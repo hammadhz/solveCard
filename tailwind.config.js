@@ -2,6 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    screens: {
+      sm: "480px",
+      md: "768px",
+      lg: "976px",
+      xl: "1440px",
+    },
     container: {
       center: true,
       padding: {
@@ -17,8 +23,15 @@ module.exports = {
       colors: {
         primary: "#F5F5F5",
         secondary: "#2A9562",
-        tertiary: "#00796D",
-        accent: "#38C682",
+        tertiary: {
+          "green-30": "#04D94F",
+          "green-40": "#148C48CC",
+          "green-50": "#29AB5D",
+          "green-60": "#38C682",
+          "green-65": "#11864E",
+          "green-70": "#00796D",
+          "green-80": "#025928",
+        },
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
