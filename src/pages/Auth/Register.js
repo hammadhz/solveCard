@@ -31,8 +31,8 @@ const Register = () => {
                 <div className="flex items-start gap-2">
                   <div className="flex flex-col items-center justify-center gap-3">
                     <div
-                      className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
-                        nextStep === 1 && "bg-black text-white"
+                      className={`size-8 rounded-full flex justify-center items-center font-inter font-sm font-normal bg-primary ${
+                        nextStep === 1 && "!bg-black text-white"
                       }`}
                     >
                       1
@@ -51,7 +51,7 @@ const Register = () => {
                   <div className="flex flex-col items-center justify-center gap-3">
                     <div
                       className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
-                        nextStep === 2 && "bg-black text-white"
+                        nextStep === 2 && "!bg-black text-white"
                       }`}
                     >
                       2
@@ -70,7 +70,7 @@ const Register = () => {
                   <div className="flex flex-col items-center justify-center gap-3">
                     <div
                       className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
-                        nextStep === 3 && "bg-black text-white"
+                        nextStep === 3 && "!bg-black text-white"
                       }`}
                     >
                       3

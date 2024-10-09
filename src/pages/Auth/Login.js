@@ -30,7 +30,10 @@ const Login = () => {
                 </span>
               </div>
               <div className="w-full rounded-lg flex justify-center gap-3 items-center bg-primary p-2">
-                <FcGoogle className="size-5" /> <p>Continue With Google</p>
+                <FcGoogle className="size-5" />{" "}
+                <p className="font-inter font-normal text-sm text-black">
+                  Continue with Google
+                </p>
               </div>
               <form className="flex flex-col gap-3">
                 <div className="flex flex-col gap-2">
@@ -61,6 +64,9 @@ const Login = () => {
                     positionIcon={"absolute right-4 top-4"}
                     selector={"password"}
                   />
+                  <span className="font-inter font-normal text-sm text-black text-end">
+                    <Link to={"/forgot-password"}>Forgot Password ?</Link>
+                  </span>
                 </div>
                 <Button
                   type={"submit"}
