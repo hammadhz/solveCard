@@ -4,7 +4,6 @@ import { ReactSVG } from "react-svg";
 import user from "../assets/svgs/user.svg";
 import contact from "../assets/svgs/contact.svg";
 import insight from "../assets/svgs/insight.svg";
-import support from "../assets/svgs/support.svg";
 import setting from "../assets/svgs/setting.svg";
 import { Link } from "react-router-dom";
 
@@ -24,10 +23,7 @@ const Sidebar = () => {
           <nav>
             <ul className="space-y-7 list-none">
               <li>
-                <Link
-                  to={"/dashboard"}
-                  className="flex items-center justify-center gap-4"
-                >
+                <Link to={"/dashboard"} className="flex items-center  gap-4">
                   <ReactSVG src={user} className="" />
                   <span className="font-inter font-normal text-base text-white">
                     My Card
@@ -35,10 +31,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to={"/contacts"}
-                  className="flex items-center justify-center gap-4"
-                >
+                <Link to={"/contacts"} className="flex items-center  gap-4">
                   <ReactSVG src={contact} className="" />
                   <span className="font-inter font-normal text-base text-white">
                     Contacts
@@ -46,32 +39,16 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to={"/insight"}
-                  className="flex items-center justify-center gap-4"
-                >
+                <Link to={"/insight"} className="flex items-center  gap-4">
                   <ReactSVG src={insight} className="" />
                   <span className="font-inter font-normal text-base text-white">
                     Insight
                   </span>
                 </Link>
               </li>
+
               <li>
-                <Link
-                  to={"/support"}
-                  className="flex items-center justify-center gap-4"
-                >
-                  <ReactSVG src={support} className="" />
-                  <span className="font-inter font-normal text-base text-white">
-                    Support
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/settings"}
-                  className="flex items-center justify-center gap-4"
-                >
+                <Link to={"/settings"} className="flex items-center  gap-4">
                   <ReactSVG src={setting} className="" />
                   <span className="font-inter font-normal text-base text-white">
                     Settings

@@ -74,7 +74,7 @@ const Input = ({
         minLength={minLength}
       />
       {icon && (
-        <div className={positionIcon}>
+        <div className={`${positionIcon}`}>
           <ReactSVG src={icon} />
         </div>
       )}

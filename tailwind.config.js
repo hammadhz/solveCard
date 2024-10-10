@@ -11,12 +11,11 @@ module.exports = {
     container: {
       center: true,
       padding: {
-        // sm: "640px",
-        // md: "768px",
-        // lg: "1024px",
-        // default: "1024px",
-        // xl: "1280px",
-        // "2xl": "1536px",
+        DEFAULT: "1rem",
+        sm: "2rem",
+        lg: "4rem",
+        xl: "5rem",
+        "2xl": "6rem",
       },
     },
     extend: {
@@ -31,6 +30,7 @@ module.exports = {
           "green-65": "#11864E",
           "green-70": "#00796D",
           "green-80": "#025928",
+          "gray-700": "#CDCDCD",
         },
       },
       fontFamily: {

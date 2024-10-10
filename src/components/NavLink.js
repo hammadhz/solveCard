@@ -4,7 +4,7 @@ import { ReactSVG } from "react-svg";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 
-const ButtonVariants = cva(
+const NavLinkVariants = cva(
   /* button base style */
   `flex justify-center items-center font-inter `,
   {
@@ -12,10 +12,10 @@ const ButtonVariants = cva(
       /* button colors */
       intent: {
         primary:
-          "bg-gradient-to-r from-tertiary-green-60 to-tertiary-green-70  text-white",
-        secondary: "bg-white border-[1px] border-black",
+          "inline-block bg-gradient-to-r from-tertiary-green-60 to-tertiary-green-70  text-white",
+        secondary: "inline-block bg-white border-[1px] border-black",
         default:
-          "bg-gradient-to-r from-tertiary-green-30 from-0% to-tertiary-green-50 to-100%",
+          "inline-block bg-gradient-to-r from-tertiary-green-30 from-0% to-tertiary-green-50 to-100%",
       },
 
       /* button sizes */
@@ -38,40 +38,13 @@ const ButtonVariants = cva(
     // defaults
     defaultVariants: {
       intent: "default",
-      size: "medium",
+      size: "md",
       roundness: "round",
     },
   }
 );
 
-const Button = ({
-  intent,
-  size,
-  roundness,
-  children,
-  eventAction,
-  type,
-  iconLeft,
-  iconRight,
-  classes,
-}) => {
-  return (
-    <button
-      type={type}
-      className={classNames(
-        ButtonVariants({ intent, size, roundness }),
-        classes
-      )}
-      onClick={eventAction}
-    >
-      {iconLeft && <ReactSVG src={iconLeft} />}
-      {children}
-      {iconRight && <ReactSVG src={iconRight} />}
-    </button>
-  );
-};
-
-const ButtonLink = ({
+const NavLink = ({
   intent,
   size,
   roundness,
@@ -87,7 +60,7 @@ const ButtonLink = ({
     <Link
       to={href}
       className={classNames(
-        ButtonVariants({ intent, size, roundness }),
+        NavLinkVariants({ intent, size, roundness }),
         classes
       )}
     >
@@ -98,4 +71,4 @@ const ButtonLink = ({
   );
 };
 
-export default Button;
+export default NavLink;
