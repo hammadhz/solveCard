@@ -19,25 +19,27 @@ const ContactTbl = () => {
           <div className="w-full h-full  overflow-auto p-3">
             <table className="w-full border-separate rounded-xl border-2 border-tertiary-gray-700">
               <thead className="text-base font-inter font-bold uppercase">
-                <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
-                  Name
-                </th>
+                <tr>
+                  <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
+                    Name
+                  </th>
 
-                <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
-                  Name
-                </th>
-                <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
-                  Name
-                </th>
-                <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
-                  Name
-                </th>
-                <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
-                  Name
-                </th>
-                <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
-                  Name
-                </th>
+                  <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
+                    Name
+                  </th>
+                  <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
+                    Name
+                  </th>
+                  <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
+                    Name
+                  </th>
+                  <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
+                    Name
+                  </th>
+                  <th className="flex-nowrap px-6 py-3 border-2 rounded-lg border-tertiary-gray-700">
+                    Name
+                  </th>
+                </tr>
               </thead>
               <tbody className="text-base font-inter font-normal">
                 <tr className="">

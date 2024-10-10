@@ -8,6 +8,7 @@ import NotFound from "../pages/NotFound";
 import { Profile } from "../pages/profile";
 import { Insights } from "../pages/Insights";
 import { Contacts } from "../pages/Contact";
+import ProtectedRoute from "./ProtectedRoute";
 
 const Routing = () => {
   return (
@@ -18,10 +19,12 @@ const Routing = () => {
       <Route path="*" element={<NotFound />} />
       <Route path="/test" element={<Test />} />
       <Route path="/" element={<MainLayout />}>
-        <Route path="/dashboard" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/insight" element={<Insights />} />
-        <Route path="/contacts" element={<Contacts />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/insight" element={<Insights />} />
+          <Route path="/contacts" element={<Contacts />} />
+        </Route>
       </Route>
     </Routes>
   );
