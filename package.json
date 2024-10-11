@@ -28,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install",
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -49,6 +51,14 @@
     ]
   },
   "devDependencies": {
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "tailwindcss": "^3.4.13"
+  },
+  "lint-staged": {
+    "*.js": "eslint --fix",
+    "*.ts": "eslint --fix",
+    "*.jsx": "eslint --fix",
+    "*.tsx": "eslint --fix"
   }
 }
