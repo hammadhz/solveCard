@@ -49,27 +49,27 @@ const Input = ({
   classes,
   icon,
   placeholder,
-  value,
+
   maxLength,
   minLength,
   parentDivH,
   positionIcon,
-  name,
+  nameField,
   selector,
+  register,
 }) => {
   return (
     <div className={`relative ${parentDivH}`}>
       <input
         type={type}
-        name={name}
+        {...register(nameField)}
         id={selector}
         placeholder={placeholder}
-        value={value}
-        onChange={eventAction}
         className={classNames(
           InputVariants({ intent, size, roundness }),
           classes
         )}
+        autoComplete="off"
         maxLength={maxLength}
         minLength={minLength}
       />
