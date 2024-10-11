@@ -7,8 +7,26 @@ import circle from "../../assets/imgs/circle.png";
 import circleCut from "../../assets/imgs/circle-cut.png";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../../utils/validations";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const loginSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
     <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 h-screen flex justify-center items-center relative">
       <div className=" absolute -top-32 left-0">
@@ -35,7 +53,10 @@ const Login = () => {
                   Continue with Google
                 </p>
               </div>
-              <form className="flex flex-col gap-3">
+              <form
+                className="flex flex-col gap-3"
+                onSubmit={handleSubmit(loginSubmit)}
+              >
                 <div className="flex flex-col gap-2">
                   <Label labelFor={"email"} content={"Email"} />
                   <Input
@@ -44,10 +65,15 @@ const Login = () => {
                     roundness={"round-md"}
                     intent={"primary"}
                     size={"lg"}
-                    name={"email"}
                     classes={"w-full"}
                     selector={"email"}
+                    nameField={"email"}
+                    register={register}
                   />
+                  <span className="font-inter font-normal text-center text-red-600 text-sm">
+                    {" "}
+                    {errors && errors?.email?.message}{" "}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label labelFor={"password"} content={"Password"} />
@@ -63,7 +89,13 @@ const Login = () => {
                     parentDivH={"w-full"}
                     positionIcon={"absolute right-4 top-4"}
                     selector={"password"}
+                    nameField={"password"}
+                    register={register}
                   />
+                  <span className="font-inter font-normal text-center text-red-600 text-sm">
+                    {" "}
+                    {errors && errors?.password?.message}{" "}
+                  </span>
                   <span className="font-inter font-normal text-sm text-black text-end">
                     <Link to={"/forgot-password"}>Forgot Password ?</Link>
                   </span>
@@ -90,6 +122,7 @@ const Login = () => {
             <img src={logo} className="" alt="" />
           </div>
         </div>
+        <DevTool control={control} />
       </div>
     </div>
   );
