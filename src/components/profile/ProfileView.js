@@ -1,7 +1,27 @@
 import React from "react";
+import ProfileViewCard from "./ProfileViewCard";
 
 const ProfileView = () => {
-  return <div className="h-[100%] flex justify-center w-52">profile view</div>;
+  return (
+    <section
+      className="h-[480px] flex justify-center w-80 overflow-y-auto"
+      id="profileView"
+    >
+      <div className="w-full px-6 pt-8">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 text-center">
+            <p className="font-inter font-normal text-sm text-black">
+              Card live preview
+            </p>
+            <p className="font-inter font-normal text-sm text-black">
+              View Card
+            </p>
+          </div>
+          <ProfileViewCard />
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default ProfileView;

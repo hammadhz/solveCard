@@ -10,6 +10,7 @@ const Home = lazy(() => import("../pages/Dashboard/Home"));
 const Profile = lazy(() => import("../pages/profile/Profile"));
 const Insights = lazy(() => import("../pages/Insights/Insights"));
 const Contacts = lazy(() => import("../pages/Contact/Contacts"));
+const Settings = lazy(() => import("../pages/Settings/Settings"));
 
 const Routing = () => {
   return (
@@ -50,6 +51,14 @@ const Routing = () => {
             element={
               <Suspense fallback={<PageFallback />}>
                 <Contacts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <Settings />
               </Suspense>
             }
           />

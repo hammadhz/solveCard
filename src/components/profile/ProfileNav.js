@@ -7,7 +7,7 @@ import { MdOutlineEmail, MdOutlineQrCode2 } from "react-icons/md";
 const ProfileNav = () => {
   return (
     <nav
-      className="h-[450px] flex justify-center w-48 px-2 overflow-y-auto border-r-2 border-r-white"
+      className="h-[480px] flex justify-center w-48 px-2 overflow-y-auto border-r-2 border-r-white"
       id="profileNav"
     >
       <div className="flex flex-col  gap-4 items-start  py-6 w-full">

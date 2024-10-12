@@ -7,7 +7,7 @@ import NavLink from "../NavLink";
 
 const ProfileCard = () => {
   return (
-    <div className="bg-primary w-80 h-[300px] p-2 rounded-2xl relative flex flex-col justify-between">
+    <div className="bg-primary h-[300px] p-2 rounded-2xl relative flex flex-col justify-between">
       <div className="bg-tertiary-gray-700 rounded-t-2xl w-full h-32"></div>
       <div className="size-20 rounded-full bg-primary flex justify-center items-center z-40 absolute top-24 left-1/2 transform -translate-x-1/2">
         <ReactSVG src={avatar} />

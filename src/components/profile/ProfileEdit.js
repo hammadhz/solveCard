@@ -5,7 +5,7 @@ import ProfileView from "./ProfileView";
 
 const ProfileEdit = () => {
   return (
-    <section className="w-full h-[450px] rounded-2xl px-4 bg-primary">
+    <section className="w-full h-[480px] rounded-2xl bg-primary">
       <div className="flex">
         <ProfileNav />
         <ProfileEd />
