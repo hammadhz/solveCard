@@ -28,3 +28,8 @@
   background: #cdcdcd; /* Track color */
   border-radius: 10px; /* Rounded track */
 }
+
+canvas {
+  height: 300px !important;
+  width: 100% !important;
+}

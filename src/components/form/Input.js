@@ -47,9 +47,9 @@ const Input = ({
   roundness,
   eventAction,
   classes,
-  icon,
+  icon: Icon,
   placeholder,
-
+  reactSvgIcon,
   maxLength,
   minLength,
   parentDivH,
@@ -57,6 +57,8 @@ const Input = ({
   nameField,
   selector,
   register,
+  iconClass,
+  iconAction,
 }) => {
   return (
     <div className={`relative ${parentDivH}`}>
@@ -73,9 +75,14 @@ const Input = ({
         maxLength={maxLength}
         minLength={minLength}
       />
-      {icon && (
+      {Icon && (
         <div className={`${positionIcon}`}>
-          <ReactSVG src={icon} />
+          <Icon className={`${iconClass}`} onClick={iconAction} />
+        </div>
+      )}
+      {reactSvgIcon && (
+        <div className={`${positionIcon}`}>
+          <ReactSVG src={reactSvgIcon} />
         </div>
       )}
     </div>

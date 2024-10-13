@@ -12,7 +12,6 @@ function useFetch() {
       const response = await axiosInstance({
         method,
         url,
-        options,
       });
       setData(response);
     } catch (err) {

@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-  fullName: z
+  name: z
     .string()
-    .min(6, { message: "Full Name is required" })
-    .max(50, { message: "Full Name must be less than 50 characters" })
+    .min(6, { message: "Name is required" })
+    .max(50, { message: "Name must be less than 50 characters" })
     .regex(/^[a-zA-Z\s]+$/, {
-      message: "Full Name must only contain letters and spaces",
+      message: "Name must only contain letters and spaces",
     }),
 
   email: z
@@ -23,6 +23,14 @@ export const registerSchema = z.object({
     .max(50, { message: "Company Name must be less than 50 characters" })
     .regex(/^[a-zA-Z\s]+$/, {
       message: "Company Name must only contain letters and spaces",
+    }),
+
+  role: z
+    .string()
+    .min(6, { message: "Role is required" })
+    .max(50, { message: "Role must be less than 50 characters" })
+    .regex(/^[a-zA-Z\s]+$/, {
+      message: "Role must only contain letters and spaces",
     }),
 
   password: z

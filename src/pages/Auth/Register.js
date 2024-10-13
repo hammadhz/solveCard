@@ -7,40 +7,44 @@ import { MdNavigateNext } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Label, Input, Button } from "../../components/form";
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../../utils/validations";
+import useFetch from "../../hooks/useFetch";
 
 const Register = () => {
   const [nextStep, setNextStep] = useState(0);
 
+  const { data, loading, error, post } = useFetch();
+
   const {
     register,
     handleSubmit,
-    watch,
-    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
   });
 
   const handleNextStepReg = () => {
-    if (nextStep !== 2) handleSubmit(registerSubmit);
-    if (!errors?.fullName && !errors?.companyName) {
-      setNextStep(nextStep + 1);
-    } else if (!errors?.email) {
-      setNextStep(nextStep + 1);
-    }
+    // if (nextStep !== 2) handleSubmit(registerSubmit);
+    // if (!errors?.fullName && !errors?.companyName) {
+    //   setNextStep(nextStep + 1);
+    // } else if (!errors?.email) {
+    //   setNextStep(nextStep + 1);
+    // }
+    setNextStep(nextStep + 1);
   };
 
   const registerSubmit = async (data) => {
     console.log(data);
+    const postData = await post("register", data);
+    console.log(postData);
+    console.log(error);
   };
 
   console.log(errors, "error");
 
   return (
-    <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 h-screen  flex justify-center items-center relative">
+    <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 min-h-screen  flex justify-center items-center relative">
       <div className=" absolute -top-32 left-0">
         <img src={circle} alt="" className="" />
       </div>
@@ -50,7 +54,7 @@ const Register = () => {
       <div className="bg-white p-10  z-10 rounded-2xl w-[694px] min-h-[438px]">
         <div className="flex items-center gap-4">
           <div className="flex-1">
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
               {/* steps */}
               <div className="flex items-center justify-center">
                 <div
@@ -121,7 +125,7 @@ const Register = () => {
               </div>
 
               <form className="" onSubmit={handleSubmit(registerSubmit)}>
-                <div className="flex gap-3 flex-col">
+                <div className="flex gap-2 flex-col">
                   <div className="flex flex-col gap-1">
                     <h1 className="text-black font-inter font-bold text-xl">
                       Register
@@ -141,31 +145,28 @@ const Register = () => {
                             roundness={"round-md"}
                             intent={"primary"}
                             size={"lg"}
-                            nameField="fullName"
+                            nameField="name"
                             classes={"w-full gap-2"}
                             selector={"name"}
                             register={register}
                           />
                           <span className="font-inter font-normal text-center text-red-600 text-sm">
                             {" "}
-                            {errors && errors?.fullName?.message}{" "}
+                            {errors && errors?.name?.message}{" "}
                           </span>
                         </div>
                         <div className="flex flex-col gap-2">
-                          <Label
-                            labelFor={"company-name"}
-                            content={"Company Name"}
-                          />
+                          <Label labelFor={"phone"} content={"Phone"} />
 
                           <Input
-                            type={"text"}
-                            placeholder={"Enter your company name"}
+                            type={"tel"}
+                            placeholder={"Enter your phone"}
                             roundness={"round-md"}
                             intent={"primary"}
                             size={"lg"}
-                            nameField="companyName"
+                            nameField="phone"
                             classes={"w-full gap-2"}
-                            selector={"company-name"}
+                            selector={"phone"}
                             register={register}
                           />
                           <span className="font-inter font-normal text-center text-red-600 text-sm">
@@ -189,6 +190,62 @@ const Register = () => {
                     {nextStep === 1 && (
                       <>
                         <div className="flex flex-col gap-2">
+                          <Label
+                            labelFor={"company-name"}
+                            content={"Company Name"}
+                          />
+
+                          <Input
+                            type={"text"}
+                            placeholder={"Enter your company name"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="companyName"
+                            classes={"w-full gap-2"}
+                            selector={"company-name"}
+                            register={register}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors && errors?.companyName?.message}{" "}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Label labelFor={"role"} content={"Role"} />
+
+                          <Input
+                            type={"text"}
+                            placeholder={"Enter your role"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="role"
+                            classes={"w-full gap-2"}
+                            selector={"role"}
+                            register={register}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors && errors?.role?.message}{" "}
+                          </span>
+                        </div>
+
+                        {/* <Button
+                          type={"button"}
+                          children={"Continue"}
+                          intent={"primary"}
+                          size={"xlg"}
+                          roundness={"round"}
+                          iconRight={rightIcon}
+                          classes={"gap-2 cursor-pointer"}
+                          eventAction={handleNextStepReg}
+                        /> */}
+                      </>
+                    )}{" "}
+                    {nextStep === 2 && (
+                      <>
+                        <div className="flex flex-col gap-2">
                           <Label labelFor={"email"} content={"Email"} />
 
                           <Input
@@ -207,21 +264,6 @@ const Register = () => {
                             {errors && errors?.email?.message}{" "}
                           </span>
                         </div>
-
-                        {/* <Button
-                          type={"button"}
-                          children={"Continue"}
-                          intent={"primary"}
-                          size={"xlg"}
-                          roundness={"round"}
-                          iconRight={rightIcon}
-                          classes={"gap-2 cursor-pointer"}
-                          eventAction={handleNextStepReg}
-                        /> */}
-                      </>
-                    )}{" "}
-                    {nextStep === 2 && (
-                      <>
                         <div className="flex flex-col gap-2">
                           <Label labelFor={"password"} content={"Password"} />
 
@@ -241,6 +283,29 @@ const Register = () => {
                             {errors && errors?.password?.message}{" "}
                           </span>
                         </div>
+                        <div className="flex flex-col gap-2">
+                          <Label
+                            labelFor={"confirm-password"}
+                            content={"Confirm Password"}
+                          />
+
+                          <Input
+                            type={"password"}
+                            placeholder={"Confirm your password"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="password_confirmation"
+                            classes={"w-full gap-2"}
+                            selector={"confirm-password"}
+                            register={register}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors &&
+                              errors?.password_confirmation?.message}{" "}
+                          </span>
+                        </div>
                       </>
                     )}
                     {nextStep === 2 && (
@@ -254,9 +319,9 @@ const Register = () => {
                         classes={"gap-2 cursor-pointer"}
                       />
                     )}
-                    {nextStep !== 2 && (
+                    {(nextStep === 0 || nextStep === 1) && (
                       <Button
-                        type="submit"
+                        type="button"
                         children={"Continue"}
                         intent={"primary"}
                         size={"xlg"}
@@ -282,7 +347,6 @@ const Register = () => {
             <img src={logo} className="" alt="" />
           </div>
         </div>
-        <DevTool control={control} />
       </div>
     </div>
   );

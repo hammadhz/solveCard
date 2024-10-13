@@ -13,7 +13,7 @@ const Searchbar = () => {
       intent={"primary"}
       size={"sm"}
       classes={""}
-      icon={search}
+      reactSvgIcon={search}
       parentDivH={"w-[450px]"}
       positionIcon={"absolute top-2 right-4"}
       nameField={"search"}
