@@ -20,7 +20,7 @@ const ForgotPwd = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(forgotPwdSchema),
+    resolver: zodResolver(forgotPwdSchema(isEmailSent)),
   });
 
   const forgotPwdEmailSubmit = async (data) => {

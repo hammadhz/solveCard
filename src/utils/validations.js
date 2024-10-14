@@ -71,15 +71,18 @@ export const loginSchema = z.object({
     }),
 });
 
-export const forgotPwdSchema = z.object({
-  email: z
-    .string()
-    .min(6, { message: "Email is required" })
-    .email({ message: "Invalid email address" })
-    .regex(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/, {
-      message: "Email must not contain special symbols except @, _, -",
-    }),
-});
+export const forgotPwdSchema = (isEmailSent) =>
+  z.object({
+    email: z
+      .string()
+      .min(6, { message: "Email is required" })
+      .email({ message: "Invalid email address" })
+      .regex(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/, {
+        message: "Email must not contain special symbols except @, _, -",
+      }),
+
+    otp: isEmailSent ? z.string() : z.optional(),
+  });
 
 const resetPwdSchema = z.object({
   otp: z.string(),
