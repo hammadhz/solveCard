@@ -13,6 +13,8 @@ const ForgotPwd = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [getEmail, setGetEmail] = useState("");
 
+  // const [email, setEmail] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -37,6 +39,10 @@ const ForgotPwd = () => {
       console.log(err);
     }
   };
+
+  // const handleEmail = (e) => {
+  //   setEmail(e.target.value);
+  // };
 
   const forgotPwdSubmit = async (data) => {
     try {
@@ -162,6 +168,19 @@ const ForgotPwd = () => {
                           selector={"name"}
                           register={register}
                         />
+                        {/* <Input
+                        type={"email"}
+                        placeholder={"Enter your email"}
+                        roundness={"round-md"}
+                        intent={"primary"}
+                        size={"lg"}
+                        name={"email"}
+                        value={email}
+                        classes={"w-full gap-2"}
+                        selector={"name"}
+                        custom={"custom"}
+                        eventAction={handleEmail}
+                      /> */}
                         <span className="font-inter font-normal text-center text-red-600 text-sm">
                           {" "}
                           {errors && errors?.email?.message}{" "}

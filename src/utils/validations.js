@@ -79,7 +79,9 @@ export const forgotPwdSchema = z.object({
     .regex(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/, {
       message: "Email must not contain special symbols except @, _, -",
     }),
+});
 
+const resetPwdSchema = z.object({
   otp: z.string(),
 
   password: z
@@ -94,4 +96,19 @@ export const forgotPwdSchema = z.object({
     .string()
     .min(6, { message: "Confirm Password is required" })
     .max(8, { message: "Confirm Password must not exceed 8 characters" }),
+  // .refine(
+  //   (value, context) => {
+  //     if (value !== context.input.password) {
+  //       throw new z.ZodError({
+  //         code: z.ZodIssueCode.INVALID_TYPE,
+  //         message: "Passwords must match",
+  //         path: ["password_confirmation"],
+  //       });
+  //     }
+  //     return true;
+  //   },
+  //   {
+  //     message: "Passwords must match",
+  //   }
+  // ),
 });
