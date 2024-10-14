@@ -1,30 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/imgs/login.png";
 import { Button, Label, Input } from "../../components/form";
 import rightIcon from "../../assets/svgs/right-arrow.svg";
-import hidePwd from "../../assets/svgs/hide-pwd.svg";
 import circle from "../../assets/imgs/circle.png";
 import circleCut from "../../assets/imgs/circle-cut.png";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../../utils/validations";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import axiosInstance from "../../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../context/slice/authSlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
-    watch,
-    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
 
-  const loginSubmit = (data) => {
-    console.log(data);
+  const loginSubmit = async (data) => {
+    try {
+      const response = await axiosInstance.post("/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+          "Device-Id": "123456",
+        },
+      });
+      console.log(response);
+
+      toast.error(response?.data?.message, {
+        position: "bottom-right",
+        autoClose: 50000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      if (response.status === 200) {
+        dispatch(loginUser(response?.data));
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.log(err);
+      // toast.error(err.response.data.message, {
+      //   position: "bottom-right",
+      //   autoClose: 5000,
+      //   hideProgressBar: true,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "light",
+      // });
+    }
+  };
+
+  const handleShowPass = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -78,19 +124,21 @@ const Login = () => {
                 <div className="flex flex-col gap-2">
                   <Label labelFor={"password"} content={"Password"} />
                   <Input
-                    type={"password"}
+                    type={`${showPassword ? "text" : "password"}`}
                     placeholder={"Enter your password"}
                     roundness={"round-md"}
                     intent={"primary"}
                     size={"lg"}
                     name={"password"}
                     classes={"w-full"}
-                    icon={hidePwd}
+                    icon={showPassword ? FaEye : FaEyeSlash}
+                    iconClass={"size-6"}
                     parentDivH={"w-full"}
                     positionIcon={"absolute right-4 top-4"}
                     selector={"password"}
                     nameField={"password"}
                     register={register}
+                    iconAction={handleShowPass}
                   />
                   <span className="font-inter font-normal text-center text-red-600 text-sm">
                     {" "}
@@ -122,7 +170,7 @@ const Login = () => {
             <img src={logo} className="" alt="" />
           </div>
         </div>
-        <DevTool control={control} />
+        <ToastContainer />
       </div>
     </div>
   );

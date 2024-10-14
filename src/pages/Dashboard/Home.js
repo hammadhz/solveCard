@@ -5,12 +5,12 @@ import { ProfileCard, AddProfileCard } from "../../components/profile";
 
 const Home = () => {
   return (
-    <section className=" p-4 sm:ml-64 bg-white min-h-screen">
+    <section className="">
       <header className="flex justify-between items-center mb-8">
         <Searchbar />
         <Avatar />
       </header>
-      <div className="grid gap-4 lg:grid-cols-3 grid-cols-1">
+      <div className="grid gap-3 lg:grid-cols-3 grid-cols-1">
         <ProfileCard />
         <AddProfileCard />
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import logo from "../assets/svgs/logo.svg";
 import { ReactSVG } from "react-svg";
 import user from "../assets/svgs/user.svg";
@@ -7,18 +7,12 @@ import insight from "../assets/svgs/insight.svg";
 import setting from "../assets/svgs/setting.svg";
 import { Link } from "react-router-dom";
 
-const Sidebar = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  const sidebarRef = useRef(null);
-
-  const handleMouseOver = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseOut = () => {
-    setIsHovered(false);
-  };
-
+const Sidebar = ({
+  handleMouseOut,
+  handleMouseOver,
+  isHovered,
+  sidebarRef,
+}) => {
   return (
     <aside
       ref={sidebarRef}

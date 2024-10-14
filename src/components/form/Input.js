@@ -47,9 +47,9 @@ const Input = ({
   roundness,
   eventAction,
   classes,
-  icon,
+  icon: Icon,
   placeholder,
-
+  reactSvgIcon,
   maxLength,
   minLength,
   parentDivH,
@@ -57,25 +57,54 @@ const Input = ({
   nameField,
   selector,
   register,
+  iconClass,
+  iconAction,
+  custom,
+  name,
+  value,
 }) => {
   return (
     <div className={`relative ${parentDivH}`}>
-      <input
-        type={type}
-        {...register(nameField)}
-        id={selector}
-        placeholder={placeholder}
-        className={classNames(
-          InputVariants({ intent, size, roundness }),
-          classes
-        )}
-        autoComplete="off"
-        maxLength={maxLength}
-        minLength={minLength}
-      />
-      {icon && (
+      {register && (
+        <input
+          type={type}
+          {...register(nameField)}
+          id={selector}
+          placeholder={placeholder}
+          className={classNames(
+            InputVariants({ intent, size, roundness }),
+            classes
+          )}
+          autoComplete="off"
+          maxLength={maxLength}
+          minLength={minLength}
+        />
+      )}
+      {custom && (
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={eventAction}
+          id={selector}
+          placeholder={placeholder}
+          className={classNames(
+            InputVariants({ intent, size, roundness }),
+            classes
+          )}
+          autoComplete="off"
+          maxLength={maxLength}
+          minLength={minLength}
+        />
+      )}
+      {Icon && (
         <div className={`${positionIcon}`}>
-          <ReactSVG src={icon} />
+          <Icon className={`${iconClass}`} onClick={iconAction} />
+        </div>
+      )}
+      {reactSvgIcon && (
+        <div className={`${positionIcon}`}>
+          <ReactSVG src={reactSvgIcon} />
         </div>
       )}
     </div>

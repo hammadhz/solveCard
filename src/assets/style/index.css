@@ -3,10 +3,47 @@
 @tailwind utilities;
 
 #profileNav::-webkit-scrollbar {
-  width: 3px;
+  width: 5px;
 }
 
 #profileNav::-webkit-scrollbar-track {
-  background: #29ab5d; /* Track color */
-  border-radius: 5px; /* Rounded track */
+  background: #cdcdcd; /* Track color */
+  border-radius: 10px; /* Rounded track */
+}
+
+#profileView::-webkit-scrollbar {
+  width: 5px;
+}
+
+#profileView::-webkit-scrollbar-track {
+  background: #cdcdcd; /* Track color */
+  border-radius: 10px; /* Rounded track */
+}
+
+#profileEdit::-webkit-scrollbar {
+  width: 5px;
+}
+
+#profileEdit::-webkit-scrollbar-track {
+  background: #cdcdcd; /* Track color */
+  border-radius: 10px; /* Rounded track */
+}
+
+canvas {
+  height: 300px !important;
+  width: 100% !important;
+}
+
+.Toastify .Toastify__toast {
+  background-color: white; /* White background */
+  color: black;
+
+  border-radius: 8px; /* Rounded corners */
+
+  padding: 5px 10px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.Toastify__toast-body {
+  margin: 0;
 }
