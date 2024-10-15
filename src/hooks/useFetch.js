@@ -8,6 +8,7 @@ function useFetch() {
 
   async function api(method, url, data, options) {
     console.log(options, "options");
+    console.log(data, "body");
     try {
       setLoading(true);
       const response = await axiosInstance({
@@ -26,7 +27,8 @@ function useFetch() {
 
   const post = async (url, data, options) =>
     await api("POST", url, data, options);
-  const get = async (url, options) => await api("GET", url, options);
+  const get = async (url, body, options) =>
+    await api("GET", url, body, options);
   const put = async (url, data, options) =>
     await api("PUT", url, data, options);
   const patch = async (url, data, options) =>

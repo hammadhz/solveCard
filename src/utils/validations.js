@@ -81,7 +81,32 @@ export const forgotPwdSchema = (isEmailSent) =>
         message: "Email must not contain special symbols except @, _, -",
       }),
 
-    otp: isEmailSent ? z.string() : z.optional(),
+    otp: isEmailSent
+      ? z
+          .string()
+          .length(4, { message: "OTP must be exactly 4 digits." })
+          .regex(/^\d{4}$/, {
+            message: "OTP must contain only numeric digits.",
+          })
+      : z.optional(),
+
+    password: isEmailSent
+      ? z
+          .string()
+          .min(6, { message: "Password must be at least 6 characters" })
+          .max(8, { message: "Password must not exceed 8 characters" })
+          .regex(/^[\w!@#$%^&*()_+=-]+$/, {
+            message:
+              "Password can contain letters, numbers, and special symbols",
+          })
+      : z.optional(),
+
+    password_confirmation: isEmailSent
+      ? z
+          .string()
+          .min(6, { message: "Confirm Password is required" })
+          .max(8, { message: "Confirm Password must not exceed 8 characters" })
+      : z.optional(),
   });
 
 const resetPwdSchema = z.object({

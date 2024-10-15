@@ -9,7 +9,7 @@ import { logout } from "../context/slice/authSlice";
 
 const Avatar = () => {
   const [openDropDn, setOpenDropDn] = useState(false);
-  const userData = useSelector((state) => state?.auth?.userInfo);
+  const userData = useSelector((state) => state?.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -38,7 +38,7 @@ const Avatar = () => {
         <ReactSVG src={avatar} />
       </div>
       {openDropDn && (
-        <div className="absolute right-5 top-14 max-h-24 w-36 p-4 bg-white shadow-md flex flex-col gap-1  rounded-lg cursor-pointer">
+        <div className="absolute right-5 top-14 max-h-24 w-36 p-1 bg-white shadow-md flex flex-col gap-1  rounded-lg cursor-pointer">
           <div
             className="w-full hover:bg-primary p-1 hover:rounded-lg flex gap-1 items-center"
             onClick={handleLogout}

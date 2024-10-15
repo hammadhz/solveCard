@@ -16,7 +16,8 @@ const GroupConTbl = () => {
   return (
     <div className="w-full h-[450px] bg-primary rounded-2xl p-3 mb-20">
       <div className="flex flex-col gap-4 w-full">
-        <div className="w-full h-20  rounded-xl flex justify-between items-center px-8">
+        <div className="w-full h-16  rounded-xl flex justify-between items-center px-8">
+          <h1 className="font-inter font-bold text-lg">Groups</h1>
           <Button
             intent={"primary"}
             size={"md"}

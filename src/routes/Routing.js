@@ -14,57 +14,24 @@ const Settings = lazy(() => import("../pages/Settings/Settings"));
 
 const Routing = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPwd />} />
-      <Route path="*" element={<NotFound />} />
-      <Route path="/test" element={<Test />} />
-      <Route path="/" element={<MainLayout />}>
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path="/dashboard"
-            element={
-              <Suspense fallback={<PageFallback />}>
-                <Home />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <Suspense fallback={<PageFallback />}>
-                <Profile />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/insight"
-            element={
-              <Suspense fallback={<PageFallback />}>
-                <Insights />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/contacts"
-            element={
-              <Suspense fallback={<PageFallback />}>
-                <Contacts />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <Suspense fallback={<PageFallback />}>
-                <Settings />
-              </Suspense>
-            }
-          />
+    <Suspense fallback={<PageFallback />}>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPwd />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/test" element={<Test />} />
+        <Route path="/" element={<MainLayout />}>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Home />} />
+            <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/insight" element={<Insights />} />
+            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 };
 

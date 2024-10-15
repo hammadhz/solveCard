@@ -6,8 +6,8 @@ import edit from "../../assets/svgs/edit.svg";
 import NavLink from "../NavLink";
 import { useSelector } from "react-redux";
 
-const ProfileCard = () => {
-  const userData = useSelector((state) => state.auth.userInfo);
+const ProfileCard = ({ id, name }) => {
+  const userData = useSelector((state) => state.auth);
   console.log(userData);
   return (
     <div className="bg-primary h-[300px] p-2 rounded-2xl relative flex flex-col justify-between">
@@ -35,7 +35,7 @@ const ProfileCard = () => {
             content={"Edit"}
             classes={"gap-2"}
             iconLeft={edit}
-            href={"/profile"}
+            href={`/profile/${id}`}
           />
         </div>
       </div>

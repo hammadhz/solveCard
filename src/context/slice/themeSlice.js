@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const themeSlice = createSlice({
   name: "theme",
   initialState: {
+    sectionLnk: "about",
     selectedColor: {
       bgColor: "#ffffff",
       textColor: "#000000",
@@ -55,9 +56,17 @@ const themeSlice = createSlice({
         },
       };
     },
+    sectionLink: (state, action) => {
+      state.sectionLnk = action.payload;
+    },
   },
 });
 
-export const { selectColor, resetColor, selectLinkColor, resetLinkColor } =
-  themeSlice.actions;
+export const {
+  selectColor,
+  resetColor,
+  selectLinkColor,
+  resetLinkColor,
+  sectionLink,
+} = themeSlice.actions;
 export default themeSlice.reducer;

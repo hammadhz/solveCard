@@ -3,23 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    userInfo: {
-      token: null,
-      user: null,
-    },
+    token: null,
+    user: null,
   },
   reducers: {
     registerUser: (state, action) => {
-      state.userInfo.user = action.payload.user;
-      state.userInfo.token = action.payload.token;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
     },
     loginUser: (state, action) => {
-      state.userInfo.user = action.payload.user;
-      state.userInfo.token = action.payload.token;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
     },
     logout: (state) => {
-      state.userInfo.user = null;
-      state.userInfo.token = null;
+      state.user = null;
+      state.token = null;
     },
   },
 });

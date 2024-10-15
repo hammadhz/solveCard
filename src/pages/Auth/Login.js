@@ -41,7 +41,7 @@ const Login = () => {
 
       toast.error(response?.data?.message, {
         position: "bottom-right",
-        autoClose: 50000,
+        autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
