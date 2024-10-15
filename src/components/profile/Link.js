@@ -65,11 +65,11 @@ const Link = () => {
   };
 
   return (
-    <section className="h-[480px] flex justify-center grow bg-primary border-r-2 border-r-white">
-      <div className="flex flex-col w-full">
+    <section className="h-full flex justify-center grow bg-primary border-r-2 border-r-white">
+      <div className="flex flex-col w-full p-8 bg-white rounded-lg">
         {/* Header */}
-        <header className="text-start p-4 w-full bg-white z-40 flex justify-between items-center">
-          <h1 className="font-inter font-bold text-base">Links</h1>
+        <header className="text-start w-full z-40 flex justify-between items-center mb-8">
+          <h1 className="font-inter font-bold text-2xl">Links</h1>
           <Button
             intent={"secondary"}
             size={"md"}
@@ -90,7 +90,7 @@ const Link = () => {
         )}
         {/* Content Area */}
         <div
-          className="h-[520px] overflow-y-auto flex flex-col gap-4 p-3 w-full bg-white"
+          className="h-[520px] overflow-y-auto flex flex-col gap-4 w-full"
           id="linksSection"
         >
           {/* Display Existing Links */}

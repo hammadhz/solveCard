@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const NavLinkVariants = cva(
   /* button base style */
-  `flex justify-center items-center font-inter `,
+  `flex justify-center items-center font-inter cursor-pointer`,
   {
     variants: {
       /* button colors */
@@ -21,9 +21,9 @@ const NavLinkVariants = cva(
       /* button sizes */
       size: {
         cr: ["size-16"],
-        sm: ["text-sm", "py-1", "px-2"],
-        md: ["text-base", "py-1", "px-7"],
-        lg: ["text-base", "py-1", "px-9"],
+        sm: ["text-sm", "py-3", "px-2"],
+        md: ["text-base", "py-2", "px-9"],
+        lg: ["text-base", "py-2", "px-12"],
         xlg: ["text-base", "py-2", "px-20", "font-semibold"],
       },
 

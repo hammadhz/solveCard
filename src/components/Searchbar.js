@@ -12,10 +12,10 @@ const Searchbar = () => {
       placeholder={"Search"}
       intent={"primary"}
       size={"sm"}
-      classes={""}
+      classes={"!px-5"}
       reactSvgIcon={search}
       parentDivH={"w-[450px]"}
-      positionIcon={"absolute top-2 right-4"}
+      positionIcon={"absolute right-5 top-1/2 transform -translate-y-1/2"}
       nameField={"search"}
       register={register}
     />

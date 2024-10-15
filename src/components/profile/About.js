@@ -56,13 +56,13 @@ const About = () => {
   // }, []);
 
   return (
-    <section className="h-[480px] flex justify-center grow bg-primary border-r-2 border-r-white">
-      <div className="flex flex-col w-full">
-        <header className=" text-start p-4 w-full  bg-white z-40">
-          <h1 className="font-inter font-bold text-base">About</h1>
+    <section className="h-full flex justify-center grow bg-primary border-r-2 border-r-white">
+      <div className="h-full flex flex-col w-full p-8 rounded-lg bg-white">
+        <header className="text-start w-full z-40 mb-8">
+          <h1 className="font-inter font-bold text-2xl">About</h1>
         </header>
         <div
-          className="h-[520px] overflow-y-auto flex flex-col gap-4 p-3 w-full bg-white"
+          className=" flex flex-col gap-4 w-full"
           id="profileEdit"
         >
           {/* <div className="flex justify-between gap-2 items-center">

@@ -14,13 +14,13 @@ const ContactTbl = () => {
   };
 
   return (
-    <div className="w-full h-[450px] bg-primary rounded-2xl p-3 mb-20">
+    <div className="w-full h-[450px] bg-primary rounded-2xl p-6 mb-20">
       <div className="flex flex-col gap-4 w-full">
-        <div className="w-full h-16  rounded-xl flex justify-between items-center px-8">
-          <h1 className="font-inter font-bold text-lg">Contacts</h1>
+        <div className="w-full h-16  rounded-xl flex justify-between items-center">
+          <h1 className="font-inter font-bold text-2xl">Contacts</h1>
           <Button
             intent={"primary"}
-            size={"md"}
+            size={"lg"}
             children={"Add Contact"}
             roundness={"round"}
             classes={""}

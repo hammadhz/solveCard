@@ -4,16 +4,16 @@ import ProfileViewCard from "./ProfileViewCard";
 const ProfileView = () => {
   return (
     <section
-      className="h-[480px] flex justify-center w-80 overflow-y-auto"
+      className=" flex justify-center w-80 overflow-y-auto"
       id="profileView"
     >
       <div className="w-full px-6 pt-8">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4 text-center">
-            <p className="font-inter font-normal text-sm text-black">
+            <p className="font-inter font-semibold text-2xl text-black">
               Card live preview
             </p>
-            <p className="font-inter font-normal text-sm text-black">
+            <p className="font-inter font-normal text-xl text-black">
               View Card
             </p>
           </div>

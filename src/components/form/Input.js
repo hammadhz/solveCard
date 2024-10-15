@@ -10,16 +10,16 @@ const InputVariants = cva(
     variants: {
       /* button colors */
       intent: {
-        primary: "bg-primary placehoder:text-base placeholder:font-normal",
+        primary: "bg-primary placeholder:text-sm placeholder:font-normal",
         secondary: "bg-primary",
         default: "bg-primary",
       },
 
       /* button sizes */
       size: {
-        sm: ["text-sm", "py-2", "px-2", "w-[450px]"],
-        md: ["text-base", "py-2", "px-4"],
-        lg: ["text-base", "py-4", "px-4"],
+        sm: ["text-sm", "py-3", "px-3", "w-[450px]"],
+        md: ["text-base", "py-3", "px-3"],
+        lg: ["text-base", "py-3", "px-3"],
       },
 
       /* button roundness */

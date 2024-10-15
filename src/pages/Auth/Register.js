@@ -71,130 +71,138 @@ const Register = () => {
       <div className="bg-white p-10  z-10 rounded-2xl w-[694px] min-h-[438px]">
         <div className="flex items-center gap-4">
           <div className="flex-1">
+            <div className="flex flex-col gap-1 mb-8">
+              <h1 className="text-black font-inter font-bold text-2xl">
+                Register
+              </h1>
+              <span className="font-inter text-sm font-medium text-black">
+                      Register your company on app
+                    </span>
+            </div>
             <div className="flex flex-col gap-6">
               {/* steps */}
-              <div className="flex items-center justify-center">
+              <div className="w-full grid grid-cols-5">
                 <div
-                  className="flex items-start gap-2"
-                  onClick={() => setNextStep(0)}
+                    className="cursor-pointer w-full col-span-2 text-start gap-2"
+                    onClick={() => setNextStep(0)}
                 >
                   <div className="flex flex-col items-center justify-center gap-3">
-                    <div
-                      className={`size-8 rounded-full flex justify-center items-center font-inter font-sm font-normal bg-primary ${
-                        nextStep === 0 && "!bg-black text-white"
-                      }`}
-                    >
-                      1
+                    <div className="w-full flex items-center justify-center gap-4">
+                      <div
+                          className={`size-8 rounded-full flex justify-center items-center font-inter font-sm font-normal bg-primary ${
+                              nextStep === 0 && "!bg-black text-white"
+                          }`}
+                      >
+                        1
+                      </div>
+                      <MdNavigateNext className="size-6"/>
                     </div>
                     <span
-                      className={`font-inter font-light text-sm ${
-                        nextStep === 0 && "!font-bold"
-                      }`}
+                        className={`font-inter font-light text-sm ${
+                            nextStep === 0 && "!font-bold"
+                        }`}
                     >
                       Get Started
                     </span>
                   </div>
-                  <MdNavigateNext className="size-6" />
                 </div>
                 <div
-                  className="flex items-start gap-2"
-                  onClick={() => setNextStep(1)}
+                    className="cursor-pointer w-full col-span-2 text-start gap-2"
+                    onClick={() => setNextStep(1)}
                 >
                   <div className="flex flex-col items-center justify-center gap-3">
-                    <div
-                      className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
-                        nextStep === 1 && "!bg-black text-white"
-                      }`}
-                    >
-                      2
+                    <div className="w-full flex items-center justify-center gap-4">
+                      <div
+                          className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
+                              nextStep === 1 && "!bg-black text-white"
+                          }`}
+                      >
+                        2
+                      </div>
+                      <MdNavigateNext className="size-6"/>
                     </div>
                     <span
-                      className={`font-inter font-light text-sm ${
-                        nextStep === 1 && "!font-bold"
-                      }`}
+                        className={`font-inter font-light text-sm ${
+                            nextStep === 1 && "!font-bold"
+                        }`}
                     >
                       Company info
                     </span>
                   </div>
-                  <MdNavigateNext className="size-6" />
                 </div>
                 <div
-                  className="flex items-start gap-2"
-                  onClick={() => setNextStep(2)}
+                    className="cursor-pointer w-full text-start gap-2"
+                    onClick={() => setNextStep(2)}
                 >
-                  <div className="flex flex-col items-center justify-center gap-3">
+                  <div className="flex flex-col items-start justify-center ps-3 gap-3">
                     <div
-                      className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
-                        nextStep === 2 && "!bg-black text-white"
-                      }`}
+                        className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
+                            nextStep === 2 && "!bg-black text-white"
+                        }`}
                     >
                       3
                     </div>
                     <span
-                      className={`font-inter font-light text-sm ${
-                        nextStep === 2 && "!font-bold"
-                      }`}
+                        className={`font-inter font-light text-sm ${
+                            nextStep === 2 && "!font-bold"
+                        }`}
                     >
                       Setup
                     </span>
                   </div>
-                </div>{" "}
+                </div>
+                {" "}
               </div>
 
-              <form className="" onSubmit={handleSubmit(registerSubmit)}>
+              <form className=""
+                    onSubmit={handleSubmit(registerSubmit)}>
                 <div className="flex gap-2 flex-col">
-                  <div className="flex flex-col gap-1">
-                    <h1 className="text-black font-inter font-bold text-xl">
-                      Register
-                    </h1>
-                    <span className="font-inter text-sm font-medium text-black">
-                      Register your company on app
-                    </span>
-                  </div>
                   <div className="flex flex-col gap-2">
                     {nextStep === 0 && (
-                      <>
-                        <div className="flex flex-col gap-2">
-                          <Label labelFor={"name"} content={"Full Name"} />
-                          <Input
-                            type={"text"}
-                            placeholder={"Enter your name"}
-                            roundness={"round-md"}
-                            intent={"primary"}
-                            size={"lg"}
-                            nameField="name"
-                            classes={"w-full gap-2"}
-                            selector={"name"}
-                            register={register}
-                          />
-                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                        <>
+                          <div className="flex flex-col gap-2">
+                            <Label labelFor={"name"}
+                                   content={"Full Name"}/>
+                            <Input
+                                type={"text"}
+                                placeholder={"Enter your name"}
+                                roundness={"round-md"}
+                                intent={"primary"}
+                                size={"lg"}
+                                nameField="name"
+                                classes={"w-full gap-2"}
+                                selector={"name"}
+                                register={register}
+                            />
+                            <span className="font-inter font-normal text-center text-red-600 text-sm">
                             {" "}
-                            {errors && errors?.name?.message}{" "}
+                              {errors && errors?.name?.message}{" "}
                           </span>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Label labelFor={"phone"} content={"Phone"} />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label labelFor={"phone"}
+                                   content={"Phone"}/>
 
-                          <Input
-                            type={"tel"}
-                            placeholder={"Enter your phone"}
-                            roundness={"round-md"}
-                            intent={"primary"}
-                            size={"lg"}
-                            nameField="phone"
-                            classes={"w-full gap-2"}
-                            selector={"phone"}
-                            register={register}
-                            maxLength={"11"}
-                            minLength={"10"}
-                          />
-                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            <Input
+                                type={"tel"}
+                                placeholder={"Enter your phone"}
+                                roundness={"round-md"}
+                                intent={"primary"}
+                                size={"lg"}
+                                nameField="phone"
+                                classes={"w-full gap-2"}
+                                selector={"phone"}
+                                register={register}
+                                maxLength={"11"}
+                                minLength={"10"}
+                            />
+                            <span className="font-inter font-normal text-center text-red-600 text-sm">
                             {" "}
-                            {errors && errors?.phone?.message}{" "}
+                              {errors && errors?.phone?.message}{" "}
                           </span>
-                        </div>
+                          </div>
 
-                        {/* <Button
+                          {/* <Button
                           type={"button"}
                           children={"Continue"}
                           intent={"primary"}
@@ -204,53 +212,54 @@ const Register = () => {
                           classes={"gap-2 cursor-pointer"}
                           eventAction={handleNextStepReg}
                         /> */}
-                      </>
+                        </>
                     )}
                     {nextStep === 1 && (
-                      <>
-                        <div className="flex flex-col gap-2">
-                          <Label
-                            labelFor={"company-name"}
-                            content={"Company Name"}
-                          />
+                        <>
+                          <div className="flex flex-col gap-2">
+                            <Label
+                                labelFor={"company-name"}
+                                content={"Company Name"}
+                            />
 
-                          <Input
-                            type={"text"}
-                            placeholder={"Enter your company name"}
-                            roundness={"round-md"}
-                            intent={"primary"}
-                            size={"lg"}
-                            nameField="companyName"
-                            classes={"w-full gap-2"}
-                            selector={"company-name"}
-                            register={register}
-                          />
-                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            <Input
+                                type={"text"}
+                                placeholder={"Enter your company name"}
+                                roundness={"round-md"}
+                                intent={"primary"}
+                                size={"lg"}
+                                nameField="companyName"
+                                classes={"w-full gap-2"}
+                                selector={"company-name"}
+                                register={register}
+                            />
+                            <span className="font-inter font-normal text-center text-red-600 text-sm">
                             {" "}
-                            {errors && errors?.companyName?.message}{" "}
+                              {errors && errors?.companyName?.message}{" "}
                           </span>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Label labelFor={"role"} content={"Role"} />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label labelFor={"role"}
+                                   content={"Role"}/>
 
-                          <Input
-                            type={"text"}
-                            placeholder={"Enter your role"}
-                            roundness={"round-md"}
-                            intent={"primary"}
-                            size={"lg"}
-                            nameField="role"
-                            classes={"w-full gap-2"}
-                            selector={"role"}
-                            register={register}
-                          />
-                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            <Input
+                                type={"text"}
+                                placeholder={"Enter your role"}
+                                roundness={"round-md"}
+                                intent={"primary"}
+                                size={"lg"}
+                                nameField="role"
+                                classes={"w-full gap-2"}
+                                selector={"role"}
+                                register={register}
+                            />
+                            <span className="font-inter font-normal text-center text-red-600 text-sm">
                             {" "}
-                            {errors && errors?.role?.message}{" "}
+                              {errors && errors?.role?.message}{" "}
                           </span>
-                        </div>
+                          </div>
 
-                        {/* <Button
+                          {/* <Button
                           type={"button"}
                           children={"Continue"}
                           intent={"primary"}
@@ -260,95 +269,97 @@ const Register = () => {
                           classes={"gap-2 cursor-pointer"}
                           eventAction={handleNextStepReg}
                         /> */}
-                      </>
+                        </>
                     )}{" "}
                     {nextStep === 2 && (
-                      <>
-                        <div className="flex flex-col gap-2">
-                          <Label labelFor={"email"} content={"Email"} />
+                        <>
+                          <div className="flex flex-col gap-2">
+                            <Label labelFor={"email"}
+                                   content={"Email"}/>
 
-                          <Input
-                            type={"email"}
-                            placeholder={"Enter your email"}
-                            roundness={"round-md"}
-                            intent={"primary"}
-                            size={"lg"}
-                            nameField="email"
-                            classes={"w-full gap-2"}
-                            selector={"email"}
-                            register={register}
-                          />
-                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            <Input
+                                type={"email"}
+                                placeholder={"Enter your email"}
+                                roundness={"round-md"}
+                                intent={"primary"}
+                                size={"lg"}
+                                nameField="email"
+                                classes={"w-full gap-2"}
+                                selector={"email"}
+                                register={register}
+                            />
+                            <span className="font-inter font-normal text-center text-red-600 text-sm">
                             {" "}
-                            {errors && errors?.email?.message}{" "}
+                              {errors && errors?.email?.message}{" "}
                           </span>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Label labelFor={"password"} content={"Password"} />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label labelFor={"password"}
+                                   content={"Password"}/>
 
-                          <Input
-                            type={"password"}
-                            placeholder={"Enter your password"}
-                            roundness={"round-md"}
-                            intent={"primary"}
-                            size={"lg"}
-                            nameField="password"
-                            classes={"w-full gap-2"}
-                            selector={"password"}
-                            register={register}
-                          />
-                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            <Input
+                                type={"password"}
+                                placeholder={"Enter your password"}
+                                roundness={"round-md"}
+                                intent={"primary"}
+                                size={"lg"}
+                                nameField="password"
+                                classes={"w-full gap-2"}
+                                selector={"password"}
+                                register={register}
+                            />
+                            <span className="font-inter font-normal text-center text-red-600 text-sm">
                             {" "}
-                            {errors && errors?.password?.message}{" "}
+                              {errors && errors?.password?.message}{" "}
                           </span>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Label
-                            labelFor={"confirm-password"}
-                            content={"Confirm Password"}
-                          />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label
+                                labelFor={"confirm-password"}
+                                content={"Confirm Password"}
+                            />
 
-                          <Input
-                            type={"password"}
-                            placeholder={"Confirm your password"}
-                            roundness={"round-md"}
-                            intent={"primary"}
-                            size={"lg"}
-                            nameField="password_confirmation"
-                            classes={"w-full gap-2"}
-                            selector={"confirm-password"}
-                            register={register}
-                          />
-                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            <Input
+                                type={"password"}
+                                placeholder={"Confirm your password"}
+                                roundness={"round-md"}
+                                intent={"primary"}
+                                size={"lg"}
+                                nameField="password_confirmation"
+                                classes={"w-full gap-2"}
+                                selector={"confirm-password"}
+                                register={register}
+                            />
+                            <span className="font-inter font-normal text-center text-red-600 text-sm">
                             {" "}
-                            {errors &&
-                              errors?.password_confirmation?.message}{" "}
+                              {errors &&
+                                  errors?.password_confirmation?.message}{" "}
                           </span>
-                        </div>
-                      </>
+                          </div>
+                        </>
                     )}
                     {nextStep === 2 && (
-                      <Button
-                        type="submit"
-                        children={"Continue"}
-                        intent={"primary"}
-                        size={"xlg"}
-                        roundness={"round"}
-                        iconRight={rightIcon}
-                        classes={"gap-2 cursor-pointer"}
-                      />
+                        <Button
+                            type="submit"
+                            children={"Continue"}
+                            intent={"primary"}
+                            size={"xlg"}
+                            roundness={"round"}
+                            iconRight={rightIcon}
+                            classes={"gap-2 cursor-pointer"}
+                        />
                     )}
                     {(nextStep === 0 || nextStep === 1) && (
-                      <Button
-                        type="button"
-                        children={"Continue"}
-                        intent={"primary"}
-                        size={"xlg"}
-                        roundness={"round"}
-                        iconRight={rightIcon}
-                        classes={"gap-2 cursor-pointer"}
-                        eventAction={handleNextStepReg}
-                      />
+                        <Button
+                            type="button"
+                            children={"Continue"}
+                            intent={"primary"}
+                            size={"xlg"}
+                            roundness={"round"}
+                            iconRight={rightIcon}
+                            classes={"gap-2 cursor-pointer"}
+                            eventAction={handleNextStepReg}
+                        />
                     )}
                   </div>
                 </div>
@@ -363,7 +374,9 @@ const Register = () => {
             </div>
           </div>
           <div className="flex-1 w-full h-full">
-            <img src={logo} className="" alt="" />
+            <img src={logo}
+                 className=""
+                 alt=""/>
           </div>
         </div>
         {/* <DevTool control={control} /> */}

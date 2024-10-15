@@ -26,7 +26,7 @@ const Sidebar = ({
         <div className="flex flex-col gap-3 items-center">
           <ReactSVG src={logo} className={""} />
 
-          <div className={`${isHovered && "flex items-end"} mb-6`}>
+          <div className={`${isHovered && "flex items-end"} mb-20`}>
             {isHovered && (
               <>
                 <p className="font-inter font-bold text-3xl text-white">
@@ -40,12 +40,12 @@ const Sidebar = ({
           </div>
 
           <nav>
-            <ul className="space-y-7 list-none">
+            <ul className="space-y-12 list-none">
               <li>
                 <Link to={"/dashboard"} className="flex items-center  gap-4">
                   <ReactSVG src={user} className="" />
                   {isHovered && (
-                    <span className="font-inter font-normal text-base text-white">
+                    <span className="font-inter font-normal text-xl text-white">
                       My Card
                     </span>
                   )}
@@ -55,7 +55,7 @@ const Sidebar = ({
                 <Link to={"/contacts"} className="flex items-center  gap-4">
                   <ReactSVG src={contact} className="" />
                   {isHovered && (
-                    <span className="font-inter font-normal text-base text-white">
+                    <span className="font-inter font-normal text-xl text-white">
                       Contacts
                     </span>
                   )}
@@ -65,7 +65,7 @@ const Sidebar = ({
                 <Link to={"/insight"} className="flex items-center  gap-4">
                   <ReactSVG src={insight} className="" />
                   {isHovered && (
-                    <span className="font-inter font-normal text-base text-white">
+                    <span className="font-inter font-normal text-xl text-white">
                       Insight
                     </span>
                   )}
@@ -76,7 +76,7 @@ const Sidebar = ({
                 <Link to={"/settings"} className="flex items-center  gap-4">
                   <ReactSVG src={setting} className="" />
                   {isHovered && (
-                    <span className="font-inter font-normal text-base text-white">
+                    <span className="font-inter font-normal text-xl text-white">
                       Settings
                     </span>
                   )}
