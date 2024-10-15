@@ -11,25 +11,19 @@ export const registerSchema = z.object({
 
   phone: z
     .string()
-    .min(10, { message: "Phone number must be at least 10 digits" })
-    .max(11, { message: "Phone number must not exceed 11 digits" })
+    .length(11, { message: "Phone number must be 11 digits" })
     .regex(/^\d+$/, { message: "Phone number must only contain numbers" }),
-
-  email: z
-    .string()
-    .min(6, { message: "Email is required" })
-    .email({ message: "Invalid email address" })
-    .regex(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/, {
-      message: "Email must not contain special symbols except @, _, -",
-    }),
 
   companyName: z
     .string()
     .min(6, { message: "Company Name is required" })
-    .max(50, { message: "Company Name must be less than 50 characters" })
+    .max(50, {
+      message: "Company Name must be less than 50 characters",
+    })
     .regex(/^[a-zA-Z\s]+$/, {
       message: "Company Name must only contain letters and spaces",
-    }),
+    })
+    .optional(),
 
   role: z
     .string()
@@ -37,7 +31,17 @@ export const registerSchema = z.object({
     .max(50, { message: "Role must be less than 50 characters" })
     .regex(/^[a-zA-Z\s]+$/, {
       message: "Role must only contain letters and spaces",
-    }),
+    })
+    .optional(),
+
+  email: z
+    .string()
+    .min(6, { message: "Email is required" })
+    .email({ message: "Invalid email address" })
+    .regex(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/, {
+      message: "Email must not contain special symbols except @, _, -",
+    })
+    .optional(),
 
   password: z
     .string()
@@ -45,12 +49,16 @@ export const registerSchema = z.object({
     .max(8, { message: "Password must not exceed 8 characters" })
     .regex(/^[\w!@#$%^&*()_+=-]+$/, {
       message: "Password can contain letters, numbers, and special symbols",
-    }),
+    })
+    .optional(),
 
   password_confirmation: z
     .string()
     .min(6, { message: "Confirm Password is required" })
-    .max(8, { message: "Confirm Password must not exceed 8 characters" }),
+    .max(8, {
+      message: "Confirm Password must not exceed 8 characters",
+    })
+    .optional(),
 });
 
 export const loginSchema = z.object({
@@ -108,35 +116,3 @@ export const forgotPwdSchema = (isEmailSent) =>
           .max(8, { message: "Confirm Password must not exceed 8 characters" })
       : z.optional(),
   });
-
-const resetPwdSchema = z.object({
-  otp: z.string(),
-
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters" })
-    .max(8, { message: "Password must not exceed 8 characters" })
-    .regex(/^[\w!@#$%^&*()_+=-]+$/, {
-      message: "Password can contain letters, numbers, and special symbols",
-    }),
-
-  password_confirmation: z
-    .string()
-    .min(6, { message: "Confirm Password is required" })
-    .max(8, { message: "Confirm Password must not exceed 8 characters" }),
-  // .refine(
-  //   (value, context) => {
-  //     if (value !== context.input.password) {
-  //       throw new z.ZodError({
-  //         code: z.ZodIssueCode.INVALID_TYPE,
-  //         message: "Passwords must match",
-  //         path: ["password_confirmation"],
-  //       });
-  //     }
-  //     return true;
-  //   },
-  //   {
-  //     message: "Passwords must match",
-  //   }
-  // ),
-});
