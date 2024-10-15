@@ -5,7 +5,7 @@ import Avatar from "../../components/Avatar";
 
 const Profile = () => {
   return (
-    <div className="h-screen">
+    <div className="min-h-screen">
       <header className="flex justify-between items-center mb-8">
         <Searchbar />
         <Avatar />

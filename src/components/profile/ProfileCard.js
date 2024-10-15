@@ -10,12 +10,12 @@ const ProfileCard = ({ id, name }) => {
   const userData = useSelector((state) => state.auth);
   console.log(userData);
   return (
-    <div className="bg-primary h-[300px] p-2 rounded-2xl relative flex flex-col justify-between">
+    <div className="bg-primary p-4 rounded-2xl relative flex flex-col justify-between">
       <div className="bg-tertiary-gray-700 rounded-t-2xl w-full h-32"></div>
-      <div className="size-20 rounded-full bg-primary flex justify-center items-center z-40 absolute top-24 left-1/2 transform -translate-x-1/2">
+      <div className="size-20 rounded-full border border-secondary bg-primary flex justify-center items-center z-40 absolute top-24 left-1/2 transform -translate-x-1/2">
         <ReactSVG src={avatar} />
       </div>
-      <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex flex-col justify-center items-center gap-2 mt-12">
         <h3 className="font-inter font-semibold text-lg">
           {userData?.user?.name}
         </h3>

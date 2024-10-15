@@ -86,14 +86,14 @@ const Login = () => {
           <div className="flex-1">
             <div className="flex gap-3 flex-col">
               <div className="flex flex-col gap-1">
-                <h1 className="text-black font-inter font-bold text-xl">
+                <h1 className="text-black font-inter font-bold text-2xl">
                   Login
                 </h1>
                 <span className="font-inter text-sm font-medium text-black">
                   Login your company on app
                 </span>
               </div>
-              <div className="w-full rounded-lg flex justify-center gap-3 items-center bg-primary p-2">
+              <div className="w-full rounded-lg flex justify-center gap-3 items-center bg-primary p-3">
                 <FcGoogle className="size-5" />{" "}
                 <p className="font-inter font-normal text-sm text-black">
                   Continue with Google
@@ -132,7 +132,7 @@ const Login = () => {
                     name={"password"}
                     classes={"w-full"}
                     icon={showPassword ? FaEye : FaEyeSlash}
-                    iconClass={"size-6"}
+                    iconClass={"size-6 cursor-pointer"}
                     parentDivH={"w-full"}
                     positionIcon={"absolute right-4 top-4"}
                     selector={"password"}

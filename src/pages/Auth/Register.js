@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [nextStep, setNextStep] = useState(0);
-  const [isStepTwoFieldVald, setIsStepTwoFieldVald] = useState(false);
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -115,20 +114,31 @@ const Register = () => {
       <div className="bg-white p-10  z-10 rounded-2xl w-[694px] min-h-[438px]">
         <div className="flex items-center gap-4">
           <div className="flex-1">
+            <div className="flex flex-col gap-1 mb-8">
+              <h1 className="text-black font-inter font-bold text-2xl">
+                Register
+              </h1>
+              <span className="font-inter text-sm font-medium text-black">
+                Register your company on app
+              </span>
+            </div>
             <div className="flex flex-col gap-6">
               {/* steps */}
-              <div className="flex items-center justify-center">
+              <div className="w-full grid grid-cols-5">
                 <div
-                  className="flex items-start gap-2"
+                  className="cursor-pointer w-full col-span-2 text-start gap-2"
                   onClick={() => setNextStep(0)}
                 >
                   <div className="flex flex-col items-center justify-center gap-3">
-                    <div
-                      className={`size-8 rounded-full flex justify-center items-center font-inter font-sm font-normal bg-primary ${
-                        nextStep === 0 && "!bg-black text-white"
-                      }`}
-                    >
-                      1
+                    <div className="w-full flex items-center justify-center gap-4">
+                      <div
+                        className={`size-8 rounded-full flex justify-center items-center font-inter font-sm font-normal bg-primary ${
+                          nextStep === 0 && "!bg-black text-white"
+                        }`}
+                      >
+                        1
+                      </div>
+                      <MdNavigateNext className="size-6" />
                     </div>
                     <span
                       className={`font-inter font-light text-sm ${
@@ -138,19 +148,21 @@ const Register = () => {
                       Get Started
                     </span>
                   </div>
-                  <MdNavigateNext className="size-6" />
                 </div>
                 <div
-                  className="flex items-start gap-2"
+                  className="cursor-pointer w-full col-span-2 text-start gap-2"
                   onClick={() => setNextStep(1)}
                 >
                   <div className="flex flex-col items-center justify-center gap-3">
-                    <div
-                      className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
-                        nextStep === 1 && "!bg-black text-white"
-                      }`}
-                    >
-                      2
+                    <div className="w-full flex items-center justify-center gap-4">
+                      <div
+                        className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
+                          nextStep === 1 && "!bg-black text-white"
+                        }`}
+                      >
+                        2
+                      </div>
+                      <MdNavigateNext className="size-6" />
                     </div>
                     <span
                       className={`font-inter font-light text-sm ${
@@ -160,13 +172,12 @@ const Register = () => {
                       Company info
                     </span>
                   </div>
-                  <MdNavigateNext className="size-6" />
                 </div>
                 <div
-                  className="flex items-start gap-2"
+                  className="cursor-pointer w-full text-start gap-2"
                   onClick={() => setNextStep(2)}
                 >
-                  <div className="flex flex-col items-center justify-center gap-3">
+                  <div className="flex flex-col items-start justify-center ps-3 gap-3">
                     <div
                       className={`size-8 rounded-full flex justify-center items-center bg-primary font-inter font-sm font-normal ${
                         nextStep === 2 && "!bg-black text-white"
@@ -187,14 +198,6 @@ const Register = () => {
 
               <div>
                 <div className="flex gap-2 flex-col">
-                  <div className="flex flex-col gap-1">
-                    <h1 className="text-black font-inter font-bold text-xl">
-                      Register
-                    </h1>
-                    <span className="font-inter text-sm font-medium text-black">
-                      Register your company on app
-                    </span>
-                  </div>
                   {/* <div className="flex flex-col gap-2"> */}
                   {nextStep === 0 && (
                     <form
@@ -401,7 +404,6 @@ const Register = () => {
             <img src={logo} className="" alt="" />
           </div>
         </div>
-        {/* <DevTool control={control} /> */}
       </div>
     </div>
   );
