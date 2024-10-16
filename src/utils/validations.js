@@ -79,40 +79,35 @@ export const loginSchema = z.object({
     }),
 });
 
-export const forgotPwdSchema = (isEmailSent) =>
-  z.object({
-    email: z
-      .string()
-      .min(6, { message: "Email is required" })
-      .email({ message: "Invalid email address" })
-      .regex(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/, {
-        message: "Email must not contain special symbols except @, _, -",
-      }),
+export const forgotPwdSchema = z.object({
+  email: z
+    .string()
+    .min(6, { message: "Email is required" })
+    .email({ message: "Invalid email address" })
+    .regex(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/, {
+      message: "Email must not contain special symbols except @, _, -",
+    }),
 
-    otp: isEmailSent
-      ? z
-          .string()
-          .length(4, { message: "OTP must be exactly 4 digits." })
-          .regex(/^\d{4}$/, {
-            message: "OTP must contain only numeric digits.",
-          })
-      : z.optional(),
+  otp: z
+    .string()
+    .length(4, { message: "OTP must be exactly 4 digits." })
+    .regex(/^\d{4}$/, {
+      message: "OTP must contain only numeric digits.",
+    })
+    .optional(),
 
-    password: isEmailSent
-      ? z
-          .string()
-          .min(6, { message: "Password must be at least 6 characters" })
-          .max(8, { message: "Password must not exceed 8 characters" })
-          .regex(/^[\w!@#$%^&*()_+=-]+$/, {
-            message:
-              "Password can contain letters, numbers, and special symbols",
-          })
-      : z.optional(),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" })
+    .max(8, { message: "Password must not exceed 8 characters" })
+    .regex(/^[\w!@#$%^&*()_+=-]+$/, {
+      message: "Password can contain letters, numbers, and special symbols",
+    })
+    .optional(),
 
-    password_confirmation: isEmailSent
-      ? z
-          .string()
-          .min(6, { message: "Confirm Password is required" })
-          .max(8, { message: "Confirm Password must not exceed 8 characters" })
-      : z.optional(),
-  });
+  password_confirmation: z
+    .string()
+    .min(6, { message: "Confirm Password is required" })
+    .max(8, { message: "Confirm Password must not exceed 8 characters" })
+    .optional(),
+});

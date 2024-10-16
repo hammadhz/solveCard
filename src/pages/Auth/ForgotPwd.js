@@ -19,16 +19,24 @@ const ForgotPwd = () => {
 
   // const [email, setEmail] = useState("");
 
+  const stepSchema = forgotPwdSchema.pick({
+    email: !isEmailSent,
+    otp: isEmailSent,
+    password: isEmailSent,
+    password_confirmation: isEmailSent,
+  });
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(forgotPwdSchema(isEmailSent)),
+    resolver: zodResolver(stepSchema),
   });
 
   const forgotPwdEmailSubmit = async (data) => {
+    await stepSchema.parseAsync(data);
     try {
       const response = await axiosInstance.post("/forgotPassword", data, {
         headers: {
@@ -78,6 +86,7 @@ const ForgotPwd = () => {
   // };
 
   const forgotPwdSubmit = async (data) => {
+    await stepSchema.parseAsync(data);
     try {
       const response = await axiosInstance.post(
         "/resetPassword",
@@ -185,7 +194,7 @@ const ForgotPwd = () => {
                           parentDivH={"w-full"}
                           icon={showPassword ? FaEye : FaEyeSlash}
                           iconClass={"size-6"}
-                          positionIcon={"absolute right-4 top-4"}
+                          positionIcon={"absolute right-4 top-3"}
                           register={register}
                           iconAction={handleShowPassword}
                         />
@@ -213,7 +222,7 @@ const ForgotPwd = () => {
                           parentDivH={"w-full"}
                           icon={showConfirmPassword ? FaEye : FaEyeSlash}
                           iconClass={"size-6"}
-                          positionIcon={"absolute right-4 top-4"}
+                          positionIcon={"absolute right-4 top-3"}
                           register={register}
                           iconAction={handleShowConfirmPassword}
                         />

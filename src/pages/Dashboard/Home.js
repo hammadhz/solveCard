@@ -6,6 +6,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CardFallback from "../../components/Fallback/CardFallback";
 
 const Home = () => {
   const [profile, setProfile] = useState([]);
@@ -50,36 +51,23 @@ const Home = () => {
       </header>
       <div className="mb-8">
         <h1 className="font-inter font-bold text-2xl">
-            Welcome Back, {userData?.user?.name} 👋
+          Welcome Back, {userData?.user?.name} 👋
         </h1>
       </div>
       <div className="grid gap-3 lg:grid-cols-3 grid-cols-1">
         {loading ? (
-            <div className="bg-primary p-4 rounded-2xl relative flex flex-col justify-between animate-pulse">
-              <div className="bg-tertiary-gray-700 rounded-t-2xl w-full h-32 shimmer"></div>
-              <div className="size-20 rounded-full bg-primary flex justify-center items-center z-40 absolute top-24 left-1/2 transform -translate-x-1/2">
-                <div className="w-20 h-20 bg-gray-300 rounded-full shimmer"/>
-              </div>
-              <div className="flex flex-col justify-center items-center gap-4 mt-12">
-                <div className="w-32 h-4 bg-gray-300 rounded shimmer"/>
-                <div className="w-24 h-4 bg-gray-300 rounded shimmer"/>
-                <div className="flex gap-2 items-center">
-                  <div className="w-28 h-10 bg-gray-300 rounded shimmer"/>
-                  <div className="w-28 h-10 bg-gray-300 rounded shimmer"/>
-                </div>
-              </div>
-            </div>
+          <CardFallback />
         ) : (
-            <>
-              {" "}
-              {profile?.map((result) => {
-                return <ProfileCard key={result?.id} {...result} />;
-              })}{" "}
-            </>
+          <>
+            {" "}
+            {profile?.map((result) => {
+              return <ProfileCard key={result?.id} {...result} />;
+            })}{" "}
+          </>
         )}
-        <AddProfileCard/>
+        <AddProfileCard />
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </section>
   );
 };

@@ -4,11 +4,8 @@ import avatar from "../../assets/svgs/avatar.svg";
 import { Button } from "../form";
 import edit from "../../assets/svgs/edit.svg";
 import NavLink from "../NavLink";
-import { useSelector } from "react-redux";
 
 const ProfileCard = ({ id, name }) => {
-  const userData = useSelector((state) => state.auth);
-  console.log(userData);
   return (
     <div className="bg-primary p-4 rounded-2xl relative flex flex-col justify-between">
       <div className="bg-tertiary-gray-700 rounded-t-2xl w-full h-32"></div>
@@ -16,9 +13,7 @@ const ProfileCard = ({ id, name }) => {
         <ReactSVG src={avatar} />
       </div>
       <div className="flex flex-col justify-center items-center gap-2 mt-12">
-        <h3 className="font-inter font-semibold text-lg">
-          {userData?.user?.name}
-        </h3>
+        <h3 className="font-inter font-semibold text-lg">{name}</h3>
         <p className="font-inter font-normal text-base">Software Engineer</p>
         <div className="flex gap-2 items-center">
           <Button

@@ -134,7 +134,7 @@ const Login = () => {
                     icon={showPassword ? FaEye : FaEyeSlash}
                     iconClass={"size-6 cursor-pointer"}
                     parentDivH={"w-full"}
-                    positionIcon={"absolute right-4 top-4"}
+                    positionIcon={"absolute right-4 top-3"}
                     selector={"password"}
                     nameField={"password"}
                     register={register}

@@ -13,9 +13,12 @@ import axiosInstance from "../../utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../context/slice/authSlice";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const Register = () => {
   const [nextStep, setNextStep] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -45,63 +48,66 @@ const Register = () => {
     resolver: zodResolver(stepSchema),
   });
 
-  const registerFirstStepSubmit = async (data) => {
+  const registerSubmit = async (data) => {
     await stepSchema.parseAsync(data);
     if (nextStep === 0) {
       if (data?.name && data?.phone) {
         setNextStep(nextStep + 1);
         setForm((prev) => ({
           ...prev,
-          name: data?.name,
-          phone: data?.phone,
+          name: data.name,
+          phone: data.phone,
         }));
       }
-    }
-  };
-
-  const registerSecondStepSubmit = async (data) => {
-    await stepSchema.parseAsync(data);
-    if (nextStep === 1) {
+    } else if (nextStep === 1) {
       if (data?.companyName && data?.role) {
         setNextStep(nextStep + 1);
         setForm((prev) => ({
           ...prev,
-          companyName: data?.companyName,
-          role: data?.role,
+          companyName: data.companyName,
+          role: data.role,
         }));
       }
-    }
-  };
-
-  const registerSubmit = async (data) => {
-    await stepSchema.parseAsync(data);
-    try {
-      const body = {
-        name: form.name,
-        phone: form.phone,
-        companyName: form.companyName,
-        role: form.role,
-        email: data?.email,
-        password: data?.password,
-        password_confirmation: data?.password_confirmation,
-      };
-      const response = await axiosInstance.post("/register", body, {
-        headers: {
-          "Content-Type": "application/json",
-          "Device-Id": "123456",
-        },
-      });
-      if (response.status === 200) {
-        dispatch(registerUser(response?.data));
-        navigate("/dashboard");
+    } else {
+      // if (data?.email && data?.passowrd && data?.password_confirmation) {
+      try {
+        const body = {
+          name: form.name,
+          phone: form.phone,
+          companyName: form.companyName,
+          role: form.role,
+          email: data?.email,
+          password: data?.password,
+          password_confirmation: data?.password_confirmation,
+        };
+        console.log(body, "data");
+        const response = await axiosInstance.post("/register", body, {
+          headers: {
+            "Content-Type": "application/json",
+            "Device-Id": "123456",
+          },
+        });
+        if (response.status === 200) {
+          dispatch(registerUser(response?.data));
+          navigate("/dashboard");
+        }
+        console.log(response?.data);
+      } catch (error) {
+        console.log(error.response?.data);
       }
-      console.log(response?.data);
-    } catch (err) {
-      console.log(err.response?.data);
+      // }
     }
   };
 
   console.log(errors, "error");
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   return (
     <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 min-h-screen  flex justify-center items-center relative">
@@ -196,201 +202,186 @@ const Register = () => {
                 </div>{" "}
               </div>
 
-              <div>
+              <form onSubmit={handleSubmit(registerSubmit)}>
                 <div className="flex gap-2 flex-col">
-                  {/* <div className="flex flex-col gap-2"> */}
-                  {nextStep === 0 && (
-                    <form
-                      className="flex flex-col gap-2"
-                      onSubmit={handleSubmit(registerFirstStepSubmit)}
-                    >
-                      <div className="flex flex-col gap-2">
-                        <Label labelFor={"name"} content={"Full Name"} />
-                        <Input
-                          type={"text"}
-                          placeholder={"Enter your name"}
-                          roundness={"round-md"}
-                          intent={"primary"}
-                          size={"lg"}
-                          nameField="name"
-                          classes={"w-full gap-2"}
-                          selector={"name"}
-                          register={register}
-                        />
-                        <span className="font-inter font-normal text-center text-red-600 text-sm">
-                          {" "}
-                          {errors && errors?.name?.message}{" "}
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Label labelFor={"phone"} content={"Phone"} />
+                  <div className="flex flex-col gap-2">
+                    {nextStep === 0 && (
+                      <>
+                        <div className="flex flex-col gap-2">
+                          <Label labelFor={"name"} content={"Full Name"} />
+                          <Input
+                            type={"text"}
+                            placeholder={"Enter your name"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="name"
+                            classes={"w-full gap-2"}
+                            selector={"name"}
+                            register={register}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors && errors?.name?.message}{" "}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Label labelFor={"phone"} content={"Phone"} />
 
-                        <Input
-                          type={"tel"}
-                          placeholder={"Enter your phone"}
-                          roundness={"round-md"}
-                          intent={"primary"}
-                          size={"lg"}
-                          nameField="phone"
-                          classes={"w-full gap-2"}
-                          selector={"phone"}
-                          register={register}
-                          maxLength={"11"}
-                          minLength={"10"}
-                        />
-                        <span className="font-inter font-normal text-center text-red-600 text-sm">
-                          {" "}
-                          {errors && errors?.phone?.message}{" "}
-                        </span>
-                      </div>
-                      <Button
-                        type="submit"
-                        children={"Continue"}
-                        intent={"primary"}
-                        size={"xlg"}
-                        roundness={"round"}
-                        iconRight={rightIcon}
-                        classes={"gap-2 cursor-pointer"}
-                      />
-                    </form>
-                  )}
-                  {nextStep === 1 && (
-                    <form
-                      className="flex flex-col gap-2"
-                      onSubmit={handleSubmit(registerSecondStepSubmit)}
-                    >
-                      <div className="flex flex-col gap-2">
-                        <Label
-                          labelFor={"company-name"}
-                          content={"Company Name"}
-                        />
+                          <Input
+                            type={"tel"}
+                            placeholder={"Enter your phone"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="phone"
+                            classes={"w-full gap-2"}
+                            selector={"phone"}
+                            register={register}
+                            maxLength={"11"}
+                            minLength={"10"}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors && errors?.phone?.message}{" "}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                    {nextStep === 1 && (
+                      <>
+                        <div className="flex flex-col gap-2">
+                          <Label
+                            labelFor={"company-name"}
+                            content={"Company Name"}
+                          />
 
-                        <Input
-                          type={"text"}
-                          placeholder={"Enter your company name"}
-                          roundness={"round-md"}
-                          intent={"primary"}
-                          size={"lg"}
-                          nameField="companyName"
-                          classes={"w-full gap-2"}
-                          selector={"company-name"}
-                          register={register}
-                        />
-                        <span className="font-inter font-normal text-center text-red-600 text-sm">
-                          {" "}
-                          {errors && errors?.companyName?.message}{" "}
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Label labelFor={"role"} content={"Role"} />
+                          <Input
+                            type={"text"}
+                            placeholder={"Enter your company name"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="companyName"
+                            classes={"w-full gap-2"}
+                            selector={"company-name"}
+                            register={register}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors && errors?.companyName?.message}{" "}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Label labelFor={"role"} content={"Role"} />
 
-                        <Input
-                          type={"text"}
-                          placeholder={"Enter your role"}
-                          roundness={"round-md"}
-                          intent={"primary"}
-                          size={"lg"}
-                          nameField="role"
-                          classes={"w-full gap-2"}
-                          selector={"role"}
-                          register={register}
-                        />
-                        <span className="font-inter font-normal text-center text-red-600 text-sm">
-                          {" "}
-                          {errors && errors?.role?.message}{" "}
-                        </span>
-                      </div>
-                      <Button
-                        type="submit"
-                        children={"Continue"}
-                        intent={"primary"}
-                        size={"xlg"}
-                        roundness={"round"}
-                        iconRight={rightIcon}
-                        classes={"gap-2 cursor-pointer"}
-                      />
-                    </form>
-                  )}{" "}
-                  {nextStep === 2 && (
-                    <form
-                      className="flex flex-col gap-2"
-                      onSubmit={handleSubmit(registerSubmit)}
-                    >
-                      <div className="flex flex-col gap-2">
-                        <Label labelFor={"email"} content={"Email"} />
+                          <Input
+                            type={"text"}
+                            placeholder={"Enter your role"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="role"
+                            classes={"w-full gap-2"}
+                            selector={"role"}
+                            register={register}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors && errors?.role?.message}{" "}
+                          </span>
+                        </div>
+                      </>
+                    )}{" "}
+                    {nextStep === 2 && (
+                      <>
+                        <div className="flex flex-col gap-2">
+                          <Label labelFor={"email"} content={"Email"} />
 
-                        <Input
-                          type={"email"}
-                          placeholder={"Enter your email"}
-                          roundness={"round-md"}
-                          intent={"primary"}
-                          size={"lg"}
-                          nameField="email"
-                          classes={"w-full gap-2"}
-                          selector={"email"}
-                          register={register}
-                        />
-                        <span className="font-inter font-normal text-center text-red-600 text-sm">
-                          {" "}
-                          {errors && errors?.email?.message}{" "}
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Label labelFor={"password"} content={"Password"} />
+                          <Input
+                            type={"email"}
+                            placeholder={"Enter your email"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="email"
+                            classes={"w-full gap-2"}
+                            selector={"email"}
+                            register={register}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors && errors?.email?.message}{" "}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Label labelFor={"password"} content={"Password"} />
 
-                        <Input
-                          type={"password"}
-                          placeholder={"Enter your password"}
-                          roundness={"round-md"}
-                          intent={"primary"}
-                          size={"lg"}
-                          nameField="password"
-                          classes={"w-full gap-2"}
-                          selector={"password"}
-                          register={register}
-                        />
-                        <span className="font-inter font-normal text-center text-red-600 text-sm">
-                          {" "}
-                          {errors && errors?.password?.message}{" "}
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Label
-                          labelFor={"confirm-password"}
-                          content={"Confirm Password"}
-                        />
+                          <Input
+                            type={`${showPassword ? "text" : "password"}`}
+                            placeholder={"Enter your password"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="password"
+                            classes={"w-full gap-2"}
+                            selector={"password"}
+                            parentDivH={"w-full"}
+                            icon={showPassword ? FaEye : FaEyeSlash}
+                            iconClass={"size-6"}
+                            positionIcon={"absolute right-4 top-3"}
+                            register={register}
+                            iconAction={handleShowPassword}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors && errors?.password?.message}{" "}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Label
+                            labelFor={"confirm-password"}
+                            content={"Confirm Password"}
+                          />
 
-                        <Input
-                          type={"password"}
-                          placeholder={"Confirm your password"}
-                          roundness={"round-md"}
-                          intent={"primary"}
-                          size={"lg"}
-                          nameField="password_confirmation"
-                          classes={"w-full gap-2"}
-                          selector={"confirm-password"}
-                          register={register}
-                        />
-                        <span className="font-inter font-normal text-center text-red-600 text-sm">
-                          {" "}
-                          {errors &&
-                            errors?.password_confirmation?.message}{" "}
-                        </span>
-                      </div>
-                      <Button
-                        type="submit"
-                        children={"Continue"}
-                        intent={"primary"}
-                        size={"xlg"}
-                        roundness={"round"}
-                        iconRight={rightIcon}
-                        classes={"gap-2 cursor-pointer"}
-                      />
-                    </form>
-                  )}
-                  {/* </div> */}
+                          <Input
+                            type={`${
+                              setShowConfirmPassword ? "text" : "password"
+                            }`}
+                            placeholder={"Confirm your password"}
+                            roundness={"round-md"}
+                            intent={"primary"}
+                            size={"lg"}
+                            nameField="password_confirmation"
+                            classes={"w-full gap-2"}
+                            selector={"confirm-password"}
+                            parentDivH={"w-full"}
+                            icon={showConfirmPassword ? FaEye : FaEyeSlash}
+                            iconClass={"size-6"}
+                            positionIcon={"absolute right-4 top-3"}
+                            register={register}
+                            iconAction={handleShowConfirmPassword}
+                          />
+                          <span className="font-inter font-normal text-center text-red-600 text-sm">
+                            {" "}
+                            {errors &&
+                              errors?.password_confirmation?.message}{" "}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                    <Button
+                      type="submit"
+                      children={"Continue"}
+                      intent={"primary"}
+                      size={"xlg"}
+                      roundness={"round"}
+                      iconRight={rightIcon}
+                      classes={"gap-2 cursor-pointer"}
+                    />
+                  </div>
                 </div>
-              </div>
+              </form>
 
               <p className="font-inter font-medium text-lg">
                 Already use solveCard?{" "}
