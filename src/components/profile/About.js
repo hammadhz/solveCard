@@ -61,10 +61,7 @@ const About = () => {
         <header className="text-start w-full z-40 mb-8">
           <h1 className="font-inter font-bold text-2xl">About</h1>
         </header>
-        <div
-          className=" flex flex-col gap-4 w-full"
-          id="profileEdit"
-        >
+        <div className=" flex flex-col gap-4 w-full" id="profileEdit">
           {/* <div className="flex justify-between gap-2 items-center">
             <div className="flex items-center w-full gap-2">
               <p className="font-inter text-sm font-normal">Card Name:</p>
@@ -91,7 +88,7 @@ const About = () => {
             <div className="w-full">
               <label
                 htmlFor="first-name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Card Name
               </label>
@@ -118,9 +115,9 @@ const About = () => {
             <div className="w-full">
               <label
                 htmlFor="last-name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Card Name
+                Company Name
               </label>
               <Input
                 type={"text"}
@@ -252,9 +249,9 @@ const About = () => {
             <div className="w-full">
               <label
                 htmlFor="first-name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Card Name
+                Role
               </label>
               <Input
                 type={"text"}
@@ -279,9 +276,9 @@ const About = () => {
             <div className="w-full">
               <label
                 htmlFor="last-name"
-                className="block mb-2 text-sm font-inter font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-inter font-medium text-gray-900"
               >
-                Card Name
+                Address
               </label>
               <Input
                 type={"text"}
@@ -307,7 +304,7 @@ const About = () => {
           <div className="flex flex-col gap-2 w-full">
             <label
               htmlFor="last-name"
-              className="block mb-2 text-sm font-inter font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-inter font-medium text-gray-900"
             >
               Bio
             </label>
@@ -323,7 +320,7 @@ const About = () => {
           <div className="flex flex-col gap-2 w-full">
             <label
               htmlFor="last-name"
-              className="block mb-2 text-sm font-inter font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-inter font-medium text-gray-900 "
             >
               Choose Theme:
             </label>
@@ -333,7 +330,7 @@ const About = () => {
                 <div className="w-full rounded-lg flex items-center justify-between bg-white border border-primary p-4">
                   <label
                     htmlFor=""
-                    className="block text-sm font-inter font-medium text-gray-900 dark:text-white"
+                    className="block text-sm font-inter font-medium text-gray-900 "
                   >
                     Card Theme
                   </label>
@@ -465,6 +462,40 @@ const About = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full bg-primary rounded-lg p-2">
+            <div className="bg-white p-1.5 rounded-lg flex items-center justify-between">
+              <label
+                htmlFor="last-name"
+                className="block  text-sm font-inter font-medium text-gray-900"
+              >
+                Card Private
+              </label>
+              <div>
+                <label className="inline-flex items-center cursor-pointer">
+                  <input type="checkbox" value="" className="sr-only peer" />
+                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full bg-primary rounded-lg p-2">
+            <div className="bg-white p-1.5 rounded-lg flex items-center justify-between">
+              <label
+                htmlFor="last-name"
+                className="block  text-sm font-inter font-medium text-gray-900"
+              >
+                User Direct
+              </label>
+              <div>
+                <label className="inline-flex items-center cursor-pointer">
+                  <input type="checkbox" value="" className="sr-only peer" />
+                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                </label>
               </div>
             </div>
           </div>

@@ -1,11 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, TextArea } from "../form";
 import { useForm } from "react-hook-form";
 import { RxAvatar } from "react-icons/rx";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { FaLinkedin, FaPen } from "react-icons/fa";
 import { FiPlus, FiEdit } from "react-icons/fi";
-
 import {
   MdColorize,
   MdGifBox,
@@ -14,7 +13,7 @@ import {
 } from "react-icons/md";
 import { CiVideoOn } from "react-icons/ci";
 import { TiCancel } from "react-icons/ti";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   resetColor,
   resetLinkColor,
@@ -25,13 +24,19 @@ import ColorPicker from "react-pick-color";
 import { AiOutlineGlobal, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import AddLinksModal from "../modal/AddLinksModal";
 import AddLinkInfoModal from "../modal/AddLinkInfoModal";
+import axiosInstance from "../../utils/axiosInstance";
+import { useParams } from "react-router-dom";
 
 const Link = () => {
+  const { id } = useParams();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isLinkInfoOpenModal, setIsLinkInfoOpenModal] = useState(false);
+  const [links, setLinks] = useState([]);
   const [pickerColor, setPickerColor] = useState("#ffffff");
   const [isPickerOpen, setPickerOpen] = useState(false);
   const pickerRef = useRef(null);
+
+  const userData = useSelector((state) => state?.auth);
 
   const dispatch = useDispatch();
   const { register } = useForm();
@@ -63,6 +68,29 @@ const Link = () => {
   const handleCloseModalLink = () => {
     setIsLinkInfoOpenModal(false);
   };
+
+  async function getLinks() {
+    try {
+      const response = await axiosInstance.post(
+        "/categories",
+        { profile_id: id },
+        {
+          headers: {
+            Authorization: `Bearer ${userData?.token}`,
+          },
+        }
+      );
+      const { categories } = response.data;
+      const value = categories[0];
+      setLinks(value.platforms);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  console.log(links);
+  useEffect(() => {
+    getLinks();
+  }, []);
 
   return (
     <section className="h-full flex justify-center grow bg-primary border-r-2 border-r-white">
@@ -100,18 +128,27 @@ const Link = () => {
             </h2>
 
             {/* Email Link */}
-            <div
-              className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg"
-              //   onClick={() => handleEditLink("email")}
-            >
-              <div className="flex items-center gap-4">
-                <AiOutlineMail className="text-2xl text-gray-600" />
-                <p className="text-base font-inter font-medium text-gray-900">
-                  Email: example@mail.com
-                </p>
-              </div>
-              <FiEdit className="text-xl text-gray-600" />
-            </div>
+            {links?.map((result) => {
+              return (
+                <div
+                  key={result?.id}
+                  className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg"
+                  //   onClick={() => handleEditLink("email")}
+                >
+                  <div className="flex items-center gap-4">
+                    <img src={result?.icon} alt="social_logo" />
+                    {/* <AiOutlineMail className="text-2xl text-gray-600" /> */}
+                    <p className="text-base font-inter font-medium text-gray-900">
+                      {result?.title}
+                    </p>
+                  </div>
+                  {result?.path && <FiEdit className="text-xl text-gray-600" />}
+                  {/* <div className="rounded-full size-6 flex justify-center items-center bg-gray-400 hover:bg-gray-900"> */}
+                  <FiPlus className="text-xl text-gray-600" />
+                  {/* </div> */}
+                </div>
+              );
+            })}
 
             {/* Phone Link */}
             <div
