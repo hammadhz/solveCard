@@ -17,6 +17,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const Register = () => {
   const [nextStep, setNextStep] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [form, setForm] = useState({
@@ -80,6 +81,7 @@ const Register = () => {
           password: data?.password,
           password_confirmation: data?.password_confirmation,
         };
+        setLoading(true);
         console.log(body, "data");
         const response = await axiosInstance.post("/register", body, {
           headers: {
@@ -90,9 +92,11 @@ const Register = () => {
         if (response.status === 200) {
           dispatch(registerUser(response?.data));
           navigate("/dashboard");
+          setLoading(false);
         }
         console.log(response?.data);
       } catch (error) {
+        setLoading(false);
         console.log(error.response?.data);
       }
       // }
@@ -378,6 +382,7 @@ const Register = () => {
                       roundness={"round"}
                       iconRight={rightIcon}
                       classes={"gap-2 cursor-pointer"}
+                      loading={loading}
                     />
                   </div>
                 </div>

@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -31,6 +32,7 @@ const Login = () => {
 
   const loginSubmit = async (data) => {
     try {
+      setLoading(true);
       const response = await axiosInstance.post("/login", data, {
         headers: {
           "Content-Type": "application/json",
@@ -53,6 +55,7 @@ const Login = () => {
       if (response.status === 200) {
         dispatch(loginUser(response?.data));
         navigate("/dashboard");
+        setLoading(false);
       }
     } catch (err) {
       console.log(err);
@@ -66,6 +69,7 @@ const Login = () => {
       //   progress: undefined,
       //   theme: "light",
       // });
+      setLoading(false);
     }
   };
 
@@ -156,6 +160,7 @@ const Login = () => {
                   roundness={"round"}
                   iconRight={rightIcon}
                   classes={"gap-2"}
+                  loading={loading}
                 />
               </form>
               <p className="font-inter font-medium text-lg">

@@ -26,11 +26,19 @@ import AddLinksModal from "../modal/AddLinksModal";
 import AddLinkInfoModal from "../modal/AddLinkInfoModal";
 import axiosInstance from "../../utils/axiosInstance";
 import { useParams } from "react-router-dom";
+import AddLinkBaseModal from "../modal/AddLinkBaseModal";
 
 const Link = () => {
   const { id } = useParams();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isLinkInfoOpenModal, setIsLinkInfoOpenModal] = useState(false);
+  const [addLinkOpenModal, setAddLinkOpenModal] = useState(false);
+  const [addLinkData, setAddLinkData] = useState({
+    id: "",
+    title: "",
+    img: "",
+    baseUrl: "",
+  });
   const [links, setLinks] = useState([]);
   const [pickerColor, setPickerColor] = useState("#ffffff");
   const [isPickerOpen, setPickerOpen] = useState(false);
@@ -92,6 +100,22 @@ const Link = () => {
     getLinks();
   }, []);
 
+  const handleAddBaseLink = (id, title, img, baseUrl) => {
+    console.log(id, title, img);
+    setAddLinkOpenModal(true);
+    setAddLinkData((prev) => ({
+      ...prev,
+      id: id,
+      title: title,
+      img: img,
+      baseUrl: baseUrl,
+    }));
+  };
+  console.log(addLinkData, "data link");
+  const handleCloseLinkBaseModal = () => {
+    setAddLinkOpenModal(false);
+  };
+
   return (
     <section className="h-full flex justify-center grow bg-primary border-r-2 border-r-white">
       <div className="flex flex-col w-full p-8 bg-white rounded-lg">
@@ -116,6 +140,12 @@ const Link = () => {
         {isLinkInfoOpenModal && (
           <AddLinkInfoModal closeModal={handleCloseModalLink} />
         )}
+        {addLinkOpenModal && (
+          <AddLinkBaseModal
+            closeModal={handleCloseLinkBaseModal}
+            data={addLinkData}
+          />
+        )}
         {/* Content Area */}
         <div
           className="h-[520px] overflow-y-auto flex flex-col gap-4 w-full"
@@ -136,7 +166,11 @@ const Link = () => {
                   //   onClick={() => handleEditLink("email")}
                 >
                   <div className="flex items-center gap-4">
-                    <img src={result?.icon} alt="social_logo" />
+                    <img
+                      src={`${process.env.REACT_APP_SERVER}${result?.icon}`}
+                      className="size-5"
+                      alt="social_logo"
+                    />
                     {/* <AiOutlineMail className="text-2xl text-gray-600" /> */}
                     <p className="text-base font-inter font-medium text-gray-900">
                       {result?.title}
@@ -144,7 +178,17 @@ const Link = () => {
                   </div>
                   {result?.path && <FiEdit className="text-xl text-gray-600" />}
                   {/* <div className="rounded-full size-6 flex justify-center items-center bg-gray-400 hover:bg-gray-900"> */}
-                  <FiPlus className="text-xl text-gray-600" />
+                  <FiPlus
+                    className="text-xl text-gray-600"
+                    onClick={() =>
+                      handleAddBaseLink(
+                        result?.id,
+                        result?.title,
+                        result?.icon,
+                        result?.baseURL
+                      )
+                    }
+                  />
                   {/* </div> */}
                 </div>
               );

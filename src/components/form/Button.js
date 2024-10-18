@@ -54,6 +54,7 @@ const Button = ({
   iconLeft,
   iconRight,
   classes,
+  loading,
 }) => {
   return (
     <button
@@ -64,9 +65,15 @@ const Button = ({
       )}
       onClick={eventAction}
     >
-      {iconLeft && <ReactSVG src={iconLeft} />}
-      {children}
-      {iconRight && <ReactSVG src={iconRight} />}
+      {loading ? (
+        <span className="size-6 border-2 border-white border-b-transparent rounded-full inline-block box-border animate-spin"></span>
+      ) : (
+        <>
+          {iconLeft && <ReactSVG src={iconLeft} />}
+          {children}
+          {iconRight && <ReactSVG src={iconRight} />}
+        </>
+      )}
     </button>
   );
 };

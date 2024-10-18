@@ -16,6 +16,7 @@ const ForgotPwd = () => {
   const [getEmail, setGetEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // const [email, setEmail] = useState("");
 
@@ -38,6 +39,7 @@ const ForgotPwd = () => {
   const forgotPwdEmailSubmit = async (data) => {
     await stepSchema.parseAsync(data);
     try {
+      setLoading(true);
       const response = await axiosInstance.post("/forgotPassword", data, {
         headers: {
           "Content-Type": "application/json",
@@ -45,6 +47,7 @@ const ForgotPwd = () => {
         },
       });
       if (response.status === 200) {
+        setLoading(false);
         setIsEmailSent(true);
         setGetEmail(data?.email);
         toast.success(response?.data?.message, {
@@ -59,6 +62,7 @@ const ForgotPwd = () => {
         });
       }
     } catch (err) {
+      setLoading(false);
       console.log(err);
       toast.error(err?.response?.data?.message, {
         position: "bottom-right",
@@ -88,6 +92,7 @@ const ForgotPwd = () => {
   const forgotPwdSubmit = async (data) => {
     await stepSchema.parseAsync(data);
     try {
+      setLoading(true);
       const response = await axiosInstance.post(
         "/resetPassword",
         {
@@ -102,6 +107,7 @@ const ForgotPwd = () => {
         }
       );
       if (response.status === 200) {
+        setLoading(false);
         console.log(response);
         toast.success(response?.data?.message, {
           position: "bottom-right",
@@ -116,6 +122,7 @@ const ForgotPwd = () => {
         // setIsEmailSent(true);
       }
     } catch (err) {
+      setLoading(false);
       reset();
       console.log(err);
       toast.error(err?.response?.data?.message, {
@@ -239,6 +246,7 @@ const ForgotPwd = () => {
                         size={"xlg"}
                         roundness={"round"}
                         classes={"gap-2 cursor-pointer"}
+                        loading={loading}
                       />
                     </form>
                   )}
@@ -285,6 +293,7 @@ const ForgotPwd = () => {
                         size={"xlg"}
                         roundness={"round"}
                         classes={"gap-2 cursor-pointer"}
+                        loading={loading}
                       />
                     </form>
                   )}
