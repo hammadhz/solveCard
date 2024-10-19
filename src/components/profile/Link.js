@@ -40,6 +40,7 @@ const Link = () => {
     baseUrl: "",
   });
   const [links, setLinks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [pickerColor, setPickerColor] = useState("#ffffff");
   const [isPickerOpen, setPickerOpen] = useState(false);
   const pickerRef = useRef(null);
@@ -89,9 +90,11 @@ const Link = () => {
         }
       );
       const { categories } = response.data;
-      const value = categories[0];
-      setLinks(value.platforms);
+      // const value = categories[0];
+      setLinks(categories);
+      setLoading(false);
     } catch (error) {
+      setLoading(true);
       console.log(error);
     }
   }
@@ -153,46 +156,85 @@ const Link = () => {
         >
           {/* Display Existing Links */}
           <div className="flex flex-col gap-4 w-full">
-            <h2 className="text-lg font-inter font-medium text-gray-900">
-              Your Links
-            </h2>
-
-            {/* Email Link */}
-            {links?.map((result) => {
-              return (
-                <div
-                  key={result?.id}
-                  className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg"
-                  //   onClick={() => handleEditLink("email")}
-                >
+            {loading ? (
+              <div className="space-y-4">
+                <h2 className="text-lg font-inter font-medium text-gray-900 animate-pulse">
+                  Loading...
+                </h2>
+                <div className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg">
                   <div className="flex items-center gap-4">
-                    <img
-                      src={`${process.env.REACT_APP_SERVER}${result?.icon}`}
-                      className="size-5"
-                      alt="social_logo"
-                    />
-                    {/* <AiOutlineMail className="text-2xl text-gray-600" /> */}
-                    <p className="text-base font-inter font-medium text-gray-900">
-                      {result?.title}
+                    <div className="bg-gray-300 w-10 h-10 rounded-full animate-pulse"></div>
+                    <p className="text-base font-inter font-medium text-gray-900 animate-pulse">
+                      Loading link name...
                     </p>
                   </div>
-                  {result?.path && <FiEdit className="text-xl text-gray-600" />}
-                  {/* <div className="rounded-full size-6 flex justify-center items-center bg-gray-400 hover:bg-gray-900"> */}
-                  <FiPlus
-                    className="text-xl text-gray-600"
-                    onClick={() =>
-                      handleAddBaseLink(
-                        result?.id,
-                        result?.title,
-                        result?.icon,
-                        result?.baseURL
-                      )
-                    }
-                  />
-                  {/* </div> */}
+                  <div className="bg-gray-300 w-6 h-6 rounded-full animate-pulse"></div>
                 </div>
-              );
-            })}
+                {/* Add more divs with the same structure as needed */}
+                <div className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-gray-300 w-10 h-10 rounded-full animate-pulse"></div>
+                    <p className="text-base font-inter font-medium text-gray-900 animate-pulse">
+                      Loading link name...
+                    </p>
+                  </div>
+                  <div className="bg-gray-300 w-6 h-6 rounded-full animate-pulse"></div>
+                </div>
+              </div>
+            ) : (
+              <>
+                {links?.map((result) => {
+                  return (
+                    <div key={result?.id} className="space-y-4">
+                      <h2 className="text-lg font-inter font-medium text-gray-900">
+                        {result?.name}
+                      </h2>
+
+                      {/* Email Link */}
+                      {result?.platforms?.map((data) => {
+                        return (
+                          <div
+                            key={data?.id}
+                            className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg"
+                            //   onClick={() => handleEditLink("email")}
+                          >
+                            <div className="flex items-center gap-4">
+                              <img
+                                src={`${process.env.REACT_APP_SERVER}${data?.icon}`}
+                                className="size-5"
+                                alt="social_logo"
+                              />
+                              {/* <AiOutlineMail className="text-2xl text-gray-600" /> */}
+                              <p className="text-base font-inter font-medium text-gray-900">
+                                {data?.title}
+                              </p>
+                            </div>
+                            {data?.path ? (
+                              <FiEdit className="text-xl text-gray-600" />
+                            ) : (
+                              <FiPlus
+                                className="text-xl text-gray-600"
+                                onClick={() =>
+                                  handleAddBaseLink(
+                                    data?.id,
+                                    data?.title,
+                                    data?.icon,
+                                    data?.baseURL
+                                  )
+                                }
+                              />
+                            )}
+                            {/* <div className="rounded-full size-6 flex justify-center items-center bg-gray-400 hover:bg-gray-900"> */}
+
+                            {/* </div> */}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </>
+            )}
 
             {/* Phone Link */}
             <div
