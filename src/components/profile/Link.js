@@ -1,27 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Button, Input, TextArea } from "../form";
-import { useForm } from "react-hook-form";
-import { RxAvatar } from "react-icons/rx";
-import { IoInformationCircleOutline } from "react-icons/io5";
-import { FaLinkedin, FaPen } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { Button } from "../form";
+import { FaLinkedin } from "react-icons/fa";
 import { FiPlus, FiEdit } from "react-icons/fi";
-import {
-  MdColorize,
-  MdGifBox,
-  MdOutlinePhotoLibrary,
-  MdPhotoLibrary,
-} from "react-icons/md";
-import { CiVideoOn } from "react-icons/ci";
-import { TiCancel } from "react-icons/ti";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  resetColor,
-  resetLinkColor,
-  selectColor,
-  selectLinkColor,
-} from "../../context/slice/themeSlice";
-import ColorPicker from "react-pick-color";
-import { AiOutlineGlobal, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { AiOutlineGlobal, AiOutlinePhone } from "react-icons/ai";
 import AddLinksModal from "../modal/AddLinksModal";
 import AddLinkInfoModal from "../modal/AddLinkInfoModal";
 import axiosInstance from "../../utils/axiosInstance";
@@ -41,26 +23,20 @@ const Link = () => {
   });
   const [links, setLinks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [pickerColor, setPickerColor] = useState("#ffffff");
-  const [isPickerOpen, setPickerOpen] = useState(false);
-  const pickerRef = useRef(null);
 
   const userData = useSelector((state) => state?.auth);
 
-  const dispatch = useDispatch();
-  const { register } = useForm();
+  // const handleSelectColor = (color) => {
+  //   dispatch(selectColor(color));
+  // };
 
-  const handleSelectColor = (color) => {
-    dispatch(selectColor(color));
-  };
+  // const handleLinkSelectColor = (color) => {
+  //   dispatch(selectLinkColor(color));
+  // };
 
-  const handleLinkSelectColor = (color) => {
-    dispatch(selectLinkColor(color));
-  };
-
-  const togglePicker = () => {
-    setPickerOpen(!isPickerOpen);
-  };
+  // const togglePicker = () => {
+  //   setPickerOpen(!isPickerOpen);
+  // };
 
   const handleAddLink = () => {
     setIsOpenModal(true);
@@ -80,15 +56,9 @@ const Link = () => {
 
   async function getLinks() {
     try {
-      const response = await axiosInstance.post(
-        "/categories",
-        { profile_id: id },
-        {
-          headers: {
-            Authorization: `Bearer ${userData?.token}`,
-          },
-        }
-      );
+      const response = await axiosInstance.post("/categories", {
+        profile_id: id,
+      });
       const { categories } = response.data;
       // const value = categories[0];
       setLinks(categories);

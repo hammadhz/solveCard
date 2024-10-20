@@ -1,29 +1,26 @@
 import React, { useState } from "react";
 import avatar from "../assets/svgs/avatar.svg";
 import { ReactSVG } from "react-svg";
-import { IoIosLogOut, IoIosMan, IoIosUnlock, IoMdPerson } from "react-icons/io";
+import { IoIosLogOut, IoIosUnlock, IoMdPerson } from "react-icons/io";
 import axiosInstance from "../utils/axiosInstance";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../context/slice/authSlice";
+import Cookies from "js-cookie";
 
 const Avatar = () => {
   const [openDropDn, setOpenDropDn] = useState(false);
-  const userData = useSelector((state) => state?.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
     // Your logout logic here
     try {
-      const response = await axiosInstance.get("/logout", {
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-        },
-      });
+      const response = await axiosInstance.get("/logout");
       if (response.status === 200) {
         dispatch(logout());
         navigate("/");
+        Cookies.remove("token");
       }
     } catch (err) {
       console.error(err);

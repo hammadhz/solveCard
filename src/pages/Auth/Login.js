@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../../context/slice/authSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,14 +34,7 @@ const Login = () => {
   const loginSubmit = async (data) => {
     try {
       setLoading(true);
-      const response = await axiosInstance.post("/login", data, {
-        headers: {
-          "Content-Type": "application/json",
-          "Device-Id": "123456",
-        },
-      });
-      console.log(response);
-
+      const response = await axiosInstance.post("/login", data);
       toast.error(response?.data?.message, {
         position: "bottom-right",
         autoClose: 5000,
@@ -56,6 +50,7 @@ const Login = () => {
         dispatch(loginUser(response?.data));
         navigate("/dashboard");
         setLoading(false);
+        Cookies.set("token", response.data.token);
       }
     } catch (err) {
       console.log(err);

@@ -40,12 +40,7 @@ const ForgotPwd = () => {
     await stepSchema.parseAsync(data);
     try {
       setLoading(true);
-      const response = await axiosInstance.post("/forgotPassword", data, {
-        headers: {
-          "Content-Type": "application/json",
-          "Device-Id": "123456",
-        },
-      });
+      const response = await axiosInstance.post("/forgotPassword", data);
       if (response.status === 200) {
         setLoading(false);
         setIsEmailSent(true);
@@ -93,19 +88,10 @@ const ForgotPwd = () => {
     await stepSchema.parseAsync(data);
     try {
       setLoading(true);
-      const response = await axiosInstance.post(
-        "/resetPassword",
-        {
-          email: getEmail,
-          ...data,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Device-Id": "123456",
-          },
-        }
-      );
+      const response = await axiosInstance.post("/resetPassword", {
+        email: getEmail,
+        ...data,
+      });
       if (response.status === 200) {
         setLoading(false);
         console.log(response);

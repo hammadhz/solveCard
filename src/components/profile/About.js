@@ -3,22 +3,10 @@ import { Button, Input, TextArea } from "../form";
 import { useForm } from "react-hook-form";
 import { RxAvatar } from "react-icons/rx";
 import { IoInformationCircleOutline } from "react-icons/io5";
-import { FaPen } from "react-icons/fa";
-import {
-  MdColorize,
-  MdGifBox,
-  MdOutlinePhotoLibrary,
-  MdPhotoLibrary,
-} from "react-icons/md";
-import { CiVideoOn } from "react-icons/ci";
+import { MdColorize, MdOutlinePhotoLibrary } from "react-icons/md";
 import { TiCancel } from "react-icons/ti";
 import { useDispatch } from "react-redux";
-import {
-  resetColor,
-  resetLinkColor,
-  selectColor,
-  selectLinkColor,
-} from "../../context/slice/themeSlice";
+import { resetColor, selectColor } from "../../context/slice/themeSlice";
 import ColorPicker from "react-pick-color";
 
 const About = () => {
@@ -33,9 +21,9 @@ const About = () => {
     dispatch(selectColor(color));
   };
 
-  const handleLinkSelectColor = (color) => {
-    dispatch(selectLinkColor(color));
-  };
+  // const handleLinkSelectColor = (color) => {
+  //   dispatch(selectLinkColor(color));
+  // };
 
   const togglePicker = () => {
     setPickerOpen(!isPickerOpen);
@@ -324,7 +312,7 @@ const About = () => {
             >
               Choose Theme:
             </label>
-            <div className="w-full bg-primary min-h-36 rounded-lg p-2">
+            <div className="w-full bg-primary min-h-16 rounded-lg p-2">
               <div className="flex flex-col gap-4">
                 {/* card theme */}
                 <div className="w-full rounded-lg flex items-center justify-between bg-white border border-primary p-4">
@@ -398,7 +386,7 @@ const About = () => {
                 </div>
 
                 {/* link color */}
-                <div className="w-full rounded-lg flex flex-col gap-2 bg-white border border-primary p-4">
+                {/* <div className="w-full rounded-lg flex flex-col gap-2 bg-white border border-primary p-4">
                   <div className="border-b border-b-black pb-4 flex items-center justify-between">
                     <label
                       htmlFor=""
@@ -412,7 +400,6 @@ const About = () => {
                         onClick={() => dispatch(resetLinkColor())}
                       />
 
-                      {/* Link color options with uniform size */}
                       <div
                         className="rounded-full w-6 h-6 bg-[#000000] cursor-pointer"
                         onClick={() => handleLinkSelectColor("#000000")}
@@ -439,7 +426,6 @@ const About = () => {
                       ></div>
                       <div className="rounded-full w-6 h-6 bg-white border-2 border-tertiary-gray-700 flex justify-center items-center">
                         <MdColorize className="text-lg text-gray-600" />{" "}
-                        {/* Adjusted size */}
                       </div>
                     </div>
                   </div>
@@ -461,7 +447,7 @@ const About = () => {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

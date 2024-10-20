@@ -15,11 +15,7 @@ const Home = () => {
 
   async function getProfile() {
     try {
-      const response = await axiosInstance.get("/profiles", {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-      });
+      const response = await axiosInstance.get("/profiles");
       if (response.status === 200) {
         setProfile(response.data?.data);
         setLoading(false);

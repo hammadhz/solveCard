@@ -83,12 +83,7 @@ const Register = () => {
         };
         setLoading(true);
         console.log(body, "data");
-        const response = await axiosInstance.post("/register", body, {
-          headers: {
-            "Content-Type": "application/json",
-            "Device-Id": "123456",
-          },
-        });
+        const response = await axiosInstance.post("/register", body);
         if (response.status === 200) {
           dispatch(registerUser(response?.data));
           navigate("/dashboard");
