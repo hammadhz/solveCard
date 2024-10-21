@@ -116,7 +116,7 @@ const Register = () => {
       <div className=" absolute -top-32 left-0">
         <img src={circleCut} alt="" className="" />
       </div>
-      <div className="bg-white p-10  z-10 rounded-2xl w-[694px] min-h-[438px]">
+      <div className="bg-white p-8 lg:p-10  z-10 rounded-2xl my-10 lg:my-0 min-w-[200px] md:min-w-[400px] lg:w-[694px] min-h-[438px]">
         <div className="flex items-center gap-4">
           <div className="flex-1">
             <div className="flex flex-col gap-1 mb-8">
@@ -391,7 +391,7 @@ const Register = () => {
               </p>
             </div>
           </div>
-          <div className="flex-1 w-full h-full">
+          <div className="flex-1 w-full h-full hidden lg:block">
             <img src={logo} className="" alt="" />
           </div>
         </div>

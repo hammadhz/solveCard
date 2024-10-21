@@ -127,14 +127,14 @@ const ForgotPwd = () => {
   console.log(errors);
 
   return (
-    <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 h-screen  flex justify-center items-center relative">
+    <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 min-h-screen  flex justify-center items-center relative">
       <div className=" absolute -top-32 left-0">
         <img src={circle} alt="" className="" />
       </div>
       <div className=" absolute -top-32 left-0">
         <img src={circleCut} alt="" className="" />
       </div>
-      <div className="bg-white p-10  z-10 rounded-2xl w-[694px] min-h-[338px]">
+      <div className="bg-white p-8 lg:p-10  z-10 rounded-2xl my-10 lg:my-0 w-[350px] lg:w-[694px] min-h-[300px] lg:min-h-[338px]">
         <div className="flex items-center gap-4">
           <div className="flex-1">
             <div className="flex flex-col gap-8">
@@ -287,7 +287,7 @@ const ForgotPwd = () => {
               </div>
             </div>
           </div>
-          <div className="flex-1 w-full h-full">
+          <div className="flex-1 w-full h-full hidden lg:block">
             <img src={logo} className="" alt="" />
           </div>
         </div>

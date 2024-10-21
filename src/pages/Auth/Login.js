@@ -73,14 +73,14 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 h-screen flex justify-center items-center relative">
+    <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 min-h-screen flex justify-center items-center relative">
       <div className=" absolute -top-32 left-0">
         <img src={circle} alt="" className="" />
       </div>
       <div className="w-full h-full absolute -top-32 left-0">
         <img src={circleCut} alt="" className="" />
       </div>
-      <div className="bg-white z-10 p-10 rounded-2xl w-[688px] min-h-[438px] shadow-2xl">
+      <div className="bg-white z-10 p-8 lg:p-10 rounded-2xl my-10 lg:my-0 min-w-[200px] md:w-[400px] lg:w-[688px] min-h-[438px] shadow-2xl">
         <div className="flex gap-4 items-center">
           <div className="flex-1">
             <div className="flex gap-3 flex-col">
@@ -166,7 +166,7 @@ const Login = () => {
               </p>
             </div>
           </div>
-          <div className="flex-1 w-full h-full">
+          <div className="flex-1 w-full h-full hidden lg:block">
             <img src={logo} className="" alt="" />
           </div>
         </div>

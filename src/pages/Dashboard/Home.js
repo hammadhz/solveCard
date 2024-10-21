@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Searchbar from "../../components/Searchbar";
-import { Avatar } from "../../components";
 import { ProfileCard, AddProfileCard } from "../../components/profile";
 import axiosInstance from "../../utils/axiosInstance";
 import { useSelector } from "react-redux";
@@ -41,10 +39,6 @@ const Home = () => {
 
   return (
     <section className="">
-      <header className="flex justify-between items-center mb-8">
-        <Searchbar />
-        <Avatar />
-      </header>
       <div className="mb-8">
         <h1 className="font-inter font-bold text-2xl">
           Welcome Back, {userData?.user?.name} 👋

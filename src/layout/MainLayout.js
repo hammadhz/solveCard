@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
 const MainLayout = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -27,6 +28,7 @@ const MainLayout = () => {
           isHovered ? "sm:ml-64" : "sm:ml-32"
         }`}
       >
+        <Header />
         <Outlet />
       </div>
     </div>
