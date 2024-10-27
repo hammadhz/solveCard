@@ -1,18 +1,37 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, Input, TextArea } from "../form";
 import { useForm } from "react-hook-form";
 import { RxAvatar } from "react-icons/rx";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { MdColorize, MdOutlinePhotoLibrary } from "react-icons/md";
 import { TiCancel } from "react-icons/ti";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resetColor, selectColor } from "../../context/slice/themeSlice";
 import ColorPicker from "react-pick-color";
+import axiosInstance from "../../utils/axiosInstance";
+import { useParams } from "react-router-dom";
 
 const About = () => {
   const [pickerColor, setPickerColor] = useState("#ffffff");
   const [isPickerOpen, setPickerOpen] = useState(false);
   const pickerRef = useRef(null);
+  const profilePicInputRef = useRef(null);
+  const coverPicInputRef = useRef(null);
+  const { id } = useParams();
+  const userData = useSelector((state) => state.auth);
+
+  const [userProfile, setUserProfile] = useState({
+    name: "",
+    email: "",
+    bio: "",
+    address: "",
+    company: "",
+    phone: "",
+    user_direct: "",
+    role: "",
+    profilePic: "",
+    coverPic: "",
+  });
 
   const dispatch = useDispatch();
   const { register } = useForm();
@@ -43,13 +62,88 @@ const About = () => {
   //   };
   // }, []);
 
+  useEffect(() => {
+    if (userData?.user) {
+      setUserProfile((prev) => ({
+        ...prev,
+        name: userData.user.name,
+        email: userData.user.email,
+        bio: userData.user.bio,
+        address: userData.user.address,
+        company: userData.user.company,
+        phone: userData.user.phone,
+        user_direct: userData.user.user_direct,
+        role: userData.user.work_position,
+      }));
+    }
+  }, [userData?.user]);
+
+  const handleProfilePic = () => {
+    profilePicInputRef.current.click();
+  };
+
+  const handleCoverPhoto = () => {
+    coverPicInputRef.current.click();
+  };
+
+  const handleProfilePicUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUserProfile((prev) => ({
+        ...prev,
+        profilePic: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCoverPicUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUserProfile((prev) => ({
+        ...prev,
+        coverPic: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const submitUpdateProfile = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post("/updateProfile", {
+        bio: userProfile.bio,
+        gender: "",
+        dob: "",
+        name: "",
+        cover_photo: userProfile.coverPic,
+        photo: userProfile.profilePic,
+        address: userProfile.address,
+        job_title: userProfile.role,
+        company: userProfile.company,
+        phone: userProfile.phone,
+        branding_color: "",
+        profile_id: id,
+        email: userProfile.email,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <section className="h-full flex justify-center grow bg-primary border-r-2 border-r-white">
       <div className="h-full flex flex-col w-full p-8 rounded-lg bg-white">
         <header className="text-start w-full z-40 mb-8">
           <h1 className="font-inter font-bold text-2xl">About</h1>
         </header>
-        <div className=" flex flex-col gap-4 w-full" id="profileEdit">
+        <form
+          onSubmit={submitUpdateProfile}
+          className=" flex flex-col gap-4 w-full"
+          id="profileEdit"
+        >
           {/* <div className="flex justify-between gap-2 items-center">
             <div className="flex items-center w-full gap-2">
               <p className="font-inter text-sm font-normal">Card Name:</p>
@@ -78,7 +172,7 @@ const About = () => {
                 htmlFor="first-name"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Card Name
+                Name
               </label>
               <Input
                 type={"text"}
@@ -86,10 +180,11 @@ const About = () => {
                 intent={"primary"}
                 id={"first-name"}
                 size={"md"}
+                value={userProfile?.name}
                 classes={"w-full block p-2.5 "}
                 roundness={"round-sm"}
                 placeholder={"first name"}
-                register={register}
+                custom={"custom"}
               />
               {/* <input
                     type="text"
@@ -105,18 +200,19 @@ const About = () => {
                 htmlFor="last-name"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Company Name
+                Email
               </label>
               <Input
-                type={"text"}
-                nameField={"last_name"}
+                type={"email"}
+                nameField={"email"}
                 intent={"primary"}
-                id={"last-name"}
+                id={"email"}
                 size={"md"}
+                value={userProfile?.email}
                 classes={"w-full block p-2.5 "}
                 roundness={"round-sm"}
-                placeholder={"Last Name"}
-                register={register}
+                placeholder={"Email"}
+                custom={"custom"}
               />
               {/* <input
                     type="text"
@@ -144,14 +240,35 @@ const About = () => {
               </div>
 
               {/* Profile Picture Upload Area */}
-              <div className="flex justify-center items-center rounded-full w-28 h-28 border border-dashed border-gray-400 bg-white hover:bg-gray-100 transition-all cursor-pointer">
-                <div className="flex flex-col items-center justify-center gap-1">
-                  <RxAvatar className="text-4xl text-gray-500" />
-                  <p className="font-inter text-xs text-gray-500 text-center">
-                    Select or drag file
-                  </p>
+              {userProfile.profilePic && (
+                <div className="size-full rounded-full">
+                  <img
+                    src={userProfile.profilePic}
+                    className="rounded-full size-28 object-cover"
+                    alt=""
+                  />
                 </div>
-              </div>
+              )}
+              {!userProfile.profilePic && (
+                <div
+                  onClick={handleProfilePic}
+                  className="flex justify-center items-center rounded-full w-28 h-28 border border-dashed border-gray-400 bg-white hover:bg-gray-100 transition-all cursor-pointer"
+                >
+                  <div className="flex flex-col items-center justify-center gap-1">
+                    <RxAvatar className="text-4xl text-gray-500" />
+                    <p className="font-inter text-xs text-gray-500 text-center">
+                      Select or drag file
+                    </p>
+                  </div>
+                </div>
+              )}
+              <input
+                type="file"
+                ref={profilePicInputRef}
+                accept=".jpg, .png, .jpeg"
+                className="hidden"
+                onChange={handleProfilePicUpload}
+              />
             </div>
 
             {/* Cover Photo Section */}
@@ -168,15 +285,35 @@ const About = () => {
               </div>
 
               {/* Cover Photo Upload Area */}
-              <div className="flex items-center justify-center rounded-lg h-28 w-64 border border-dashed border-gray-400 bg-white hover:bg-gray-100 transition-all cursor-pointer">
-                <div className="flex flex-col items-center gap-2">
-                  <MdOutlinePhotoLibrary className="text-3xl text-gray-500" />
-                  <p className="font-inter text-xs text-gray-500 text-center">
-                    Select image, gif, video, or drag & drop
-                  </p>
+              {userProfile.coverPic && (
+                <div className="h-full w-full">
+                  <img
+                    src={userProfile.coverPic}
+                    className="h-28 w-64 rounded-lg object-cover"
+                    alt="cover_pic"
+                  />
                 </div>
-              </div>
+              )}
+              {!userProfile.coverPic && (
+                <div
+                  onClick={handleCoverPhoto}
+                  className="flex items-center justify-center rounded-lg h-28 w-64 border border-dashed border-gray-400 bg-white hover:bg-gray-100 transition-all cursor-pointer"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <MdOutlinePhotoLibrary className="text-3xl text-gray-500" />
+                    <p className="font-inter text-xs text-gray-500 text-center">
+                      Select image, gif, video, or drag & drop
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
+            <input
+              type="file"
+              ref={coverPicInputRef}
+              className="hidden"
+              onChange={handleCoverPicUpload}
+            />
           </div>
 
           {/* <div className="flex justify-center items-center  gap-4">
@@ -236,21 +373,22 @@ const About = () => {
           <div className="flex space-x-4">
             <div className="w-full">
               <label
-                htmlFor="first-name"
+                htmlFor="role"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Role
               </label>
               <Input
                 type={"text"}
-                nameField={"first_name"}
+                nameField={""}
+                name={"role"}
                 intent={"primary"}
-                id={"first-name"}
+                id={"role"}
                 size={"md"}
                 classes={"w-full block p-2.5 "}
                 roundness={"round-sm"}
-                placeholder={"first name"}
-                register={register}
+                placeholder={"Role"}
+                custom={"custom"}
               />
               {/* <input
                     type="text"
@@ -263,21 +401,81 @@ const About = () => {
             </div>
             <div className="w-full">
               <label
-                htmlFor="last-name"
+                htmlFor="company"
+                className="block mb-2 text-sm font-inter font-medium text-gray-900"
+              >
+                Company
+              </label>
+              <Input
+                type={"text"}
+                nameField={"company"}
+                intent={"primary"}
+                id={"company"}
+                size={"md"}
+                value={userProfile.company}
+                classes={"w-full block p-2.5 "}
+                roundness={"round-sm"}
+                placeholder={"company"}
+                custom={"custom"}
+              />
+              {/* <input
+                    type="text"
+                    name="last-name"
+                    id="last-name"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                    placeholder="Doe"
+                    required
+                  /> */}
+            </div>
+          </div>
+          <div className="flex space-x-4">
+            <div className="w-full">
+              <label
+                htmlFor="address"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Role
+              </label>
+              <Input
+                type={"text"}
+                nameField={""}
+                name={"address"}
+                intent={"primary"}
+                id={"address"}
+                size={"md"}
+                value={userProfile.address}
+                classes={"w-full block p-2.5 "}
+                roundness={"round-sm"}
+                placeholder={"Address"}
+                custom={"custom"}
+              />
+              {/* <input
+                    type="text"
+                    name="first-name"
+                    id="first-name"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                    placeholder="John"
+                    required
+                  /> */}
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="address"
                 className="block mb-2 text-sm font-inter font-medium text-gray-900"
               >
                 Address
               </label>
               <Input
                 type={"text"}
-                nameField={"last_name"}
+                nameField={"address"}
                 intent={"primary"}
-                id={"last-name"}
+                id={"address"}
                 size={"md"}
+                value={userProfile.address}
                 classes={"w-full block p-2.5 "}
                 roundness={"round-sm"}
-                placeholder={"Last Name"}
-                register={register}
+                placeholder={"Address"}
+                custom={"custom"}
               />
               {/* <input
                     type="text"
@@ -291,7 +489,7 @@ const About = () => {
           </div>
           <div className="flex flex-col gap-2 w-full">
             <label
-              htmlFor="last-name"
+              htmlFor="bio"
               className="block mb-2 text-sm font-inter font-medium text-gray-900"
             >
               Bio
@@ -301,6 +499,7 @@ const About = () => {
               cols={"10"}
               intent={"primary"}
               classes={"w-full !rounded-md p-2"}
+              value={userProfile?.bio}
             ></TextArea>
           </div>
 
@@ -375,7 +574,6 @@ const About = () => {
                         color={pickerColor}
                         onChange={(newColor) => {
                           if (newColor && newColor.hex) {
-                            console.log(newColor.hex);
                             setPickerColor(newColor.hex);
                             handleSelectColor(newColor.hex);
                           }
@@ -479,13 +677,18 @@ const About = () => {
               </label>
               <div>
                 <label className="inline-flex items-center cursor-pointer">
-                  <input type="checkbox" value="" className="sr-only peer" />
+                  <input
+                    type="checkbox"
+                    name="user_direct"
+                    value={userProfile.user_direct}
+                    className="sr-only peer"
+                  />
                   <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
                 </label>
               </div>
             </div>
           </div>
-        </div>
+        </form>
         <footer className=" p-4 w-full  bg-white flex justify-end items-center gap-4">
           <Button
             intent={"secondary"}

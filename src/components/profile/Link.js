@@ -25,7 +25,6 @@ const Link = () => {
   const [loading, setLoading] = useState(true);
 
   const userData = useSelector((state) => state?.auth);
-
   // const handleSelectColor = (color) => {
   //   dispatch(selectColor(color));
   // };
@@ -68,12 +67,12 @@ const Link = () => {
       console.log(error);
     }
   }
-  console.log(links);
+
   useEffect(() => {
     getLinks();
   }, []);
 
-  const handleAddBaseLink = (id, title, img, baseUrl) => {
+  const handleAddBaseLink = (id, title, img, baseUrl, path) => {
     console.log(id, title, img);
     setAddLinkOpenModal(true);
     setAddLinkData((prev) => ({
@@ -82,9 +81,10 @@ const Link = () => {
       title: title,
       img: img,
       baseUrl: baseUrl,
+      path: path,
     }));
   };
-  console.log(addLinkData, "data link");
+
   const handleCloseLinkBaseModal = () => {
     setAddLinkOpenModal(false);
   };
@@ -117,6 +117,7 @@ const Link = () => {
           <AddLinkBaseModal
             closeModal={handleCloseLinkBaseModal}
             data={addLinkData}
+            id={id}
           />
         )}
         {/* Content Area */}
@@ -180,7 +181,18 @@ const Link = () => {
                               </p>
                             </div>
                             {data?.path ? (
-                              <FiEdit className="text-xl text-gray-600" />
+                              <FiEdit
+                                className="text-xl text-gray-600"
+                                onClick={() =>
+                                  handleAddBaseLink(
+                                    data?.id,
+                                    data?.title,
+                                    data?.icon,
+                                    data?.baseURL,
+                                    data?.path
+                                  )
+                                }
+                              />
                             ) : (
                               <FiPlus
                                 className="text-xl text-gray-600"

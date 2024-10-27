@@ -1,12 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
 import { AiOutlineGlobal, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { FiPlus } from "react-icons/fi";
 import { Button, Input } from "../form";
+import axiosInstance from "../../utils/axiosInstance";
 
-const AddLinkBaseModal = ({ closeModal, data }) => {
-  console.log(data.title, "data");
+const AddLinkBaseModal = ({ closeModal, data, id }) => {
+  const [updateLink, setUpdateLink] = useState("");
+  const [pathLink, setPathLink] = useState("");
+
+  const handleUpdateLink = (e) => {
+    const pathInput = e.target.value;
+    const path = pathInput.replace(data?.baseUrl, "");
+    setPathLink(path);
+    setUpdateLink(path);
+  };
+
+  console.log(pathLink, "path link");
+
+  useEffect(() => {
+    if (data?.baseUrl) {
+      setUpdateLink(data?.baseUrl);
+    }
+    if (data?.path) {
+      setUpdateLink(data?.baseUrl + data?.path);
+    }
+  }, [data?.baseUrl, data?.path]);
+
+  const submitUpdateLink = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post("/addPlatform", {
+        platform_id: data?.id,
+        path: pathLink,
+        profile_id: id,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return ReactDOM.createPortal(
     <div
       id="authentication-modal"
@@ -44,7 +79,10 @@ const AddLinkBaseModal = ({ closeModal, data }) => {
             </button>
           </div>
           <div className="p-4 md:p-5">
-            <div className="space-y-4 text-center w-full">
+            <form
+              onSubmit={submitUpdateLink}
+              className="space-y-4 text-center w-full"
+            >
               <img
                 src={`${process.env.REACT_APP_SERVER}${data.img}`}
                 className="size-10 mx-auto"
@@ -62,7 +100,9 @@ const AddLinkBaseModal = ({ closeModal, data }) => {
                   placeholder={"Enter link title"}
                   custom={"custom"}
                   classes={"w-full"}
-                  value={data?.baseUrl}
+                  name={"link"}
+                  value={updateLink}
+                  eventAction={handleUpdateLink}
                 />
               </div>
 
@@ -73,7 +113,7 @@ const AddLinkBaseModal = ({ closeModal, data }) => {
                 children={"Add"}
                 classes={"!w-1/2 !p-2 !mx-auto"}
               />
-            </div>
+            </form>
           </div>
         </div>
       </div>
