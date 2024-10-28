@@ -6,11 +6,18 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import { MdColorize, MdOutlinePhotoLibrary } from "react-icons/md";
 import { TiCancel } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
-import { resetColor, selectColor } from "../../context/slice/profileSlice";
+import {
+  profileUpdate,
+  resetColor,
+  selectColor,
+} from "../../context/slice/profileSlice";
 import ColorPicker from "react-pick-color";
 import axiosInstance from "../../utils/axiosInstance";
 import { useParams } from "react-router-dom";
 import imageCompression from "browser-image-compression";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { base64ToBlob } from "../../utils/base64ToBlob";
 
 const About = () => {
   const [pickerColor, setPickerColor] = useState("#ffffff");
@@ -35,8 +42,12 @@ const About = () => {
     dob: "",
     gender: "",
   });
+  const [blobCon, setBlobCon] = useState({
+    profilePic: "",
+    coverPic: "",
+  });
 
-  const maxFileSize = 4 * 1024 * 1024;
+  const maxFileSize = 6 * 1024 * 1024;
 
   const dispatch = useDispatch();
   const { register } = useForm();
@@ -97,12 +108,21 @@ const About = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > maxFileSize) {
-        console.log("Profile picture size must be less than 4MB.");
+        toast.error("Profile picture size must be less than 6MB.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         return;
       }
       try {
         const options = {
-          maxSizeMB: 4,
+          maxSizeMB: 6,
           useWebWorker: true,
         };
         const compressedFile = await imageCompression(file, options);
@@ -114,6 +134,7 @@ const About = () => {
           }));
         };
         reader.readAsDataURL(compressedFile);
+        // profileUpdate()
       } catch (error) {
         console.error("Error compressing image:", error);
       }
@@ -134,12 +155,21 @@ const About = () => {
     if (file) {
       console.log(file.size, "size", maxFileSize);
       if (file.size > maxFileSize) {
-        console.log("Cover picture size must be less than 4MB.");
+        toast.error("Cover picture size must be less than 6MB.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         return;
       }
       try {
         const options = {
-          maxSizeMB: 4,
+          maxSizeMB: 6,
           useWebWorker: true,
         };
         const compressedFile = await imageCompression(file, options);
@@ -167,25 +197,46 @@ const About = () => {
 
   const submitUpdateProfile = async (e) => {
     e.preventDefault();
+    let blobProfile = userProfile.profilePic
+      ? base64ToBlob(userProfile.profilePic)
+      : null;
+    let blobCoverProfile = userProfile.coverPic
+      ? base64ToBlob(userProfile.coverPic)
+      : null;
+    const formData = new FormData();
+    formData.append("bio", userProfile.bio);
+    formData.append("gender", userProfile.gender);
+    formData.append("dob", userProfile.dob);
+    formData.append("name", userProfile.name);
+    formData.append("address", userProfile.address);
+    formData.append("job_title", userProfile.role);
+    formData.append("company", userProfile.company);
+    formData.append("phone", userProfile.phone);
+    formData.append("branding_color", ""); // Assuming branding_color is empty
+    formData.append("profile_id", id);
+    formData.append("email", userProfile.email);
+    if (blobProfile) {
+      formData.append("photo", blobProfile);
+    }
+    if (blobCoverProfile) {
+      formData.append("cover_photo", blobCoverProfile);
+    }
+
     try {
-      const response = await axiosInstance.post("/updateProfile", {
-        bio: userProfile.bio,
-        gender: userProfile.gender,
-        dob: userProfile.dob,
-        name: userProfile.name,
-        cover_photo: userProfile.coverPic,
-        photo: userProfile.profilePic,
-        address: userProfile.address,
-        job_title: userProfile.role,
-        company: userProfile.company,
-        phone: userProfile.phone,
-        branding_color: "",
-        profile_id: id,
-        email: userProfile.email,
-      });
+      const response = await axiosInstance.post("/updateProfile", formData);
       console.log(response.data);
     } catch (error) {
       console.log(error);
+      toast.error("error file upload", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -202,6 +253,28 @@ const About = () => {
       [e.target.name]: Number(e.target.checked),
     }));
   };
+
+  // const submitUserDirect = async () => {
+  //   try {
+  //     const response = await axiosInstance.post("/profileDirect", {
+  //       profile_id: 11,
+  //       user_direct: userProfile.user_direct,
+  //     });
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error(error.response.data.message, {
+  //       position: "bottom-right",
+  //       autoClose: 5000,
+  //       hideProgressBar: true,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
 
   return (
     <section className="h-full flex justify-center grow bg-primary border-r-2 border-r-white">
@@ -827,6 +900,7 @@ const About = () => {
           />
         </footer> */}
       </div>
+      <ToastContainer />
     </section>
   );
 };

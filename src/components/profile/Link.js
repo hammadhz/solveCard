@@ -23,6 +23,7 @@ const Link = () => {
   });
   const [links, setLinks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [update, setUpdate] = useState(true);
 
   const userData = useSelector((state) => state?.auth);
   // const handleSelectColor = (color) => {
@@ -70,7 +71,7 @@ const Link = () => {
 
   useEffect(() => {
     getLinks();
-  }, []);
+  }, [update]);
 
   const handleAddBaseLink = (id, title, img, baseUrl, path) => {
     console.log(id, title, img);
@@ -87,6 +88,13 @@ const Link = () => {
 
   const handleCloseLinkBaseModal = () => {
     setAddLinkOpenModal(false);
+  };
+
+  const handleUpdate = () => {
+    setUpdate((prev) => ({
+      ...prev,
+      update: !update,
+    }));
   };
 
   return (
@@ -118,6 +126,7 @@ const Link = () => {
             closeModal={handleCloseLinkBaseModal}
             data={addLinkData}
             id={id}
+            handleUpdate={handleUpdate}
           />
         )}
         {/* Content Area */}

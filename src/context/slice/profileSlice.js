@@ -4,6 +4,10 @@ const profileSlice = createSlice({
   name: "profile",
   initialState: {
     sectionLnk: "about",
+    profileUpdate: {
+      profilePic: "",
+      coverPic: "",
+    },
     selectedColor: {
       bgColor: "#ffffff",
       textColor: "#000000",
@@ -59,6 +63,10 @@ const profileSlice = createSlice({
     sectionLink: (state, action) => {
       state.sectionLnk = action.payload;
     },
+    profileUpdate: (state, action) => {
+      state.profileUpdate.profilePic = action.payload.profilePic;
+      state.profileUpdate.coverPic = action.payload.coverPic;
+    },
   },
 });
 
@@ -68,5 +76,6 @@ export const {
   selectLinkColor,
   resetLinkColor,
   sectionLink,
+  profileUpdate,
 } = profileSlice.actions;
 export default profileSlice.reducer;

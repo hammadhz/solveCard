@@ -6,18 +6,24 @@ import { FiPlus } from "react-icons/fi";
 import { Button, Input } from "../form";
 import axiosInstance from "../../utils/axiosInstance";
 
-const AddLinkBaseModal = ({ closeModal, data, id }) => {
+const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
   const [updateLink, setUpdateLink] = useState("");
   const [pathLink, setPathLink] = useState("");
 
-  const handleUpdateLink = (e) => {
-    const pathInput = e.target.value;
-    const path = pathInput.replace(data?.baseUrl, "");
-    setPathLink(path);
-    setUpdateLink(path);
+  const extractUsername = (url) => {
+    const lastSlashIndex = url.lastIndexOf("/");
+    return url.substring(lastSlashIndex + 1);
   };
 
-  console.log(pathLink, "path link");
+  const handleUpdateLink = (e) => {
+    const path = e.target.value;
+    // const path = pathInput.replace(data?.baseUrl, "");
+    // setPathLink(pathInput);
+    setUpdateLink(path);
+    const username = extractUsername(path);
+    console.log(username, "username");
+    setPathLink(username);
+  };
 
   useEffect(() => {
     if (data?.baseUrl) {
@@ -36,6 +42,8 @@ const AddLinkBaseModal = ({ closeModal, data, id }) => {
         path: pathLink,
         profile_id: id,
       });
+      handleUpdate();
+      closeModal();
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -90,7 +98,7 @@ const AddLinkBaseModal = ({ closeModal, data, id }) => {
                   alt=""
                 />
               </div>
-              <h1 className="text-black dark:text-white">
+              <h1 className="text-black dark:text-black">
                 Add {data.title} Link
               </h1>
               <div>
@@ -99,7 +107,9 @@ const AddLinkBaseModal = ({ closeModal, data, id }) => {
                   size={"lg"}
                   roundness={"round-md"}
                   label={"Link Title"}
-                  placeholder={"Enter link title"}
+                  placeholder={
+                    data?.baseUrl ? data?.baseUrl : "Enter your base"
+                  }
                   custom={"custom"}
                   classes={"w-full"}
                   name={"link"}
