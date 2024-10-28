@@ -50,15 +50,15 @@ const AddLinkBaseModal = ({ closeModal, data, id }) => {
       className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50"
     >
       <div className="relative p-4 w-full max-w-[320px] max-h-full">
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div className="relative bg-white rounded-lg shadow ">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-900">
               Add Link
             </h3>
             <button
               type="button"
               onClick={closeModal}
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-900 dark:hover:text-white"
             >
               <svg
                 className="w-3 h-3"
@@ -83,11 +83,13 @@ const AddLinkBaseModal = ({ closeModal, data, id }) => {
               onSubmit={submitUpdateLink}
               className="space-y-4 text-center w-full"
             >
-              <img
-                src={`${process.env.REACT_APP_SERVER}${data.img}`}
-                className="size-10 mx-auto"
-                alt=""
-              />
+              <div className="flex justify-center items-center size-10 rounded-full bg-tertiary-green-30 mx-auto">
+                <img
+                  src={`${process.env.REACT_APP_SERVER}${data.img}`}
+                  className="size-6"
+                  alt=""
+                />
+              </div>
               <h1 className="text-black dark:text-white">
                 Add {data.title} Link
               </h1>

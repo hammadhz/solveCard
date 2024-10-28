@@ -7,10 +7,11 @@ import { IoMdCall } from "react-icons/io";
 import { useSelector } from "react-redux";
 
 const ProfileViewCard = () => {
-  const selectedColor = useSelector((state) => state.theme?.selectedColor);
-  const selectedLinkColor = useSelector((state) => state.theme?.linkTheme);
+  const selectedColor = useSelector((state) => state.profile?.selectedColor);
+  const selectedLinkColor = useSelector((state) => state.profile?.linkTheme);
   return (
-    <>
+    <div className="space-y-4">
+      {/* card  */}
       <div className="relative w-full rounded-3xl bg-white h-64 p-4 shadow-lg">
         <div className="space-y-10">
           <div className="w-full h-32 bg-primary rounded-3xl"></div>
@@ -23,6 +24,18 @@ const ProfileViewCard = () => {
             <h1 className="font-inter text-base font-semibold">Hammad Azam</h1>
             <p className="font-inter text-base font-medium">Sofe</p>
           </div>
+        </div>
+      </div>
+      {/* profile data */}
+      <div className="space-y-3">
+        <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
+          Name
+        </div>
+        <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
+          Email
+        </div>
+        <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
+          Phone
         </div>
       </div>
       {/* <div
@@ -123,7 +136,7 @@ const ProfileViewCard = () => {
           </div>
         </div>
       </div> */}
-    </>
+    </div>
   );
 };
 

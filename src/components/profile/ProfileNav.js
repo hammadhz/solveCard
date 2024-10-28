@@ -4,7 +4,7 @@ import { AiOutlineLink } from "react-icons/ai";
 import { RiFilterLine } from "react-icons/ri";
 import { MdOutlineEmail, MdOutlineQrCode2 } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { sectionLink } from "../../context/slice/themeSlice";
+import { sectionLink } from "../../context/slice/profileSlice";
 
 const ProfileNav = () => {
   const dispatch = useDispatch();

@@ -18,14 +18,14 @@ import {
   resetLinkColor,
   selectColor,
   selectLinkColor,
-} from "../../context/slice/themeSlice";
+} from "../../context/slice/profileSlice";
 import ColorPicker from "react-pick-color";
 import About from "./About";
 import Link from "./Link";
 import LinkView from "./LinkView";
 
 const ProfileEd = () => {
-  const linkData = useSelector((state) => state.theme.sectionLnk);
+  const linkData = useSelector((state) => state.profile.sectionLnk);
 
   const [pickerColor, setPickerColor] = useState("#ffffff");
   const [isPickerOpen, setPickerOpen] = useState(false);
@@ -64,7 +64,7 @@ const ProfileEd = () => {
     <>
       {linkData === "about" && <About />}
       {linkData === "links" && <Link />}
-      {linkData === "linkView" && <LinkView />}
+      {/* {linkData === "linkView" && <LinkView />} */}
     </>
   );
 };

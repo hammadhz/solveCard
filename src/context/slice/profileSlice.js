@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const themeSlice = createSlice({
-  name: "theme",
+const profileSlice = createSlice({
+  name: "profile",
   initialState: {
     sectionLnk: "about",
     selectedColor: {
@@ -68,5 +68,5 @@ export const {
   selectLinkColor,
   resetLinkColor,
   sectionLink,
-} = themeSlice.actions;
-export default themeSlice.reducer;
+} = profileSlice.actions;
+export default profileSlice.reducer;

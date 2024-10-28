@@ -6,10 +6,11 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import { MdColorize, MdOutlinePhotoLibrary } from "react-icons/md";
 import { TiCancel } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
-import { resetColor, selectColor } from "../../context/slice/themeSlice";
+import { resetColor, selectColor } from "../../context/slice/profileSlice";
 import ColorPicker from "react-pick-color";
 import axiosInstance from "../../utils/axiosInstance";
 import { useParams } from "react-router-dom";
+import imageCompression from "browser-image-compression";
 
 const About = () => {
   const [pickerColor, setPickerColor] = useState("#ffffff");
@@ -31,7 +32,11 @@ const About = () => {
     role: "",
     profilePic: "",
     coverPic: "",
+    dob: "",
+    gender: "",
   });
+
+  const maxFileSize = 4 * 1024 * 1024;
 
   const dispatch = useDispatch();
   const { register } = useForm();
@@ -74,6 +79,8 @@ const About = () => {
         phone: userData.user.phone,
         user_direct: userData.user.user_direct,
         role: userData.user.work_position,
+        dob: userData.user.dob,
+        gender: userData.user.gender,
       }));
     }
   }, [userData?.user]);
@@ -86,28 +93,76 @@ const About = () => {
     coverPicInputRef.current.click();
   };
 
-  const handleProfilePicUpload = (e) => {
+  const handleProfilePicUpload = async (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setUserProfile((prev) => ({
-        ...prev,
-        profilePic: reader.result,
-      }));
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      if (file.size > maxFileSize) {
+        console.log("Profile picture size must be less than 4MB.");
+        return;
+      }
+      try {
+        const options = {
+          maxSizeMB: 4,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setUserProfile((prev) => ({
+            ...prev,
+            profilePic: reader.result,
+          }));
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error("Error compressing image:", error);
+      }
+    }
+
+    // const reader = new FileReader();
+    // reader.onloadend = () => {
+    //   setUserProfile((prev) => ({
+    //     ...prev,
+    //     profilePic: reader.result,
+    //   }));
+    // };
+    // reader.readAsDataURL(file);
   };
 
-  const handleCoverPicUpload = (e) => {
+  const handleCoverPicUpload = async (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setUserProfile((prev) => ({
-        ...prev,
-        coverPic: reader.result,
-      }));
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      console.log(file.size, "size", maxFileSize);
+      if (file.size > maxFileSize) {
+        console.log("Cover picture size must be less than 4MB.");
+        return;
+      }
+      try {
+        const options = {
+          maxSizeMB: 4,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setUserProfile((prev) => ({
+            ...prev,
+            coverPic: reader.result,
+          }));
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error("Error compressing image:", error);
+      }
+    }
+    // const reader = new FileReader();
+    // reader.onloadend = () => {
+    //   setUserProfile((prev) => ({
+    //     ...prev,
+    //     coverPic: reader.result,
+    //   }));
+    // };
+    // reader.readAsDataURL(file);
   };
 
   const submitUpdateProfile = async (e) => {
@@ -115,9 +170,9 @@ const About = () => {
     try {
       const response = await axiosInstance.post("/updateProfile", {
         bio: userProfile.bio,
-        gender: "",
-        dob: "",
-        name: "",
+        gender: userProfile.gender,
+        dob: userProfile.dob,
+        name: userProfile.name,
         cover_photo: userProfile.coverPic,
         photo: userProfile.profilePic,
         address: userProfile.address,
@@ -128,9 +183,24 @@ const About = () => {
         profile_id: id,
         email: userProfile.email,
       });
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleChange = (e) => {
+    setUserProfile((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleCheckChange = (e) => {
+    setUserProfile((prev) => ({
+      ...prev,
+      [e.target.name]: Number(e.target.checked),
+    }));
   };
 
   return (
@@ -185,6 +255,7 @@ const About = () => {
                 roundness={"round-sm"}
                 placeholder={"first name"}
                 custom={"custom"}
+                eventAction={handleChange}
               />
               {/* <input
                     type="text"
@@ -213,6 +284,7 @@ const About = () => {
                 roundness={"round-sm"}
                 placeholder={"Email"}
                 custom={"custom"}
+                eventAction={handleChange}
               />
               {/* <input
                     type="text"
@@ -310,6 +382,7 @@ const About = () => {
             </div>
             <input
               type="file"
+              accept=".jpg, .png, .jpeg"
               ref={coverPicInputRef}
               className="hidden"
               onChange={handleCoverPicUpload}
@@ -380,7 +453,6 @@ const About = () => {
               </label>
               <Input
                 type={"text"}
-                nameField={""}
                 name={"role"}
                 intent={"primary"}
                 id={"role"}
@@ -389,6 +461,7 @@ const About = () => {
                 roundness={"round-sm"}
                 placeholder={"Role"}
                 custom={"custom"}
+                eventAction={handleChange}
               />
               {/* <input
                     type="text"
@@ -408,7 +481,7 @@ const About = () => {
               </label>
               <Input
                 type={"text"}
-                nameField={"company"}
+                name={"company"}
                 intent={"primary"}
                 id={"company"}
                 size={"md"}
@@ -417,6 +490,7 @@ const About = () => {
                 roundness={"round-sm"}
                 placeholder={"company"}
                 custom={"custom"}
+                eventAction={handleChange}
               />
               {/* <input
                     type="text"
@@ -431,23 +505,23 @@ const About = () => {
           <div className="flex space-x-4">
             <div className="w-full">
               <label
-                htmlFor="address"
+                htmlFor="dob"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Role
+                DOB
               </label>
               <Input
-                type={"text"}
-                nameField={""}
-                name={"address"}
+                type={"date"}
+                name={"dob"}
                 intent={"primary"}
-                id={"address"}
+                id={"dob"}
                 size={"md"}
-                value={userProfile.address}
+                value={userProfile.dob}
                 classes={"w-full block p-2.5 "}
                 roundness={"round-sm"}
-                placeholder={"Address"}
+                placeholder={"dob"}
                 custom={"custom"}
+                eventAction={handleChange}
               />
               {/* <input
                     type="text"
@@ -460,23 +534,21 @@ const About = () => {
             </div>
             <div className="w-full">
               <label
-                htmlFor="address"
+                htmlFor="gender"
                 className="block mb-2 text-sm font-inter font-medium text-gray-900"
               >
-                Address
+                Gender
               </label>
-              <Input
-                type={"text"}
-                nameField={"address"}
-                intent={"primary"}
-                id={"address"}
-                size={"md"}
-                value={userProfile.address}
-                classes={"w-full block p-2.5 "}
-                roundness={"round-sm"}
-                placeholder={"Address"}
-                custom={"custom"}
-              />
+              <select
+                onChange={handleChange}
+                name="gender"
+                className="w-full block px-2.5 py-3.5  font-inter outline-none bg-primary placeholder:text-sm placeholder:font-normal rounded-md"
+              >
+                <option value={"1"}>Male</option>
+                <option value={"2"}>Female</option>
+                <option value={"3"}>Not Share</option>
+              </select>
+
               {/* <input
                     type="text"
                     name="last-name"
@@ -486,6 +558,35 @@ const About = () => {
                     required
                   /> */}
             </div>
+          </div>
+          <div className="w-full">
+            <label
+              htmlFor="address"
+              className="block mb-2 text-sm font-inter font-medium text-gray-900"
+            >
+              Address
+            </label>
+            <Input
+              type={"text"}
+              name={"address"}
+              intent={"primary"}
+              id={"address"}
+              size={"md"}
+              value={userProfile.address}
+              classes={"w-full block p-2.5 "}
+              roundness={"round-sm"}
+              placeholder={"Address"}
+              custom={"custom"}
+              eventAction={handleChange}
+            />
+            {/* <input
+                    type="text"
+                    name="last-name"
+                    id="last-name"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                    placeholder="Doe"
+                    required
+                  /> */}
           </div>
           <div className="flex flex-col gap-2 w-full">
             <label
@@ -499,7 +600,9 @@ const About = () => {
               cols={"10"}
               intent={"primary"}
               classes={"w-full !rounded-md p-2"}
+              name={"bio"}
               value={userProfile?.bio}
+              eventAction={handleChange}
             ></TextArea>
           </div>
 
@@ -682,14 +785,32 @@ const About = () => {
                     name="user_direct"
                     value={userProfile.user_direct}
                     className="sr-only peer"
+                    onChange={handleCheckChange}
                   />
                   <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
                 </label>
               </div>
             </div>
           </div>
+          <div className=" p-4 w-full  bg-white flex justify-end items-center gap-4">
+            <Button
+              type={"submit"}
+              intent={"secondary"}
+              children={"Update"}
+              size={"lg"}
+              roundness={"round"}
+              classes={"!bg-black !text-white"}
+            />
+            <Button
+              intent={"secondary"}
+              children={"Cancel"}
+              size={"lg"}
+              roundness={"round"}
+              classes={"!bg-black !text-white"}
+            />
+          </div>
         </form>
-        <footer className=" p-4 w-full  bg-white flex justify-end items-center gap-4">
+        {/* <footer className=" p-4 w-full  bg-white flex justify-end items-center gap-4">
           <Button
             intent={"secondary"}
             children={"Update"}
@@ -704,7 +825,7 @@ const About = () => {
             roundness={"round"}
             classes={"!bg-black !text-white"}
           />
-        </footer>
+        </footer> */}
       </div>
     </section>
   );

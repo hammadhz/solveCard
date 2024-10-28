@@ -95,14 +95,14 @@ const Link = () => {
         {/* Header */}
         <header className="text-start w-full z-40 flex justify-between items-center mb-8">
           <h1 className="font-inter font-bold text-2xl">Links</h1>
-          <Button
+          {/* <Button
             intent={"secondary"}
             size={"md"}
             roundness={"round"}
             children={"Add Links"}
             classes={"!bg-black !text-white px-4 py-2"}
             eventAction={handleAddLink}
-          />
+          /> */}
         </header>
         {isOpenModal && (
           <AddLinksModal
@@ -219,9 +219,9 @@ const Link = () => {
             )}
 
             {/* Phone Link */}
-            <div
+            {/* <div
               className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg"
-              //   onClick={() => handleEditLink("phone")}
+             
             >
               <div className="flex items-center gap-4">
                 <AiOutlinePhone className="text-2xl text-gray-600" />
@@ -230,16 +230,15 @@ const Link = () => {
                 </p>
               </div>
               <FiEdit className="text-xl text-gray-600" />
-            </div>
+            </div> */}
           </div>
 
           {/* Suggested Links Section */}
-          <div className="flex flex-col gap-4 w-full">
+          {/* <div className="flex flex-col gap-4 w-full">
             <h2 className="text-lg font-inter font-medium text-gray-900">
               Suggested Links
             </h2>
 
-            {/* Suggested: LinkedIn */}
             <div className="flex items-center justify-between p-4 bg-white hover:bg-gray-100 cursor-pointer rounded-lg border border-gray-300">
               <div className="flex items-center gap-4">
                 <FaLinkedin className="text-2xl text-gray-600" />
@@ -250,7 +249,6 @@ const Link = () => {
               <FiPlus className="text-xl text-gray-600" />
             </div>
 
-            {/* Suggested: Website */}
             <div className="flex items-center justify-between p-4 bg-white hover:bg-gray-100 cursor-pointer rounded-lg border border-gray-300">
               <div className="flex items-center gap-4">
                 <AiOutlineGlobal className="text-2xl text-gray-600" />
@@ -260,7 +258,7 @@ const Link = () => {
               </div>
               <FiPlus className="text-xl text-gray-600" />
             </div>
-          </div>
+          </div> */}
         </div>
         <footer className=" p-4 w-full  bg-white flex justify-end items-center gap-4">
           <Button
