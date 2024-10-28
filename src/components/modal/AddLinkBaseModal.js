@@ -39,7 +39,7 @@ const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
     try {
       const response = await axiosInstance.post("/addPlatform", {
         platform_id: data?.id,
-        path: pathLink,
+        path: pathLink.replace(data?.baseUrl, ""),
         profile_id: id,
       });
       handleUpdate();
