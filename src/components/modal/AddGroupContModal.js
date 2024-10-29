@@ -1,17 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { Button, Input } from "../form";
+import { useForm } from "react-hook-form";
+import axiosInstance from "../../utils/axiosInstance";
+import { ToastContainer, toast } from "react-toastify";
 
-const AddGroupContModal = ({ closeModal }) => {
-  const [groupName, setGroupName] = useState("");
+const AddGroupContModal = ({ data, closeModal }) => {
   const [description, setDescription] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedContacts, setSelectedContacts] = useState([]);
-  const [availableContacts] = useState([
-    "John Doe",
-    "Jane Smith",
-    "Alice Johnson",
-  ]); // Example contacts
+  const [contacts, setContacts] = useState([]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const [selectedContact, setSelectedContact] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleSelect = (contact) => {
+    setSelectedContact(contact);
+    setIsOpen(false);
+    addContactIntoGroup(contact);
+  };
+
+  async function addContactIntoGroup(contactData) {
+    try {
+      const response = await axiosInstance.post("/addContactIntoGroup", {
+        contact_id: contactData.id,
+        group_id: data.id,
+        profile_id: "415",
+      });
+      console.log(response);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
 
   const handleSelectContact = (contact) => {
     if (!selectedContacts.includes(contact)) {
@@ -19,9 +44,38 @@ const AddGroupContModal = ({ closeModal }) => {
     }
   };
 
-  const handleAddGroupName = (e) => {
-    setGroupName(e.target.value);
+  const submitAddGroup = async (data) => {
+    try {
+      const response = await axiosInstance.post("/addGroup", {
+        title: data.title,
+        profile_id: "415",
+      });
+      console.log(response);
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response.data.message);
+    }
   };
+
+  async function getContacts() {
+    try {
+      const response = await axiosInstance.post("/phoneContacts", {
+        profile_id: "415",
+      });
+      console.log(response);
+      setContacts(response.data.contacts);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  }
+
+  useEffect(() => {
+    if (data?.isEdit) {
+      getContacts();
+    }
+  }, [data?.isEdit]);
 
   return ReactDOM.createPortal(
     <div
@@ -31,15 +85,13 @@ const AddGroupContModal = ({ closeModal }) => {
       className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50"
     >
       <div className="relative p-4 w-full max-w-lg max-h-full">
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Add Group
-            </h3>
+        <div className="relative bg-white rounded-lg shadow ">
+          <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+            <h3 className="text-xl font-semibold text-gray-900 ">Add Group</h3>
             <button
               type="button"
               onClick={closeModal}
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center"
             >
               <svg
                 className="w-3 h-3"
@@ -60,91 +112,109 @@ const AddGroupContModal = ({ closeModal }) => {
             </button>
           </div>
           <div className="p-4 md:p-5">
-            <form className="space-y-4" action="#">
+            <form className="space-y-4" onSubmit={handleSubmit(submitAddGroup)}>
               <div>
                 <label
                   htmlFor="group-name"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Group Name
                 </label>
 
                 <Input
                   type={"text"}
-                  name=""
-                  custom={"custom"}
+                  nameField="title"
                   intent={"primary"}
                   size={"md"}
                   placeholder={"Enter Group Name"}
                   roundness={"round-sm"}
                   classes={"w-full p-2.5"}
-                  eventAction={handleAddGroupName}
+                  register={register}
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="description"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Description
                 </label>
                 <textarea
                   id="description"
-                  className="w-full outline-none block p-2.5 bg-primary  text-gray-900 text-sm rounded-lg  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  className="w-full outline-none block p-2.5 bg-primary  text-gray-900 text-sm rounded-lg   "
                   placeholder="Enter group description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                  {...register("description")}
+                ></textarea>
               </div>
-
-              <div>
-                <label
-                  htmlFor="search-contact"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Search Contact
-                </label>
-                <Input
-                  type="text"
-                  name="search-contact"
-                  id="search-contact"
-                  className="w-full block p-2.5"
-                  placeholder="Search for contacts..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <ul className="mt-2 max-h-40 overflow-y-auto border border-gray-300 rounded-lg bg-white">
-                  {availableContacts
-                    .filter((contact) =>
-                      contact.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
-                    .map((contact) => (
-                      <li
-                        key={contact}
-                        className="p-2 hover:bg-gray-200 cursor-pointer"
-                        onClick={() => handleSelectContact(contact)}
+              {data?.isEdit && (
+                <>
+                  <div>
+                    <label
+                      htmlFor="select-contact"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Select Contact
+                    </label>
+                    <div className="custom-dropdown relative">
+                      <div
+                        className="selected-option rounded-xl bg-primary border p-2 text-black cursor-pointer"
+                        onClick={() => setIsOpen(!isOpen)}
                       >
-                        {contact}
-                      </li>
-                    ))}
-                </ul>
-              </div>
+                        {selectedContact ? (
+                          <div className="flex flex-row gap-3 items-center">
+                            <img
+                              src={`${process.env.REACT_APP_SERVER}${selectedContact.photo}`}
+                              className="rounded-full w-8 h-8 object-cover"
+                              alt={data.first_name}
+                            />
+                            <p> {selectedContact.first_name}</p>
+                          </div>
+                        ) : (
+                          "Select a contact"
+                        )}
+                      </div>
+                      {isOpen && (
+                        <div className="dropdown-options absolute w-full bg-white rounded-xl border shadow-lg mt-1">
+                          {contacts?.map((data) => (
+                            <div
+                              className="dropdown-option flex items-center p-2 cursor-pointer hover:bg-gray-200 hover:rounded-xl"
+                              key={data.id}
+                              onClick={() => handleSelect(data)}
+                            >
+                              <img
+                                src={`${process.env.REACT_APP_SERVER}${data.photo}`}
+                                className="rounded-full w-8 h-8 mr-2 object-cover"
+                                alt={data.first_name}
+                              />
+                              <span>{data.first_name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Selected Contacts
-                </label>
-                <ul className="max-h-40 overflow-y-auto border border-gray-300 rounded-lg bg-white">
-                  {selectedContacts.map((contact) => (
-                    <li key={contact} className="p-2 border-b border-gray-300">
-                      {contact}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                      Selected Contacts
+                    </label>
+                    <ul className="max-h-40 overflow-y-auto border border-gray-300 rounded-lg bg-white">
+                      {selectedContacts.map((contact) => (
+                        <li
+                          key={contact}
+                          className="p-2 border-b border-gray-300"
+                        >
+                          {contact}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              )}
 
               <Button
+                type={"submit"}
                 intent={"primary"}
                 size={"lg"}
                 children={"Add"}

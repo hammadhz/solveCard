@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
+import { ToastContainer } from "react-toastify";
 
 const MainLayout = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -31,6 +32,7 @@ const MainLayout = () => {
         <Header />
         <Outlet />
       </div>
+      <ToastContainer />
     </div>
   );
 };
