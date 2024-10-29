@@ -82,16 +82,16 @@ const About = () => {
     if (userData?.user) {
       setUserProfile((prev) => ({
         ...prev,
-        name: userData.user.name,
-        email: userData.user.email,
-        bio: userData.user.bio,
-        address: userData.user.address,
-        company: userData.user.company,
-        phone: userData.user.phone,
-        user_direct: userData.user.user_direct,
-        role: userData.user.work_position,
-        dob: userData.user.dob,
-        gender: userData.user.gender,
+        name: userData.user.name ? userData.user.name : "",
+        email: userData.user.email ? userData.user.email : "",
+        bio: userData.user.bio ? userData.user.bio : "",
+        address: userData.user.address ? userData.user.address : "",
+        company: userData.user.company ? userData.user.company : "",
+        phone: userData.user.phone ? userData.user.phone : "",
+        user_direct: userData.user.user_direct ? userData.user.user_direct : "",
+        role: userData.user.work_position ? userData.user.work_position : "",
+        dob: userData.user.dob ? userData.user.dob : "",
+        gender: userData.user.gender ? userData.user.gender : "",
       }));
     }
   }, [userData?.user]);
@@ -121,6 +121,10 @@ const About = () => {
         return;
       }
       try {
+        setBlobCon((prev) => ({
+          ...prev,
+          profilePic: file,
+        }));
         const options = {
           maxSizeMB: 4,
           useWebWorker: true,
@@ -168,6 +172,10 @@ const About = () => {
         return;
       }
       try {
+        setBlobCon((prev) => ({
+          ...prev,
+          coverPic: file,
+        }));
         const options = {
           maxSizeMB: 6,
           useWebWorker: true,
