@@ -319,7 +319,7 @@ const About = () => {
               </label>
               <Input
                 type={"text"}
-                nameField={"first_name"}
+                name={"name"}
                 intent={"primary"}
                 id={"first-name"}
                 size={"md"}
@@ -348,7 +348,7 @@ const About = () => {
               </label>
               <Input
                 type={"email"}
-                nameField={"email"}
+                name={"email"}
                 intent={"primary"}
                 id={"email"}
                 size={"md"}

@@ -60,15 +60,15 @@ const AddContactModal = ({ closeModal }) => {
       <div className="relative p-4 w-full max-w-lg max-h-full">
         {" "}
         {/* Expanded width */}
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="relative bg-white rounded-lg shadow">
+          <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+            <h3 className="text-xl font-semibold text-gray-900 ">
               Add Contact
             </h3>
             <button
               type="button"
               onClick={closeModal}
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center "
             >
               <svg
                 className="w-3 h-3"
@@ -97,7 +97,7 @@ const AddContactModal = ({ closeModal }) => {
                 <div className="w-full">
                   <label
                     htmlFor="first-name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     First Name
                   </label>
@@ -124,7 +124,7 @@ const AddContactModal = ({ closeModal }) => {
                 <div className="w-full">
                   <label
                     htmlFor="last-name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Last Name
                   </label>
@@ -153,7 +153,7 @@ const AddContactModal = ({ closeModal }) => {
               <div className="w-full">
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Your Email
                 </label>
@@ -180,7 +180,7 @@ const AddContactModal = ({ closeModal }) => {
               <div className="w-full">
                 <label
                   htmlFor="phone"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Phone
                 </label>
@@ -209,7 +209,7 @@ const AddContactModal = ({ closeModal }) => {
               <div className="w-full">
                 <label
                   htmlFor="website"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Website
                 </label>
@@ -237,7 +237,7 @@ const AddContactModal = ({ closeModal }) => {
               <div>
                 <label
                   htmlFor="profile-pic"
-                  className="block mb-2 text-center text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-center text-sm font-medium text-gray-900 "
                 >
                   Profile Picture
                 </label>
