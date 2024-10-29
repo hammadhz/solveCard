@@ -4,22 +4,48 @@ import { Button, Input } from "../form";
 import axiosInstance from "../../utils/axiosInstance";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import imageCompression from "browser-image-compression";
 
 const AddContactModal = ({ closeModal }) => {
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-  });
-  const tokenValue = useSelector((state) => state?.auth?.userInfo);
   const [profilePic, setProfilePic] = useState("");
-  const handleProfilePicChange = (e) => {
+
+  const handleProfilePicChange = async (e) => {
     const file = e.target.files[0];
+    const maxFileSize = 4 * 1024 * 1024;
     if (file) {
-      setProfilePic(URL.createObjectURL(file));
+      if (file.size > maxFileSize) {
+        toast.error("picture size must be less than 6MB.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return;
+      }
+      try {
+        const options = {
+          maxSizeMB: 6,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        const reader = new FileReader();
+        console.log(reader, "reader");
+        reader.onloadend = () => {
+          setProfilePic(reader.result);
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
+  console.log(profilePic, "profile");
 
   const {
     register,
@@ -29,21 +55,26 @@ const AddContactModal = ({ closeModal }) => {
 
   const addContactSubmit = async (data) => {
     const body = {
-      ...data,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      phone: data?.phone,
+      website: data?.webiste,
+      email: data?.email,
       photo: profilePic,
-      profile_id: 2,
+      profile_id: 415,
     };
-    console.log({
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${data?.token}`,
-    });
+    // const formData = new FormData();
+    // formData.append("first_name", data?.first_name);
+    // formData.append("last_name", data?.last_name);
+    // formData.append("email", data?.email);
+    // formData.append("phone", data?.phone);
+    // formData.append("website", data?.website);
+    // formData.append("profile_id", "415");
+    // formData.append("photo", profilePic);
+
+    console.log(body, "body");
     try {
-      const response = await axiosInstance.post("/addPhoneContact", body, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenValue?.token}`,
-        },
-      });
+      const response = await axiosInstance.post("/addPhoneContact", body);
       console.log(response);
     } catch (err) {
       console.log(err);
@@ -92,6 +123,7 @@ const AddContactModal = ({ closeModal }) => {
             <form
               className="space-y-4"
               onSubmit={handleSubmit(addContactSubmit)}
+              encType="multipart/form-data"
             >
               <div className="flex space-x-4">
                 <div className="w-full">

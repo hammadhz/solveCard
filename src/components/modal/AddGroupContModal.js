@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { Button, Input } from "../form";
 
 const AddGroupContModal = ({ closeModal }) => {
-  const [profilePic, setProfilePic] = useState("");
   const [groupName, setGroupName] = useState("");
   const [description, setDescription] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,13 +12,6 @@ const AddGroupContModal = ({ closeModal }) => {
     "Jane Smith",
     "Alice Johnson",
   ]); // Example contacts
-
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfilePic(URL.createObjectURL(file));
-    }
-  };
 
   const handleSelectContact = (contact) => {
     if (!selectedContacts.includes(contact)) {
@@ -99,7 +91,7 @@ const AddGroupContModal = ({ closeModal }) => {
                 </label>
                 <textarea
                   id="description"
-                  className="w-full outline-none block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  className="w-full outline-none block p-2.5 bg-primary  text-gray-900 text-sm rounded-lg  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   placeholder="Enter group description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}

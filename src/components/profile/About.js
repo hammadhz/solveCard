@@ -82,16 +82,16 @@ const About = () => {
     if (userData?.user) {
       setUserProfile((prev) => ({
         ...prev,
-        name: userData.user.name,
-        email: userData.user.email,
-        bio: userData.user.bio,
-        address: userData.user.address,
-        company: userData.user.company,
-        phone: userData.user.phone,
-        user_direct: userData.user.user_direct,
-        role: userData.user.work_position,
-        dob: userData.user.dob,
-        gender: userData.user.gender,
+        name: userData.user.name ? userData.user.name : "",
+        email: userData.user.email ? userData.user.email : "",
+        bio: userData.user.bio ? userData.user.bio : "",
+        address: userData.user.address ? userData.user.address : "",
+        company: userData.user.company ? userData.user.company : "",
+        phone: userData.user.phone ? userData.user.phone : "",
+        user_direct: userData.user.user_direct ? userData.user.user_direct : "",
+        role: userData.user.work_position ? userData.user.work_position : "",
+        dob: userData.user.dob ? userData.user.dob : "",
+        gender: userData.user.gender ? userData.user.gender : "",
       }));
     }
   }, [userData?.user]);
@@ -121,8 +121,12 @@ const About = () => {
         return;
       }
       try {
+        setBlobCon((prev) => ({
+          ...prev,
+          profilePic: file,
+        }));
         const options = {
-          maxSizeMB: 6,
+          maxSizeMB: 4,
           useWebWorker: true,
         };
         const compressedFile = await imageCompression(file, options);
@@ -168,6 +172,10 @@ const About = () => {
         return;
       }
       try {
+        setBlobCon((prev) => ({
+          ...prev,
+          coverPic: file,
+        }));
         const options = {
           maxSizeMB: 6,
           useWebWorker: true,
@@ -197,33 +205,22 @@ const About = () => {
 
   const submitUpdateProfile = async (e) => {
     e.preventDefault();
-    let blobProfile = userProfile.profilePic
-      ? base64ToBlob(userProfile.profilePic)
-      : null;
-    let blobCoverProfile = userProfile.coverPic
-      ? base64ToBlob(userProfile.coverPic)
-      : null;
-    const formData = new FormData();
-    formData.append("bio", userProfile.bio);
-    formData.append("gender", userProfile.gender);
-    formData.append("dob", userProfile.dob);
-    formData.append("name", userProfile.name);
-    formData.append("address", userProfile.address);
-    formData.append("job_title", userProfile.role);
-    formData.append("company", userProfile.company);
-    formData.append("phone", userProfile.phone);
-    formData.append("branding_color", ""); // Assuming branding_color is empty
-    formData.append("profile_id", id);
-    formData.append("email", userProfile.email);
-    if (blobProfile) {
-      formData.append("photo", blobProfile);
-    }
-    if (blobCoverProfile) {
-      formData.append("cover_photo", blobCoverProfile);
-    }
-
     try {
-      const response = await axiosInstance.post("/updateProfile", formData);
+      const response = await axiosInstance.post("/updateProfile", {
+        bio: userProfile.bio,
+        gender: userProfile.gender,
+        dob: userProfile.dob,
+        name: userProfile.name,
+        cover_photo: userProfile.coverPic,
+        photo: userProfile.profilePic,
+        address: userProfile.address,
+        job_title: userProfile.role,
+        company: userProfile.company,
+        phone: userProfile.phone,
+        branding_color: "",
+        profile_id: id,
+        email: userProfile.email,
+      });
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -900,7 +897,6 @@ const About = () => {
           />
         </footer> */}
       </div>
-      <ToastContainer />
     </section>
   );
 };

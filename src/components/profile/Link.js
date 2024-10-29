@@ -86,8 +86,10 @@ const Link = () => {
     }));
   };
 
-  const handleCloseLinkBaseModal = () => {
+  const handleCloseLinkBaseModal = async () => {
     setAddLinkOpenModal(false);
+    setLoading(true);
+    await getLinks();
   };
 
   const handleUpdate = () => {
@@ -171,7 +173,7 @@ const Link = () => {
                       </h2>
 
                       {/* Email Link */}
-                      {result?.platforms?.map((data) => {
+                      {result?.platforms?.filter((value) => parseInt(value?.pro) === userData.user.is_pro).map((data) => {
                         return (
                           <div
                             key={data?.id}
@@ -269,22 +271,22 @@ const Link = () => {
             </div>
           </div> */}
         </div>
-        <footer className=" p-4 w-full  bg-white flex justify-end items-center gap-4">
-          <Button
-            intent={"secondary"}
-            children={"Update"}
-            size={"lg"}
-            roundness={"round"}
-            classes={"!bg-black !text-white"}
-          />
-          <Button
-            intent={"secondary"}
-            children={"Cancel"}
-            size={"lg"}
-            roundness={"round"}
-            classes={"!bg-black !text-white"}
-          />
-        </footer>
+        {/*<footer className=" p-4 w-full  bg-white flex justify-end items-center gap-4">*/}
+        {/*  <Button*/}
+        {/*    intent={"secondary"}*/}
+        {/*    children={"Update"}*/}
+        {/*    size={"lg"}*/}
+        {/*    roundness={"round"}*/}
+        {/*    classes={"!bg-black !text-white"}*/}
+        {/*  />*/}
+        {/*  <Button*/}
+        {/*    intent={"secondary"}*/}
+        {/*    children={"Cancel"}*/}
+        {/*    size={"lg"}*/}
+        {/*    roundness={"round"}*/}
+        {/*    classes={"!bg-black !text-white"}*/}
+        {/*  />*/}
+        {/*</footer>*/}
       </div>
     </section>
   );
