@@ -195,7 +195,7 @@ const AddGroupContModal = ({ data, closeModal }) => {
                     </div>
                   </div>
 
-                  <div>
+                  {/* <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
                       Selected Contacts
                     </label>
@@ -209,7 +209,7 @@ const AddGroupContModal = ({ data, closeModal }) => {
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </div> */}
                 </>
               )}
 

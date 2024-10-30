@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
+import { base64ToBlob } from "../../utils/base64ToBlob";
 
 const AddContactModal = ({ closeModal }) => {
   const [profilePic, setProfilePic] = useState("");
@@ -54,13 +55,14 @@ const AddContactModal = ({ closeModal }) => {
   } = useForm();
 
   const addContactSubmit = async (data) => {
+    let profileBlob = base64ToBlob(profilePic);
     const body = {
       first_name: data.first_name,
       last_name: data.last_name,
       phone: data?.phone,
       website: data?.webiste,
       email: data?.email,
-      photo: profilePic,
+      photo: profileBlob,
       profile_id: 415,
     };
     // const formData = new FormData();

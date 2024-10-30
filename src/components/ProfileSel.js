@@ -1,16 +1,34 @@
-import React, { useState } from "react";
-import { Input } from "./form";
-import search from "../assets/svgs/search-icon.svg";
+import React, { useEffect, useState } from "react";
+import axiosInstance from "../utils/axiosInstance";
+import { useDispatch } from "react-redux";
+import { profileIdSelect } from "../context/slice/profileSlice";
 
 const ProfileSel = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [profile, setProfile] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
-  const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
+
+  const dispatch = useDispatch();
+
+  async function getProfile() {
+    try {
+      const response = await axiosInstance.get("/profiles");
+      setProfile(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   const handleSelect = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false); // Close the options after selecting
+    setSelectedOption(option?.name);
+    setIsOpen(false);
+    dispatch(profileIdSelect(option?.id));
   };
+
   return (
     <div className="relative w-[250px]">
       <div
@@ -22,13 +40,13 @@ const ProfileSel = () => {
 
       {isOpen && (
         <div className="absolute top-16 z-10 w-full bg-white rounded-lg shadow-md">
-          {options.map((option, index) => (
+          {profile.map((option) => (
             <div
-              key={index}
+              key={option?.id}
               className="px-5 py-3 hover:bg-gray-200 cursor-pointer"
               onClick={() => handleSelect(option)}
             >
-              {option}
+              {option?.name}
             </div>
           ))}
         </div>
