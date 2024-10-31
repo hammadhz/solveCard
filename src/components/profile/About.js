@@ -7,7 +7,8 @@ import { MdColorize, MdOutlinePhotoLibrary } from "react-icons/md";
 import { TiCancel } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  profileUpdate,
+  profileCoverUpdate,
+  profilePicUpdate,
   resetColor,
   selectColor,
 } from "../../context/slice/profileSlice";
@@ -15,7 +16,7 @@ import ColorPicker from "react-pick-color";
 import axiosInstance from "../../utils/axiosInstance";
 import { useParams } from "react-router-dom";
 import imageCompression from "browser-image-compression";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { base64ToBlob } from "../../utils/base64ToBlob";
 
@@ -128,6 +129,7 @@ const About = () => {
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
         reader.onloadend = () => {
+          dispatch(profilePicUpdate(reader.result));
           setBlobCon((prev) => ({
             ...prev,
             profilePic: base64ToBlob(reader.result),
@@ -178,6 +180,7 @@ const About = () => {
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
         reader.onloadend = () => {
+          dispatch(profileCoverUpdate(reader.result));
           setBlobCon((prev) => ({
             ...prev,
             coverPic: base64ToBlob(reader.result),
@@ -201,13 +204,9 @@ const About = () => {
     // };
     // reader.readAsDataURL(file);
   };
-  console.log(userProfile);
+
   const submitUpdateProfile = async (e) => {
     e.preventDefault();
-    console.log(blobCon);
-    // let profileData = base64ToBlob(userProfile.phone);
-    // console.log(profileData);
-    // let coverData = base64ToBlob(userProfile.coverPic);
     const body = {
       bio: userProfile.bio,
       gender: userProfile.gender,
@@ -219,16 +218,27 @@ const About = () => {
       job_title: userProfile.role,
       company: userProfile.company,
       phone: userProfile.phone,
-      branding_color: "",
+      branding_color: "#d5d5d5",
       profile_id: id,
       email: userProfile.email,
     };
     try {
       const response = await axiosInstance.post("/updateProfile", body);
-      console.log(response.data);
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     } catch (error) {
       console.log(error);
-      toast.error("error file upload", {
+      toast.error(error.response.data.message, {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: true,

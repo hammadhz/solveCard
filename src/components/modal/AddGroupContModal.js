@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import { Button, Input } from "../form";
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axiosInstance";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
-const AddGroupContModal = ({ data, closeModal }) => {
+const AddGroupContModal = ({ data, closeModal, handleChange }) => {
   const [description, setDescription] = useState("");
   const [selectedContacts, setSelectedContacts] = useState([]);
   const [contacts, setContacts] = useState([]);
@@ -14,6 +14,7 @@ const AddGroupContModal = ({ data, closeModal }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const [selectedContact, setSelectedContact] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -31,10 +32,30 @@ const AddGroupContModal = ({ data, closeModal }) => {
         group_id: data.id,
         profile_id: "415",
       });
-      console.log(response);
-      toast.success(response.data.message);
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        handleChange();
+      }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -46,15 +67,36 @@ const AddGroupContModal = ({ data, closeModal }) => {
 
   const submitAddGroup = async (data) => {
     try {
+      setLoading(true);
       const response = await axiosInstance.post("/addGroup", {
         title: data.title,
         profile_id: "415",
       });
-      console.log(response);
-      toast.success(response.data.message);
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     } catch (error) {
+      setLoading(false);
       console.error(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -220,6 +262,7 @@ const AddGroupContModal = ({ data, closeModal }) => {
                 children={"Add"}
                 classes={"w-full !p-2"}
                 roundness={"round"}
+                loading={loading}
               />
             </form>
           </div>

@@ -12,6 +12,8 @@ const GroupConTbl = () => {
     isAdd: false,
     id: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [change, setChange] = useState(false);
 
   const openAddContactModal = () => {
     setIsOpenModal(!isOpenModal);
@@ -26,21 +28,36 @@ const GroupConTbl = () => {
   };
 
   async function getGroups() {
+    setLoading(true);
     try {
       const response = await axiosInstance.post("/groups", {
         profile_id: "415",
       });
-      setGroups(response.data.groups);
+      if (response.status === 200) {
+        setGroups(response.data.groups);
+        setLoading(false);
+      }
     } catch (error) {
       console.log("error");
+      setLoading(true);
       console.error(error?.response);
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       // toast.error(error.response.data.message);
     }
   }
 
   useEffect(() => {
     getGroups();
-  }, []);
+  }, [change]);
 
   const editGroup = (id, isEdit) => {
     setIsOpenModal(true);
@@ -50,6 +67,43 @@ const GroupConTbl = () => {
       isEdit: isEdit,
     }));
   };
+
+  const handleChange = () => {
+    setChange(!change);
+  };
+
+  async function deleteGroup(id) {
+    try {
+      const response = await axiosInstance.post("/removeGroup", {
+        group_id: id,
+        profile_id: "415",
+      });
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        handleChange();
+      }
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
 
   return (
     <div className="w-full min-h-[150px] bg-primary rounded-2xl p-6 mb-20">
@@ -67,6 +121,7 @@ const GroupConTbl = () => {
           />
           {isOpenModal && (
             <AddGroupContModal
+              handleChange={handleChange}
               data={groupData}
               closeModal={closeAddContactModal}
             />
@@ -92,26 +147,62 @@ const GroupConTbl = () => {
                 </tr>
               </thead>
               <tbody>
-                {groups?.map((result) => {
-                  return (
-                    <tr
-                      key={result.id}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                {loading ? (
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td
+                      colSpan={4}
+                      className="py-3 text-center text-gray-500 dark:text-gray-400"
                     >
-                      <td className="px-6 py-4">{result.title}</td>
-                      <td className="px-6 py-4">{result.total_contacts}</td>
-                      <td className="px-6 py-4">{result.total_members}</td>
-                      <td className="px-6 py-4">
-                        <div
-                          onClick={() => editGroup(result.id, true)}
-                          className="font-medium text-blue-600 cursor-pointer hover:underline"
+                      Loading....
+                    </td>
+                  </tr>
+                ) : (
+                  <>
+                    {groups.length === 0 ? (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td
+                          colSpan={4}
+                          className="py-3 text-center text-gray-500 dark:text-gray-400"
                         >
-                          Edit group
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                          No Group Record
+                        </td>
+                      </tr>
+                    ) : (
+                      <>
+                        {groups?.map((result) => {
+                          return (
+                            <tr
+                              key={result.id}
+                              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                            >
+                              <td className="px-6 py-4">{result.title}</td>
+                              <td className="px-6 py-4">
+                                {result.total_contacts}
+                              </td>
+                              <td className="px-6 py-4">
+                                {result.total_members}
+                              </td>
+                              <td className="px-6 py-4">
+                                <div
+                                  onClick={() => editGroup(result.id, true)}
+                                  className="font-medium text-blue-600 cursor-pointer hover:underline"
+                                >
+                                  Edit
+                                </div>
+                                <div
+                                  onClick={() => deleteGroup(result.id)}
+                                  className="font-medium text-blue-600 cursor-pointer hover:underline"
+                                >
+                                  Delete
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </>
+                    )}
+                  </>
+                )}
               </tbody>
             </table>
           </div>

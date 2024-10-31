@@ -22,7 +22,8 @@ axiosInstance.interceptors.request.use(
       config.headers["Accept"] = "application/json";
       if (
         config.url === "/addPhoneContact" ||
-        config.url === "/updateProfile"
+        config.url === "/updateProfile" ||
+        config.url === "/updatePhoneContact"
       ) {
         config.headers["Content-Type"] = "multipart/form-data";
       } else {

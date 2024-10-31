@@ -7,17 +7,34 @@ import { IoMdCall } from "react-icons/io";
 import { useSelector } from "react-redux";
 
 const ProfileViewCard = () => {
-  const selectedColor = useSelector((state) => state.profile?.selectedColor);
-  const selectedLinkColor = useSelector((state) => state.profile?.linkTheme);
+  const profilePic = useSelector((state) => state.profile.profilePic);
+  const profileCover = useSelector((state) => state.profile.coverPic);
+
   return (
     <div className="space-y-4">
       {/* card  */}
       <div className="relative w-full rounded-3xl bg-white h-64 p-4 shadow-lg">
         <div className="space-y-10">
-          <div className="w-full h-32 bg-primary rounded-3xl"></div>
+          {profileCover ? (
+            <img
+              src={profileCover}
+              className="w-full h-32 rounded-3xl object-cover"
+              alt="cover-pic"
+            />
+          ) : (
+            <div className="w-full h-32 bg-primary rounded-3xl"></div>
+          )}
           <div className="absolute left-10 top-12 rounded-full size-20 bg-white flex justify-center items-center">
             <div className="  rounded-full size-[70px] bg-primary flex justify-center items-center">
-              <ReactSVG src={avatar} />
+              {profilePic ? (
+                <img
+                  src={profilePic}
+                  className="rounded-full size-[70px] object-cover"
+                  alt="profile"
+                />
+              ) : (
+                <ReactSVG src={avatar} />
+              )}
             </div>
           </div>
           <div className="space-y-1">

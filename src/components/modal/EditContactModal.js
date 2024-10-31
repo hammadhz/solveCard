@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
 import { base64ToBlob } from "../../utils/base64ToBlob";
 
-const AddContactModal = ({ closeModal, handleChange }) => {
+const EditContactModal = ({ closeModal, editData, handleChange }) => {
   const [profilePic, setProfilePic] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -15,7 +15,20 @@ const AddContactModal = ({ closeModal, handleChange }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
+
+  useEffect(() => {
+    if (editData) {
+      reset({
+        first_name: editData.data.first_name ? editData.data.first_name : "",
+        last_name: editData.data.last_name ? editData.data.last_name : "",
+        email: editData.data.email ? editData.data.email : "",
+        phone: editData.data.phone ? editData.data.phone : "",
+        website: editData.data.website ? editData.data.website : "",
+      });
+    }
+  }, [editData, reset]);
 
   const handleProfilePicChange = async (e) => {
     const file = e.target.files[0];
@@ -55,18 +68,18 @@ const AddContactModal = ({ closeModal, handleChange }) => {
   const addContactSubmit = async (data) => {
     let profileBlob = base64ToBlob(profilePic);
     setLoading(true);
-    const body = {
-      first_name: data.first_name,
-      last_name: data.last_name,
-      phone: data?.phone,
-      website: data?.webiste,
-      email: data?.email,
-      photo: profileBlob,
-      profile_id: 415,
-    };
     try {
-      const response = await axiosInstance.post("/addPhoneContact", body);
-
+      const body = {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        phone: data?.phone,
+        website: data?.webiste,
+        email: data?.email,
+        photo: profileBlob,
+        profile_id: 415,
+        contact_id: editData.data.id,
+      };
+      const response = await axiosInstance.post("/updatePhoneContact", body);
       if (response.status === 200) {
         toast.success(response.data.message, {
           position: "bottom-right",
@@ -82,8 +95,8 @@ const AddContactModal = ({ closeModal, handleChange }) => {
         closeModal();
       }
     } catch (err) {
-      console.log(err);
       setLoading(false);
+      console.log(err);
       toast.error(err.response.data.message, {
         position: "bottom-right",
         autoClose: 5000,
@@ -110,7 +123,7 @@ const AddContactModal = ({ closeModal, handleChange }) => {
         <div className="relative bg-white rounded-lg shadow">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
             <h3 className="text-xl font-semibold text-gray-900 ">
-              {"Add Contact"}
+              {"Edit Contact"}
             </h3>
             <button
               type="button"
@@ -331,4 +344,4 @@ const AddContactModal = ({ closeModal, handleChange }) => {
   );
 };
 
-export default AddContactModal;
+export default EditContactModal;
