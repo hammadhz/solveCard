@@ -46,8 +46,6 @@ const AddContactModal = ({ closeModal }) => {
     }
   };
 
-  console.log(profilePic, "profile");
-
   const {
     register,
     handleSubmit,
@@ -56,6 +54,7 @@ const AddContactModal = ({ closeModal }) => {
 
   const addContactSubmit = async (data) => {
     let profileBlob = base64ToBlob(profilePic);
+    console.log(profileBlob);
     const body = {
       first_name: data.first_name,
       last_name: data.last_name,

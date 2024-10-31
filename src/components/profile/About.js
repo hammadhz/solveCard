@@ -121,10 +121,6 @@ const About = () => {
         return;
       }
       try {
-        setBlobCon((prev) => ({
-          ...prev,
-          profilePic: file,
-        }));
         const options = {
           maxSizeMB: 4,
           useWebWorker: true,
@@ -132,6 +128,10 @@ const About = () => {
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
         reader.onloadend = () => {
+          setBlobCon((prev) => ({
+            ...prev,
+            profilePic: base64ToBlob(reader.result),
+          }));
           setUserProfile((prev) => ({
             ...prev,
             profilePic: reader.result,
@@ -157,7 +157,6 @@ const About = () => {
   const handleCoverPicUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log(file.size, "size", maxFileSize);
       if (file.size > maxFileSize) {
         toast.error("Cover picture size must be less than 6MB.", {
           position: "bottom-right",
@@ -172,10 +171,6 @@ const About = () => {
         return;
       }
       try {
-        setBlobCon((prev) => ({
-          ...prev,
-          coverPic: file,
-        }));
         const options = {
           maxSizeMB: 6,
           useWebWorker: true,
@@ -183,6 +178,10 @@ const About = () => {
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
         reader.onloadend = () => {
+          setBlobCon((prev) => ({
+            ...prev,
+            coverPic: base64ToBlob(reader.result),
+          }));
           setUserProfile((prev) => ({
             ...prev,
             coverPic: reader.result,
@@ -202,25 +201,30 @@ const About = () => {
     // };
     // reader.readAsDataURL(file);
   };
-
+  console.log(userProfile);
   const submitUpdateProfile = async (e) => {
     e.preventDefault();
+    console.log(blobCon);
+    // let profileData = base64ToBlob(userProfile.phone);
+    // console.log(profileData);
+    // let coverData = base64ToBlob(userProfile.coverPic);
+    const body = {
+      bio: userProfile.bio,
+      gender: userProfile.gender,
+      dob: userProfile.dob,
+      name: userProfile.name,
+      cover_photo: blobCon.coverPic,
+      photo: blobCon.profilePic,
+      address: userProfile.address,
+      job_title: userProfile.role,
+      company: userProfile.company,
+      phone: userProfile.phone,
+      branding_color: "",
+      profile_id: id,
+      email: userProfile.email,
+    };
     try {
-      const response = await axiosInstance.post("/updateProfile", {
-        bio: userProfile.bio,
-        gender: userProfile.gender,
-        dob: userProfile.dob,
-        name: userProfile.name,
-        cover_photo: userProfile.coverPic,
-        photo: userProfile.profilePic,
-        address: userProfile.address,
-        job_title: userProfile.role,
-        company: userProfile.company,
-        phone: userProfile.phone,
-        branding_color: "",
-        profile_id: id,
-        email: userProfile.email,
-      });
+      const response = await axiosInstance.post("/updateProfile", body);
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -283,6 +287,7 @@ const About = () => {
           onSubmit={submitUpdateProfile}
           className=" flex flex-col gap-4 w-full"
           id="profileEdit"
+          encType="multipart/form-data"
         >
           {/* <div className="flex justify-between gap-2 items-center">
             <div className="flex items-center w-full gap-2">

@@ -20,7 +20,10 @@ axiosInstance.interceptors.request.use(
     } else {
       const token = Cookies.get("token");
       config.headers["Accept"] = "application/json";
-      if (config.url === "/addPhoneContact") {
+      if (
+        config.url === "/addPhoneContact" ||
+        config.url === "/updateProfile"
+      ) {
         config.headers["Content-Type"] = "multipart/form-data";
       } else {
         config.headers["Content-Type"] = "application/json";
