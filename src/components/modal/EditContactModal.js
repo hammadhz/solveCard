@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
 import { Button, Input } from "../form";
 import axiosInstance from "../../utils/axiosInstance";
@@ -6,10 +6,15 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
 import { base64ToBlob } from "../../utils/base64ToBlob";
+import { MdCancel } from "react-icons/md";
 
 const EditContactModal = ({ closeModal, editData, handleChange }) => {
   const [profilePic, setProfilePic] = useState("");
+  const [profilePicEdit, setProfilePicEdit] = useState({
+    pic: "",
+  });
   const [loading, setLoading] = useState(false);
+  const profilePicInputRef = useRef();
 
   const {
     register,
@@ -17,6 +22,10 @@ const EditContactModal = ({ closeModal, editData, handleChange }) => {
     formState: { errors },
     reset,
   } = useForm();
+
+  const handleProfilePic = () => {
+    profilePicInputRef.current.click();
+  };
 
   useEffect(() => {
     if (editData) {
@@ -27,6 +36,10 @@ const EditContactModal = ({ closeModal, editData, handleChange }) => {
         phone: editData.data.phone ? editData.data.phone : "",
         website: editData.data.website ? editData.data.website : "",
       });
+      setProfilePicEdit((prev) => ({
+        ...prev,
+        pic: editData?.data?.photo,
+      }));
     }
   }, [editData, reset]);
 
@@ -54,7 +67,7 @@ const EditContactModal = ({ closeModal, editData, handleChange }) => {
         };
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
-        console.log(reader, "reader");
+
         reader.onloadend = () => {
           setProfilePic(reader.result);
         };
@@ -108,6 +121,19 @@ const EditContactModal = ({ closeModal, editData, handleChange }) => {
         theme: "light",
       });
     }
+  };
+
+  const rmEditPic = () => {
+    setProfilePicEdit((prev) => ({
+      ...prev,
+      pic: "",
+    }));
+    profilePicInputRef.current.value = null;
+  };
+
+  const rmEditProPic = () => {
+    setProfilePic("");
+    profilePicInputRef.current.value = null;
   };
 
   return ReactDOM.createPortal(
@@ -296,23 +322,43 @@ const EditContactModal = ({ closeModal, editData, handleChange }) => {
               </div>
               {/* </div> */}
               <div>
-                <label
-                  htmlFor="profile-pic"
-                  className="block mb-2 text-center text-sm font-medium text-gray-900 "
-                >
+                <label className="block mb-2 text-center text-sm font-medium text-gray-900 ">
                   Profile Picture
                 </label>
                 <div className="flex items-center justify-center mb-4">
-                  <label htmlFor="profile-pic" className="cursor-pointer">
+                  <label htmlFor="" className="">
                     <div className="relative w-16 h-16 overflow-hidden bg-gray-200 rounded-full">
-                      {profilePic ? (
-                        <img
-                          src={profilePic}
-                          alt="Profile"
-                          className="object-cover w-full h-full"
-                        />
-                      ) : (
-                        <span className="flex items-center justify-center w-full h-full text-gray-400">
+                      {profilePicEdit.pic && (
+                        <>
+                          <img
+                            src={`${process.env.REACT_APP_SERVER}${profilePicEdit.pic}`}
+                            alt="Profile"
+                            className="object-cover w-full h-full"
+                          />
+                          <MdCancel
+                            onClick={rmEditPic}
+                            className="absolute top-3 right-2 cursor-pointer text-black"
+                          />
+                        </>
+                      )}
+                      {profilePic && (
+                        <>
+                          <img
+                            src={profilePic}
+                            alt="Profile"
+                            className="object-cover w-full h-full"
+                          />
+                          <MdCancel
+                            onClick={rmEditProPic}
+                            className="absolute top-3 right-2 cursor-pointer text-black"
+                          />
+                        </>
+                      )}
+                      {!profilePic && !profilePicEdit.pic && (
+                        <span
+                          onClick={handleProfilePic}
+                          className="flex items-center justify-center w-full h-full text-gray-400"
+                        >
                           +
                         </span>
                       )}
@@ -320,8 +366,9 @@ const EditContactModal = ({ closeModal, editData, handleChange }) => {
                   </label>
                   <input
                     type="file"
+                    ref={profilePicInputRef}
                     id="profile-pic"
-                    accept="image/*"
+                    accept=".jpg, .jpeg, .png"
                     onChange={handleProfilePicChange}
                     className="hidden"
                   />
