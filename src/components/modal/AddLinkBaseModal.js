@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
-import { AiOutlineGlobal, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
-import { FiPlus } from "react-icons/fi";
 import { Button, Input } from "../form";
 import axiosInstance from "../../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
   const [updateLink, setUpdateLink] = useState("");
@@ -21,7 +19,6 @@ const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
     // setPathLink(pathInput);
     setUpdateLink(path);
     const username = extractUsername(path);
-    console.log(username, "username");
     setPathLink(username);
   };
 
@@ -42,11 +39,31 @@ const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
         path: pathLink.replace(data?.baseUrl, ""),
         profile_id: id,
       });
-      handleUpdate();
-      closeModal();
-      console.log(response);
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        handleUpdate();
+        closeModal();
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 

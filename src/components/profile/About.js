@@ -381,7 +381,6 @@ const About = () => {
         }
       } catch (error) {
         setLoading(false);
-        console.log(error);
         toast.error(error.response.data.message, {
           position: "bottom-right",
           autoClose: 5000,

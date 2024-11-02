@@ -15,7 +15,6 @@ const AddLinkInfoModal = ({ closeModal, selectedLink }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitted Link:", form);
     // Handle form submission logic here, such as saving the link
   };
 

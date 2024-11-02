@@ -6,9 +6,11 @@ import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const AddGroupContModal = ({ grpData, closeModal, handleChange }) => {
+const EditGrpContact = ({ grpData, closeModal, handleChange }) => {
   // const [description, setDescription] = useState("");
   const profileId = useSelector((state) => state.profile.profileId);
+  //   const [selectedContacts, setSelectedContacts] = useState([]);
+  const [contacts, setContacts] = useState([]);
   const {
     register,
     handleSubmit,
@@ -17,31 +19,36 @@ const AddGroupContModal = ({ grpData, closeModal, handleChange }) => {
   } = useForm();
   const [loading, setLoading] = useState(false);
 
+  const [selectedContact, setSelectedContact] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleSelect = (contact) => {
+    setSelectedContact(contact);
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     if (grpData) {
       reset({
-        title: grpData?.data?.title,
+        title: grpData?.title,
       });
     }
   }, [grpData, reset]);
 
+  //   const handleSelectContact = (contact) => {
+  //     if (!selectedContacts.includes(contact)) {
+  //       setSelectedContacts([...selectedContacts, contact]);
+  //     }
+  //   };
+
   const submitAddGroup = async (data) => {
     try {
       setLoading(true);
-      let response;
-      if (grpData?.isEdit) {
-        response = await axiosInstance.post("/updateGroup", {
-          title: data.title,
-          group_id: grpData?.data?.id,
-          profile_id: profileId,
-          active: "1",
-        });
-      } else {
-        response = await axiosInstance.post("/addGroup", {
-          title: data.title,
-          profile_id: profileId,
-        });
-      }
+      const response = await axiosInstance.post("/addContactIntoGroup", {
+        contact_id: selectedContact?.id,
+        group_id: grpData?.id,
+        profile_id: profileId,
+      });
       if (response.status === 200) {
         toast.success(response.data.message, {
           position: "bottom-right",
@@ -71,6 +78,31 @@ const AddGroupContModal = ({ grpData, closeModal, handleChange }) => {
       });
     }
   };
+
+  async function getContacts() {
+    try {
+      const response = await axiosInstance.post("/phoneContacts", {
+        profile_id: profileId,
+      });
+
+      setContacts(response.data.contacts);
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
+
+  useEffect(() => {
+    getContacts();
+  }, []);
 
   return ReactDOM.createPortal(
     <div
@@ -125,6 +157,7 @@ const AddGroupContModal = ({ grpData, closeModal, handleChange }) => {
                   roundness={"round-sm"}
                   classes={"w-full p-2.5"}
                   register={register}
+                  readOnly={true}
                 />
               </div>
 
@@ -142,6 +175,68 @@ const AddGroupContModal = ({ grpData, closeModal, handleChange }) => {
                   {...register("description")}
                 ></textarea>
               </div> */}
+
+              <div>
+                <label
+                  htmlFor="select-contact"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
+                >
+                  Select Contact
+                </label>
+                <div className="custom-dropdown relative">
+                  <div
+                    className="selected-option rounded-xl bg-primary border p-2 text-black cursor-pointer"
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
+                    {selectedContact ? (
+                      <div className="flex flex-row gap-3 items-center">
+                        <img
+                          src={`${process.env.REACT_APP_SERVER}${selectedContact.photo}`}
+                          className="rounded-full w-8 h-8 object-cover"
+                          alt=""
+                        />
+                        <p> {selectedContact.first_name}</p>
+                      </div>
+                    ) : (
+                      "Select a contact"
+                    )}
+                  </div>
+                  {isOpen && (
+                    <div className="dropdown-options absolute w-full bg-white rounded-xl border shadow-lg mt-1">
+                      {contacts?.map((data) => (
+                        <div
+                          className="dropdown-option flex items-center p-2 cursor-pointer hover:bg-gray-200 hover:rounded-xl"
+                          key={data.id}
+                          onClick={() => handleSelect(data)}
+                        >
+                          <img
+                            src={`${process.env.REACT_APP_SERVER}${data.photo}`}
+                            className="rounded-full w-8 h-8 mr-2 object-cover"
+                            alt={data.first_name}
+                          />
+                          <span>{data.first_name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                      Selected Contacts
+                    </label>
+                    <ul className="max-h-40 overflow-y-auto border border-gray-300 rounded-lg bg-white">
+                      {selectedContacts.map((contact) => (
+                        <li
+                          key={contact}
+                          className="p-2 border-b border-gray-300"
+                        >
+                          {contact}
+                        </li>
+                      ))}
+                    </ul>
+                  </div> */}
 
               <Button
                 type={"submit"}
@@ -161,4 +256,4 @@ const AddGroupContModal = ({ grpData, closeModal, handleChange }) => {
   );
 };
 
-export default AddGroupContModal;
+export default EditGrpContact;

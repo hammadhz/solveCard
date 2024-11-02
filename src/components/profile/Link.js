@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "../form";
-import { FaLinkedin } from "react-icons/fa";
 import { FiPlus, FiEdit } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { AiOutlineGlobal, AiOutlinePhone } from "react-icons/ai";
 import AddLinksModal from "../modal/AddLinksModal";
 import AddLinkInfoModal from "../modal/AddLinkInfoModal";
 import axiosInstance from "../../utils/axiosInstance";
 import { useParams } from "react-router-dom";
 import AddLinkBaseModal from "../modal/AddLinkBaseModal";
+import { toast } from "react-toastify";
 
 const Link = () => {
   const { id } = useParams();
@@ -65,7 +63,16 @@ const Link = () => {
       setLoading(false);
     } catch (error) {
       setLoading(true);
-      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -74,7 +81,6 @@ const Link = () => {
   }, [update]);
 
   const handleAddBaseLink = (id, title, img, baseUrl, path) => {
-    console.log(id, title, img);
     setAddLinkOpenModal(true);
     setAddLinkData((prev) => ({
       ...prev,
@@ -173,56 +179,61 @@ const Link = () => {
                       </h2>
 
                       {/* Email Link */}
-                      {result?.platforms?.filter((value) => parseInt(value?.pro) === userData.user.is_pro).map((data) => {
-                        return (
-                          <div
-                            key={data?.id}
-                            className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg"
-                            //   onClick={() => handleEditLink("email")}
-                          >
-                            <div className="flex items-center gap-4">
-                              <img
-                                src={`${process.env.REACT_APP_SERVER}${data?.icon}`}
-                                className="size-5"
-                                alt="social_logo"
-                              />
-                              {/* <AiOutlineMail className="text-2xl text-gray-600" /> */}
-                              <p className="text-base font-inter font-medium text-gray-900">
-                                {data?.title}
-                              </p>
-                            </div>
-                            {data?.path ? (
-                              <FiEdit
-                                className="text-xl text-gray-600"
-                                onClick={() =>
-                                  handleAddBaseLink(
-                                    data?.id,
-                                    data?.title,
-                                    data?.icon,
-                                    data?.baseURL,
-                                    data?.path
-                                  )
-                                }
-                              />
-                            ) : (
-                              <FiPlus
-                                className="text-xl text-gray-600"
-                                onClick={() =>
-                                  handleAddBaseLink(
-                                    data?.id,
-                                    data?.title,
-                                    data?.icon,
-                                    data?.baseURL
-                                  )
-                                }
-                              />
-                            )}
-                            {/* <div className="rounded-full size-6 flex justify-center items-center bg-gray-400 hover:bg-gray-900"> */}
+                      {result?.platforms
+                        ?.filter(
+                          (value) =>
+                            parseInt(value?.pro) === userData.user.is_pro
+                        )
+                        .map((data) => {
+                          return (
+                            <div
+                              key={data?.id}
+                              className="flex items-center justify-between p-4 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-lg"
+                              //   onClick={() => handleEditLink("email")}
+                            >
+                              <div className="flex items-center gap-4">
+                                <img
+                                  src={`${process.env.REACT_APP_SERVER}${data?.icon}`}
+                                  className="size-5"
+                                  alt="social_logo"
+                                />
+                                {/* <AiOutlineMail className="text-2xl text-gray-600" /> */}
+                                <p className="text-base font-inter font-medium text-gray-900">
+                                  {data?.title}
+                                </p>
+                              </div>
+                              {data?.path ? (
+                                <FiEdit
+                                  className="text-xl text-gray-600"
+                                  onClick={() =>
+                                    handleAddBaseLink(
+                                      data?.id,
+                                      data?.title,
+                                      data?.icon,
+                                      data?.baseURL,
+                                      data?.path
+                                    )
+                                  }
+                                />
+                              ) : (
+                                <FiPlus
+                                  className="text-xl text-gray-600"
+                                  onClick={() =>
+                                    handleAddBaseLink(
+                                      data?.id,
+                                      data?.title,
+                                      data?.icon,
+                                      data?.baseURL
+                                    )
+                                  }
+                                />
+                              )}
+                              {/* <div className="rounded-full size-6 flex justify-center items-center bg-gray-400 hover:bg-gray-900"> */}
 
-                            {/* </div> */}
-                          </div>
-                        );
-                      })}
+                              {/* </div> */}
+                            </div>
+                          );
+                        })}
                     </div>
                   );
                 })}

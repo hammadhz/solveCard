@@ -4,8 +4,11 @@ import AddContactModal from "../modal/AddContactModal";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import EditContactModal from "../modal/EditContactModal";
+import { useSelector } from "react-redux";
 
 const ContactTbl = () => {
+  const profileId = useSelector((state) => state.profile.profileId);
+
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isEditOpenModal, setIsEditOpenModal] = useState(false);
   const [contacts, setContacts] = useState([]);
@@ -32,16 +35,24 @@ const ContactTbl = () => {
     try {
       setLoading(true);
       const response = await axiosInstance.post("/phoneContacts", {
-        profile_id: "415",
+        profile_id: profileId,
       });
       if (response.status === 200) {
         setContacts(response.data.contacts);
         setLoading(false);
       }
     } catch (error) {
-      console.log(error);
       setLoading(false);
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -50,11 +61,10 @@ const ContactTbl = () => {
   }, [change]);
 
   const deleteContact = async (id) => {
-    console.log(id);
     try {
       const response = await axiosInstance.post("/removeContact", {
         contact_id: id,
-        profile_id: "415",
+        profile_id: profileId,
       });
       if (response.status === 200) {
         toast.success(response.data.message, {
@@ -70,7 +80,6 @@ const ContactTbl = () => {
       }
       setChange(!change);
     } catch (error) {
-      console.log(error);
       toast.error(error.response.data.message, {
         position: "bottom-right",
         autoClose: 5000,
@@ -97,7 +106,7 @@ const ContactTbl = () => {
   };
 
   return (
-    <div className="w-full h-[450px] bg-primary rounded-2xl p-6 mb-20">
+    <div className="w-full min-h-[150px] bg-primary rounded-2xl p-6 mb-20">
       <div className="flex flex-col gap-4 w-full">
         <div className="w-full h-16  rounded-xl flex justify-between items-center">
           <h1 className="font-inter font-bold text-2xl">Contacts</h1>
@@ -124,7 +133,7 @@ const ContactTbl = () => {
             />
           )}
         </div>
-        <div className="w-full h-[330px]  bg-white rounded-xl">
+        <div className="w-full min-h-[150px]  bg-white rounded-xl">
           <div className="w-full h-full  overflow-auto p-3">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

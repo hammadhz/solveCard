@@ -14,8 +14,6 @@ const ProfileCard = (result) => {
     dispatch(setProfileData(data));
   };
 
-  console.log(profileId, "id");
-  console.log(result, "result");
   return (
     <div
       key={result?.id}

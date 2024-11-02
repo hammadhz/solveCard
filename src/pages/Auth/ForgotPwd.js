@@ -58,7 +58,6 @@ const ForgotPwd = () => {
       }
     } catch (err) {
       setLoading(false);
-      console.log(err);
       toast.error(err?.response?.data?.message, {
         position: "bottom-right",
         autoClose: 5000,
@@ -94,7 +93,6 @@ const ForgotPwd = () => {
       });
       if (response.status === 200) {
         setLoading(false);
-        console.log(response);
         toast.success(response?.data?.message, {
           position: "bottom-right",
           autoClose: 50000,
@@ -109,8 +107,6 @@ const ForgotPwd = () => {
       }
     } catch (err) {
       setLoading(false);
-      reset();
-      console.log(err);
       toast.error(err?.response?.data?.message, {
         position: "bottom-right",
         autoClose: 50000,
@@ -123,8 +119,6 @@ const ForgotPwd = () => {
       });
     }
   };
-
-  console.log(errors);
 
   return (
     <div className="bg-gradient-to-r from-tertiary-green-30 to-tertiary-green-50 min-h-screen  flex justify-center items-center relative">

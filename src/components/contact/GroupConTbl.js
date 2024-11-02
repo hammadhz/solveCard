@@ -3,14 +3,22 @@ import { Button } from "../form";
 import AddGroupContModal from "../modal/AddGroupContModal";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import EditGrpContact from "../modal/EditGrpContact";
+import { useSelector } from "react-redux";
 
 const GroupConTbl = () => {
+  const profileId = useSelector((state) => state.profile.profileId);
+
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenEditConModal, setIsOpenEditConModal] = useState(false);
   const [groups, setGroups] = useState([]);
   const [groupData, setGroupData] = useState({
     isEdit: false,
     isAdd: false,
-    id: "",
+    data: "",
+  });
+  const [editGrpConData, setEditGrpConData] = useState({
+    data: "",
   });
   const [loading, setLoading] = useState(false);
   const [change, setChange] = useState(false);
@@ -31,14 +39,13 @@ const GroupConTbl = () => {
     setLoading(true);
     try {
       const response = await axiosInstance.post("/groups", {
-        profile_id: "415",
+        profile_id: profileId,
       });
       if (response.status === 200) {
         setGroups(response.data.groups);
         setLoading(false);
       }
     } catch (error) {
-      console.log("error");
       setLoading(true);
       console.error(error?.response);
       toast.error(error.response.data.message, {
@@ -59,12 +66,13 @@ const GroupConTbl = () => {
     getGroups();
   }, [change]);
 
-  const editGroup = (id, isEdit) => {
+  const editGroup = (data, isEdit) => {
     setIsOpenModal(true);
     setGroupData((prev) => ({
       ...prev,
-      id: id,
+      data: data,
       isEdit: isEdit,
+      isAdd: false,
     }));
   };
 
@@ -76,7 +84,7 @@ const GroupConTbl = () => {
     try {
       const response = await axiosInstance.post("/removeGroup", {
         group_id: id,
-        profile_id: "415",
+        profile_id: profileId,
       });
       if (response.status === 200) {
         toast.success(response.data.message, {
@@ -105,6 +113,15 @@ const GroupConTbl = () => {
     }
   }
 
+  const handleEditGrpContact = (data) => {
+    setIsOpenEditConModal(true);
+    setEditGrpConData(data);
+  };
+
+  const closeEditGrpContactModal = () => {
+    setIsOpenEditConModal(!isOpenEditConModal);
+  };
+
   return (
     <div className="w-full min-h-[150px] bg-primary rounded-2xl p-6 mb-20">
       <div className="flex flex-col gap-4 w-full">
@@ -122,8 +139,15 @@ const GroupConTbl = () => {
           {isOpenModal && (
             <AddGroupContModal
               handleChange={handleChange}
-              data={groupData}
+              grpData={groupData}
               closeModal={closeAddContactModal}
+            />
+          )}
+          {isOpenEditConModal && (
+            <EditGrpContact
+              handleChange={handleChange}
+              grpData={editGrpConData}
+              closeModal={closeEditGrpContactModal}
             />
           )}
         </div>
@@ -184,16 +208,22 @@ const GroupConTbl = () => {
                               </td>
                               <td className="px-6 py-4">
                                 <div
-                                  onClick={() => editGroup(result.id, true)}
+                                  onClick={() => editGroup(result, true)}
                                   className="font-medium text-blue-600 cursor-pointer hover:underline"
                                 >
-                                  Edit
+                                  Edit Group
                                 </div>
                                 <div
                                   onClick={() => deleteGroup(result.id)}
                                   className="font-medium text-blue-600 cursor-pointer hover:underline"
                                 >
-                                  Delete
+                                  Delete Group
+                                </div>
+                                <div
+                                  onClick={() => handleEditGrpContact(result)}
+                                  className="font-medium text-blue-600 cursor-pointer hover:underline"
+                                >
+                                  Add Contact
                                 </div>
                               </td>
                             </tr>

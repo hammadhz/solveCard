@@ -7,8 +7,10 @@ import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
 import { base64ToBlob } from "../../utils/base64ToBlob";
 import { MdCancel } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const EditContactModal = ({ closeModal, editData, handleChange }) => {
+  const profileId = useSelector((state) => state.profile.profileId);
   const [profilePic, setProfilePic] = useState("");
   const [profilePicEdit, setProfilePicEdit] = useState({
     pic: "",
@@ -89,7 +91,7 @@ const EditContactModal = ({ closeModal, editData, handleChange }) => {
         website: data?.webiste,
         email: data?.email,
         photo: profileBlob,
-        profile_id: 415,
+        profile_id: profileId,
         contact_id: editData.data.id,
       };
       const response = await axiosInstance.post("/updatePhoneContact", body);
@@ -109,7 +111,6 @@ const EditContactModal = ({ closeModal, editData, handleChange }) => {
       }
     } catch (err) {
       setLoading(false);
-      console.log(err);
       toast.error(err.response.data.message, {
         position: "bottom-right",
         autoClose: 5000,

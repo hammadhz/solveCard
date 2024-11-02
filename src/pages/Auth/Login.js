@@ -53,17 +53,16 @@ const Login = () => {
         Cookies.set("token", response.data.token);
       }
     } catch (err) {
-      console.log(err);
-      // toast.error(err.response.data.message, {
-      //   position: "bottom-right",
-      //   autoClose: 5000,
-      //   hideProgressBar: true,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      // });
+      toast.error(err.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setLoading(false);
     }
   };

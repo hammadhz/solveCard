@@ -62,6 +62,7 @@ const Input = ({
   custom,
   name,
   value,
+  readOnly,
 }) => {
   return (
     <div className={`relative ${parentDivH}`}>
@@ -78,6 +79,7 @@ const Input = ({
           autoComplete="off"
           maxLength={maxLength}
           minLength={minLength}
+          readOnly={readOnly}
         />
       )}
       {custom && (

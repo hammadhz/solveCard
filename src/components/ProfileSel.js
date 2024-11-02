@@ -37,7 +37,6 @@ const ProfileSel = () => {
     setSelectedOption(option?.name);
     setIsOpen(false);
     let id = String(option?.id);
-    console.log(id);
     dispatch(profileIdSelect(id));
   };
 

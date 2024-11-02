@@ -1,5 +1,4 @@
 export const base64ToBlob = (base64, mimeType = "image/jpeg") => {
-  console.log(base64, "base64");
   // Split the base64 string to handle the data URL format
   const byteString = atob(base64.split(",")[1]); // Decode base64 string
   const arrayBuffer = new ArrayBuffer(byteString.length); // Create an ArrayBuffer

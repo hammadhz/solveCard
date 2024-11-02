@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "../../context/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [nextStep, setNextStep] = useState(0);
@@ -82,23 +83,28 @@ const Register = () => {
           password_confirmation: data?.password_confirmation,
         };
         setLoading(true);
-        console.log(body, "data");
         const response = await axiosInstance.post("/register", body);
         if (response.status === 200) {
           dispatch(registerUser(response?.data));
           navigate("/dashboard");
           setLoading(false);
         }
-        console.log(response?.data);
       } catch (error) {
         setLoading(false);
-        console.log(error.response?.data);
+        toast.error(error.response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       // }
     }
   };
-
-  console.log(errors, "error");
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);

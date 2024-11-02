@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { Button, Input } from "../form";
 import axiosInstance from "../../utils/axiosInstance";
@@ -6,8 +6,11 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
 import { base64ToBlob } from "../../utils/base64ToBlob";
+import { useSelector } from "react-redux";
 
 const AddContactModal = ({ closeModal, handleChange }) => {
+  const profileId = useSelector((state) => state.profile.profileId);
+
   const [profilePic, setProfilePic] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +44,6 @@ const AddContactModal = ({ closeModal, handleChange }) => {
         };
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
-        console.log(reader, "reader");
         reader.onloadend = () => {
           setProfilePic(reader.result);
         };
@@ -62,7 +64,7 @@ const AddContactModal = ({ closeModal, handleChange }) => {
       website: data?.webiste,
       email: data?.email,
       photo: profileBlob,
-      profile_id: 415,
+      profile_id: profileId,
     };
     try {
       const response = await axiosInstance.post("/addPhoneContact", body);
@@ -82,7 +84,6 @@ const AddContactModal = ({ closeModal, handleChange }) => {
         closeModal();
       }
     } catch (err) {
-      console.log(err);
       setLoading(false);
       toast.error(err.response.data.message, {
         position: "bottom-right",

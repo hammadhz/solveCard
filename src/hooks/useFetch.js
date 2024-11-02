@@ -7,8 +7,6 @@ function useFetch() {
   const [error, setError] = useState(null);
 
   async function api(method, url, data, options) {
-    console.log(options, "options");
-    console.log(data, "body");
     try {
       setLoading(true);
       const response = await axiosInstance({
