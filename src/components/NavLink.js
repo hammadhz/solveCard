@@ -63,6 +63,7 @@ const NavLink = ({
         NavLinkVariants({ intent, size, roundness }),
         classes
       )}
+      onClick={eventAction}
     >
       {iconLeft && <ReactSVG src={iconLeft} />}
       {content}

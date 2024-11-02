@@ -4,10 +4,9 @@ const profileSlice = createSlice({
   name: "profile",
   initialState: {
     sectionLnk: "about",
-    profileId: null,
-    profilePic: "",
-
-    coverPic: "",
+    profileId: "",
+    profileData: null,
+    profileViewData: null,
   },
   reducers: {
     sectionLink: (state, action) => {
@@ -22,6 +21,12 @@ const profileSlice = createSlice({
     profileIdSelect: (state, action) => {
       state.profileId = action.payload;
     },
+    setProfileData: (state, action) => {
+      state.profileData = action.payload;
+    },
+    setProfileviewData: (state, action) => {
+      state.profileViewData = action.payload;
+    },
   },
 });
 
@@ -34,5 +39,7 @@ export const {
   profilePicUpdate,
   profileCoverUpdate,
   profileIdSelect,
+  setProfileData,
+  setProfileviewData,
 } = profileSlice.actions;
 export default profileSlice.reducer;

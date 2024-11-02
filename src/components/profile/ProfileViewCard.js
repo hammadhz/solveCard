@@ -1,60 +1,131 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import avatar from "../../assets/svgs/avatar.svg";
 import { ReactSVG } from "react-svg";
-import { Button } from "../form";
-import { MdOutlineMail } from "react-icons/md";
-import { IoMdCall } from "react-icons/io";
 import { useSelector } from "react-redux";
 
 const ProfileViewCard = () => {
-  const profilePic = useSelector((state) => state.profile.profilePic);
-  const profileCover = useSelector((state) => state.profile.coverPic);
+  const userData = useSelector((state) => state.profile.profileViewData);
+  const [profilePicData, setProfilePicData] = useState({
+    url: "",
+    base64Str: "",
+  });
+
+  const [coverPicData, setCoverPicData] = useState({
+    url: "",
+    base64Str: "",
+  });
+
+  useEffect(() => {
+    if (userData?.photo) {
+      if (userData?.photo.startsWith("data:image/")) {
+        setProfilePicData((prev) => ({
+          ...prev,
+          base64Str: userData.photo,
+        }));
+      }
+      if (userData?.photo.startsWith("uploads/")) {
+        setProfilePicData((prev) => ({
+          ...prev,
+          url: userData.photo,
+        }));
+      }
+    }
+    if (userData?.cover_photo) {
+      if (userData?.cover_photo.startsWith("data:image/")) {
+        setCoverPicData((prev) => ({
+          ...prev,
+          base64Str: userData.cover_photo,
+        }));
+      }
+      if (userData?.cover_photo.startsWith("uploads/")) {
+        setCoverPicData((prev) => ({
+          ...prev,
+          url: userData.cover_photo,
+        }));
+      }
+    }
+  }, [userData]);
 
   return (
     <div className="space-y-4">
       {/* card  */}
       <div className="relative w-full rounded-3xl bg-white h-64 p-4 shadow-lg">
         <div className="space-y-10">
-          {profileCover ? (
-            <img
-              src={profileCover}
-              className="w-full h-32 rounded-3xl object-cover"
-              alt="cover-pic"
-            />
-          ) : (
-            <div className="w-full h-32 bg-primary rounded-3xl"></div>
+          {userData.cover_photo && (
+            <>
+              {coverPicData?.base64Str ? (
+                <img
+                  src={userData.cover_photo}
+                  className="w-full h-32 rounded-3xl object-cover"
+                  alt="cover-pic"
+                />
+              ) : coverPicData?.url ? (
+                <img
+                  src={`${process.env.REACT_APP_SERVER}${coverPicData.url}`}
+                  className="w-full h-32 rounded-3xl object-cover"
+                  alt="cover-pic"
+                />
+              ) : (
+                <div className="w-full h-32 bg-primary rounded-3xl"></div>
+              )}
+            </>
           )}
           <div className="absolute left-10 top-12 rounded-full size-20 bg-white flex justify-center items-center">
             <div className="  rounded-full size-[70px] bg-primary flex justify-center items-center">
-              {profilePic ? (
-                <img
-                  src={profilePic}
-                  className="rounded-full size-[70px] object-cover"
-                  alt="profile"
-                />
-              ) : (
-                <ReactSVG src={avatar} />
+              {userData?.photo && (
+                <>
+                  {profilePicData.base64Str ? (
+                    <img
+                      src={userData.photo}
+                      className="rounded-full size-[70px] object-cover"
+                      alt="profile"
+                    />
+                  ) : profilePicData?.url ? (
+                    <img
+                      src={`${process.env.REACT_APP_SERVER}${profilePicData.url}`}
+                      className="rounded-full size-[70px] object-cover"
+                      alt="profile"
+                    />
+                  ) : (
+                    <ReactSVG src={avatar} />
+                  )}
+                </>
               )}
             </div>
           </div>
           <div className="space-y-1">
-            <h1 className="font-inter text-base font-semibold">Hammad Azam</h1>
-            <p className="font-inter text-base font-medium">Sofe</p>
+            <h1 className="font-inter text-base font-semibold">
+              {userData?.name ? userData.name : "User"}
+            </h1>
+            <p className="font-inter text-base font-medium">
+              {userData?.job_title ? userData.job_title : "Engineer"}
+            </p>
           </div>
         </div>
       </div>
       {/* profile data */}
-      <div className="space-y-3">
-        <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
-          Name
+      {userData && (
+        <div className="space-y-3">
+          <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
+            {userData?.email}
+          </div>
+          <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
+            {userData?.dob}
+          </div>
+          <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
+            {userData?.phone}
+          </div>
+          <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
+            {userData?.company}
+          </div>
+          <div className="w-full p-3 h-24 bg-white rounded-xl flex justify-start items-start shadow-lg">
+            {userData?.address}
+          </div>
+          <div className="w-full h-24 p-3 bg-white rounded-xl flex justify-start items-start shadow-lg">
+            {userData?.bio}
+          </div>
         </div>
-        <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
-          Email
-        </div>
-        <div className="w-full p-3 bg-white rounded-xl flex justify-start items-center shadow-lg">
-          Phone
-        </div>
-      </div>
+      )}
       {/* <div
         className={`relative w-full rounded-t-3xl  border-t-2 border-r-2 border-l-2 border-black h-[490px] flex flex-col gap-[60px]`}
         style={{ background: `${selectedColor.bgColor}` }}

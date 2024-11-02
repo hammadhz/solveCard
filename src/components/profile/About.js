@@ -3,7 +3,7 @@ import { Button, Input, TextArea } from "../form";
 import { useForm } from "react-hook-form";
 import { RxAvatar } from "react-icons/rx";
 import { IoInformationCircleOutline } from "react-icons/io5";
-import { MdColorize, MdOutlinePhotoLibrary } from "react-icons/md";
+import { MdColorize, MdOutlinePhotoLibrary, MdCancel } from "react-icons/md";
 import { TiCancel } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,6 +11,7 @@ import {
   profilePicUpdate,
   resetColor,
   selectColor,
+  setProfileviewData,
 } from "../../context/slice/profileSlice";
 import ColorPicker from "react-pick-color";
 import axiosInstance from "../../utils/axiosInstance";
@@ -27,8 +28,12 @@ const About = () => {
   const profilePicInputRef = useRef(null);
   const coverPicInputRef = useRef(null);
   const { id } = useParams();
-  const userData = useSelector((state) => state.auth);
-
+  const userData = useSelector((state) => state.profile.profileData);
+  const [loading, setLoading] = useState(false);
+  const [picData, setPicData] = useState({
+    profilePic: "",
+    coverPic: "",
+  });
   const [userProfile, setUserProfile] = useState({
     name: "",
     email: "",
@@ -37,7 +42,7 @@ const About = () => {
     company: "",
     phone: "",
     user_direct: "",
-    role: "",
+    job_title: "",
     profilePic: "",
     coverPic: "",
     dob: "",
@@ -80,22 +85,27 @@ const About = () => {
   // }, []);
 
   useEffect(() => {
-    if (userData?.user) {
+    if (userData) {
       setUserProfile((prev) => ({
         ...prev,
-        name: userData.user.name ? userData.user.name : "",
-        email: userData.user.email ? userData.user.email : "",
-        bio: userData.user.bio ? userData.user.bio : "",
-        address: userData.user.address ? userData.user.address : "",
-        company: userData.user.company ? userData.user.company : "",
-        phone: userData.user.phone ? userData.user.phone : "",
-        user_direct: userData.user.user_direct ? userData.user.user_direct : "",
-        role: userData.user.work_position ? userData.user.work_position : "",
-        dob: userData.user.dob ? userData.user.dob : "",
-        gender: userData.user.gender ? userData.user.gender : "",
+        name: userData.name ? userData.name : "",
+        email: userData.email ? userData.email : "",
+        bio: userData.bio ? userData.bio : "",
+        address: userData.address ? userData.address : "",
+        company: userData.company ? userData.company : "",
+        phone: userData.phone ? userData.phone : "",
+        user_direct: userData.user_direct ? userData.user_direct : "",
+        job_title: userData.job_title ? userData.job_title : "",
+        dob: userData.dob ? userData.dob : "",
+        gender: userData.gender ? userData.gender : "",
+      }));
+      setPicData((prev) => ({
+        ...prev,
+        profilePic: userData.photo ? userData.photo : "",
+        coverPic: userData.cover_photo ? userData.cover_photo : "",
       }));
     }
-  }, [userData?.user]);
+  }, [userData]);
 
   const handleProfilePic = () => {
     profilePicInputRef.current.click();
@@ -129,7 +139,6 @@ const About = () => {
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
         reader.onloadend = () => {
-          dispatch(profilePicUpdate(reader.result));
           setBlobCon((prev) => ({
             ...prev,
             profilePic: base64ToBlob(reader.result),
@@ -180,7 +189,6 @@ const About = () => {
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
         reader.onloadend = () => {
-          dispatch(profileCoverUpdate(reader.result));
           setBlobCon((prev) => ({
             ...prev,
             coverPic: base64ToBlob(reader.result),
@@ -215,17 +223,166 @@ const About = () => {
       cover_photo: blobCon.coverPic,
       photo: blobCon.profilePic,
       address: userProfile.address,
-      job_title: userProfile.role,
+      job_title: userProfile.job_title,
       company: userProfile.company,
       phone: userProfile.phone,
       branding_color: "#d5d5d5",
       profile_id: id,
       email: userProfile.email,
     };
-    try {
-      const response = await axiosInstance.post("/updateProfile", body);
-      if (response.status === 200) {
-        toast.success(response.data.message, {
+    setLoading(true);
+    const {
+      address,
+      bio,
+      company,
+      coverPic,
+      dob,
+      email,
+      gender,
+      job_title,
+      name,
+      phone,
+      profilePic,
+    } = userProfile;
+    if (name === "") {
+      toast.error("Please, enter your name", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (email === "") {
+      toast.error("Please, enter your email", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (dob === "") {
+      toast.error("Please, enter your dob", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (company === "") {
+      toast.error("Please, enter company name", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (gender === "") {
+      toast.error("Please, select your geneder", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (bio === "") {
+      toast.error("Please, enter your bio", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (phone === "") {
+      toast.error("Please, enter your phone", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (address === "") {
+      toast.error("Please, enter your address", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (job_title === "") {
+      toast.error("Please, enter your job title", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      try {
+        const response = await axiosInstance.post("/updateProfile", body);
+        if (response.status === 200) {
+          setLoading(false);
+          dispatch(
+            setProfileviewData({
+              bio: userProfile.bio,
+              gender: userProfile.gender,
+              dob: userProfile.dob,
+              name: userProfile.name,
+              cover_photo: userProfile.coverPic
+                ? userProfile.coverPic
+                : picData.coverPic,
+              photo: userProfile.profilePic
+                ? userProfile.profilePic
+                : picData.profilePic,
+              address: userProfile.address,
+              job_title: userProfile.job_title,
+              company: userProfile.company,
+              phone: userProfile.phone,
+              profile_id: id,
+              email: userProfile.email,
+            })
+          );
+          toast.success(response.data.message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+        toast.error(error.response.data.message, {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -236,18 +393,6 @@ const About = () => {
           theme: "light",
         });
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     }
   };
 
@@ -262,6 +407,34 @@ const About = () => {
     setUserProfile((prev) => ({
       ...prev,
       [e.target.name]: Number(e.target.checked),
+    }));
+  };
+
+  const rmProfilePicData = () => {
+    setPicData((prev) => ({
+      ...prev,
+      profilePic: "",
+    }));
+  };
+
+  const rmCoverPicData = () => {
+    setPicData((prev) => ({
+      ...prev,
+      coverPic: "",
+    }));
+  };
+
+  const rmProfilePic = () => {
+    setUserProfile((prev) => ({
+      ...prev,
+      profilePic: "",
+    }));
+  };
+
+  const rmCoverPic = () => {
+    setUserProfile((prev) => ({
+      ...prev,
+      coverPic: "",
     }));
   };
 
@@ -395,18 +568,34 @@ const About = () => {
                   title="Maximum size: 2MB"
                 />
               </div>
-
+              {userData.photo && picData.profilePic && (
+                <div className="h-full w-full relative">
+                  <img
+                    src={`${process.env.REACT_APP_SERVER}${picData.profilePic}`}
+                    className="size-28 rounded-full object-cover"
+                    alt="profile_pic"
+                  />
+                  <MdCancel
+                    className="absolute top-5 right-4 text-white cursor-pointer"
+                    onClick={rmProfilePicData}
+                  />
+                </div>
+              )}
               {/* Profile Picture Upload Area */}
               {userProfile.profilePic && (
-                <div className="size-full rounded-full">
+                <div className="size-full rounded-full relative">
                   <img
                     src={userProfile.profilePic}
                     className="rounded-full size-28 object-cover"
                     alt=""
                   />
+                  <MdCancel
+                    className="absolute top-5 right-4 text-white cursor-pointer"
+                    onClick={rmProfilePic}
+                  />
                 </div>
               )}
-              {!userProfile.profilePic && (
+              {!picData.profilePic && !userProfile.profilePic && (
                 <div
                   onClick={handleProfilePic}
                   className="flex justify-center items-center rounded-full w-28 h-28 border border-dashed border-gray-400 bg-white hover:bg-gray-100 transition-all cursor-pointer"
@@ -440,18 +629,34 @@ const About = () => {
                   title="Maximum size: 5MB"
                 />
               </div>
-
+              {userData.cover_photo && picData.coverPic && (
+                <div className="h-full w-full relative">
+                  <img
+                    src={`${process.env.REACT_APP_SERVER}${picData.coverPic}`}
+                    className="h-28 w-64 rounded-lg object-cover"
+                    alt="cover_pic"
+                  />
+                  <MdCancel
+                    className="absolute top-0 right-0 text-white cursor-pointer"
+                    onClick={rmCoverPicData}
+                  />
+                </div>
+              )}
               {/* Cover Photo Upload Area */}
               {userProfile.coverPic && (
-                <div className="h-full w-full">
+                <div className="h-full w-full relative">
                   <img
                     src={userProfile.coverPic}
                     className="h-28 w-64 rounded-lg object-cover"
                     alt="cover_pic"
                   />
+                  <MdCancel
+                    className="absolute top-0 right-0 text-white cursor-pointer"
+                    onClick={rmCoverPic}
+                  />
                 </div>
               )}
-              {!userProfile.coverPic && (
+              {!picData.coverPic && !userProfile.coverPic && (
                 <div
                   onClick={handleCoverPhoto}
                   className="flex items-center justify-center rounded-lg h-28 w-64 border border-dashed border-gray-400 bg-white hover:bg-gray-100 transition-all cursor-pointer"
@@ -531,21 +736,22 @@ const About = () => {
           <div className="flex space-x-4">
             <div className="w-full">
               <label
-                htmlFor="role"
+                htmlFor="job_title"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Role
+                Job Title
               </label>
               <Input
                 type={"text"}
-                name={"role"}
+                name={"job_title"}
                 intent={"primary"}
-                id={"role"}
+                id={"job_title"}
                 size={"md"}
                 classes={"w-full block p-2.5 "}
                 roundness={"round-sm"}
-                placeholder={"Role"}
+                placeholder={"Job Title"}
                 custom={"custom"}
+                value={userProfile.job_title}
                 eventAction={handleChange}
               />
               {/* <input
@@ -885,14 +1091,15 @@ const About = () => {
               size={"lg"}
               roundness={"round"}
               classes={"!bg-black !text-white"}
+              loading={loading}
             />
-            <Button
+            {/* <Button
               intent={"secondary"}
               children={"Cancel"}
               size={"lg"}
               roundness={"round"}
               classes={"!bg-black !text-white"}
-            />
+            /> */}
           </div>
         </form>
         {/* <footer className=" p-4 w-full  bg-white flex justify-end items-center gap-4">

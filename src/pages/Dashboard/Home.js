@@ -51,7 +51,7 @@ const Home = () => {
           <>
             {" "}
             {profile?.map((result) => {
-              return <ProfileCard key={result?.id} {...result} />;
+              return <ProfileCard {...result} />;
             })}{" "}
           </>
         )}

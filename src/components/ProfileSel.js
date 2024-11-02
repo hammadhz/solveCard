@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { profileIdSelect } from "../context/slice/profileSlice";
+import { toast } from "react-toastify";
 
 const ProfileSel = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +16,16 @@ const ProfileSel = () => {
       const response = await axiosInstance.get("/profiles");
       setProfile(response.data.data);
     } catch (error) {
-      console.error(error);
+      toast.error(error.response.data.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -26,7 +36,9 @@ const ProfileSel = () => {
   const handleSelect = (option) => {
     setSelectedOption(option?.name);
     setIsOpen(false);
-    dispatch(profileIdSelect(option?.id));
+    let id = String(option?.id);
+    console.log(id);
+    dispatch(profileIdSelect(id));
   };
 
   return (
