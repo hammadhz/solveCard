@@ -84,21 +84,21 @@ const Login = () => {
           <div className="flex-1">
             <div className="flex gap-3 flex-col">
               <div className="flex flex-col gap-1">
-                <h1 className="text-black font-inter font-bold text-2xl">
+                <h1 className="text-black font-inter font-bold text-xl">
                   Login
                 </h1>
                 <span className="font-inter text-sm font-medium text-black">
                   Login your company on app
                 </span>
               </div>
-              <div className="w-full rounded-lg flex justify-center gap-3 items-center bg-primary p-3">
-                <FcGoogle className="size-5" />{" "}
-                <p className="font-inter font-normal text-sm text-black">
-                  Continue with Google
-                </p>
-              </div>
+              {/*<div className="w-full rounded-lg flex justify-center gap-3 items-center bg-primary p-3">*/}
+              {/*  <FcGoogle className="size-5" />{" "}*/}
+              {/*  <p className="font-inter font-normal text-sm text-black">*/}
+              {/*    Continue with Google*/}
+              {/*  </p>*/}
+              {/*</div>*/}
               <form
-                className="flex flex-col gap-3"
+                className="flex flex-col gap-1"
                 onSubmit={handleSubmit(loginSubmit)}
               >
                 <div className="flex flex-col gap-2">

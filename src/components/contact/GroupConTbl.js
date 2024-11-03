@@ -201,14 +201,18 @@ const GroupConTbl = () => {
                             >
                               <td className="px-6 py-4">{result.title}</td>
                               <td className="px-6 py-4">
-                                {result.total_contacts}
+                                <div className="bg-secondary px-4 py-1 rounded-full w-max text-white">
+                                  {result.total_contacts}
+                                </div>
                               </td>
                               <td className="px-6 py-4">
-                                {result.total_members}
+                                <div className="bg-secondary px-4 py-1 rounded-full w-max text-white">
+                                  {result.total_members}
+                                </div>
                               </td>
                               <td className="px-6 py-4">
                                 <div
-                                  onClick={() => editGroup(result, true)}
+                                    onClick={() => editGroup(result, true)}
                                   className="font-medium text-blue-600 cursor-pointer hover:underline"
                                 >
                                   Edit Group

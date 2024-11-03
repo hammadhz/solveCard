@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProfileData } from "../../context/slice/profileSlice";
 
 const ProfileCard = (result) => {
+  console.log("result", result);
   const profileId = useSelector((state) => state.profile.profileId);
   const dispatch = useDispatch();
   const profileDataDispatch = (data) => {
@@ -23,10 +24,18 @@ const ProfileCard = (result) => {
           : ""
       }`}
     >
-      <div className="bg-tertiary-gray-700 rounded-t-2xl w-full h-32"></div>
+      <div className="bg-tertiary-gray-700 rounded-t-2xl w-full h-32">
+      {result.cover_photo && (
+          <img
+              src={`${process.env.REACT_APP_SERVER}${result.cover_photo}`}
+              className="w-full h-32 rounded-t-2xl object-contain"
+              alt="cover_photo"
+          />
+      )}
+      </div>
       {result.photo && (
-        <img
-          src={`${process.env.REACT_APP_SERVER}${result.photo}`}
+          <img
+              src={`${process.env.REACT_APP_SERVER}${result.photo}`}
           className="size-20 rounded-full border border-secondary object-cover flex justify-center items-center z-40 absolute top-24 left-1/2 transform -translate-x-1/2"
           alt="profile"
         />

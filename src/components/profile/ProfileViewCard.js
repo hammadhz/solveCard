@@ -51,11 +51,11 @@ const ProfileViewCard = () => {
       {/* card  */}
       <div className="relative w-full rounded-3xl bg-white h-64 p-4 shadow-lg">
         <div className="space-y-10">
-          {userData.cover_photo && (
+          {userData?.cover_photo && (
             <>
               {coverPicData?.base64Str ? (
                 <img
-                  src={userData.cover_photo}
+                  src={userData?.cover_photo}
                   className="w-full h-32 rounded-3xl object-cover"
                   alt="cover-pic"
                 />

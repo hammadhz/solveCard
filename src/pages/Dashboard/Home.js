@@ -15,6 +15,7 @@ const Home = () => {
     try {
       const response = await axiosInstance.get("/profiles");
       if (response.status === 200) {
+        console.log(response.data?.data);
         setProfile(response.data?.data);
         setLoading(false);
       }

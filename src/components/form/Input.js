@@ -19,7 +19,7 @@ const InputVariants = cva(
       size: {
         sm: ["text-sm", "py-3", "px-3", "w-[450px]"],
         md: ["text-base", "py-3", "px-3"],
-        lg: ["text-base", "py-3", "px-3"],
+        lg: ["text-base", "py-2", "px-3"],
       },
 
       /* button roundness */

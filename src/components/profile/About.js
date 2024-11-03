@@ -59,7 +59,7 @@ const About = () => {
   const { register } = useForm();
 
   const handleSelectColor = (color) => {
-    dispatch(selectColor(color));
+    // dispatch(selectColor(color));
   };
 
   // const handleLinkSelectColor = (color) => {
@@ -86,6 +86,7 @@ const About = () => {
 
   useEffect(() => {
     if (userData) {
+      console.log("userData", userData);
       setUserProfile((prev) => ({
         ...prev,
         name: userData.name ? userData.name : "",
@@ -94,7 +95,8 @@ const About = () => {
         address: userData.address ? userData.address : "",
         company: userData.company ? userData.company : "",
         phone: userData.phone ? userData.phone : "",
-        user_direct: userData.user_direct ? userData.user_direct : "",
+        user_direct: userData.user_direct ? userData.user_direct : 0,
+        private: userData.private ? userData.private : 0,
         job_title: userData.job_title ? userData.job_title : "",
         dob: userData.dob ? userData.dob : "",
         gender: userData.gender ? userData.gender : "",
@@ -213,9 +215,52 @@ const About = () => {
     // reader.readAsDataURL(file);
   };
 
+  const ProfileBlobConverter = () => {
+    const reader = new FileReader();
+    reader.readAsDataURL(profilePicInputRef.current.files[0]);
+    reader.onloadend = () => {
+      setBlobCon((prev) => ({
+        ...prev,
+        profilePic: base64ToBlob(reader.result),
+      }));
+      setUserProfile((prev) => ({
+        ...prev,
+        profilePic: reader.result,
+      }));
+    };
+  }
+
+  const CoverBlobConverter = () => {
+    const reader = new FileReader();
+    reader.readAsDataURL(coverPicInputRef.current.files[0]);
+    reader.onloadend = () => {
+      setBlobCon((prev) => ({
+        ...prev,
+        coverPic: base64ToBlob(reader.result),
+      }));
+      setUserProfile((prev) => ({
+        ...prev,
+        coverPic: reader.result,
+      }));
+    };
+  }
+
   const submitUpdateProfile = async (e) => {
     e.preventDefault();
-    const body = {
+    console.log(userProfile, "userProfile");
+    console.log(blobCon.coverPic, "coverPic");
+    console.log(blobCon.profilePic, "profilePic");
+
+    // if (blobCon.coverPic){
+    //     await CoverBlobConverter();
+    // }
+    //
+    // if (blobCon.profilePic){
+    //     await ProfileBlobConverter();
+    // }
+
+    // debugger;
+    let body = {
       bio: userProfile.bio,
       gender: userProfile.gender,
       dob: userProfile.dob,
@@ -230,6 +275,16 @@ const About = () => {
       profile_id: id,
       email: userProfile.email,
     };
+
+    if (!blobCon.coverPic){
+        delete body.cover_photo;
+    }
+
+    if (!blobCon.profilePic){
+        delete body.photo;
+    }
+
+    // debugger;
     setLoading(true);
     const {
       address,
@@ -289,7 +344,7 @@ const About = () => {
         theme: "light",
       });
     } else if (gender === "") {
-      toast.error("Please, select your geneder", {
+      toast.error("Please, select your gender", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -347,6 +402,16 @@ const About = () => {
       try {
         const response = await axiosInstance.post("/updateProfile", body);
         if (response.status === 200) {
+          if (userData.user_direct !== userProfile.user_direct) {
+            await axiosInstance.post("/profileDirect", {
+              profile_id: id,
+            });
+          }
+          if (userData.private !== userProfile.private) {
+            await axiosInstance.post("/privateProfile", {
+              profile_id: id,
+            });
+          }
           setLoading(false);
           dispatch(
             setProfileviewData({
@@ -379,6 +444,7 @@ const About = () => {
             theme: "light",
           });
         }
+
       } catch (error) {
         setLoading(false);
         toast.error(error.response.data.message, {
@@ -567,7 +633,7 @@ const About = () => {
                   title="Maximum size: 2MB"
                 />
               </div>
-              {userData.photo && picData.profilePic && (
+              {userData?.photo && picData?.profilePic && (
                 <div className="h-full w-full relative">
                   <img
                     src={`${process.env.REACT_APP_SERVER}${picData.profilePic}`}
@@ -628,10 +694,10 @@ const About = () => {
                   title="Maximum size: 5MB"
                 />
               </div>
-              {userData.cover_photo && picData.coverPic && (
+              {userData?.cover_photo && picData?.coverPic && (
                 <div className="h-full w-full relative">
                   <img
-                    src={`${process.env.REACT_APP_SERVER}${picData.coverPic}`}
+                    src={`${process.env.REACT_APP_SERVER}${picData?.coverPic}`}
                     className="h-28 w-64 rounded-lg object-cover"
                     alt="cover_pic"
                   />
@@ -642,10 +708,10 @@ const About = () => {
                 </div>
               )}
               {/* Cover Photo Upload Area */}
-              {userProfile.coverPic && (
+              {userProfile?.coverPic && (
                 <div className="h-full w-full relative">
                   <img
-                    src={userProfile.coverPic}
+                    src={userProfile?.coverPic}
                     className="h-28 w-64 rounded-lg object-cover"
                     alt="cover_pic"
                   />
@@ -1053,7 +1119,14 @@ const About = () => {
               </label>
               <div>
                 <label className="inline-flex items-center cursor-pointer">
-                  <input type="checkbox" value="" className="sr-only peer" />
+                  <input
+                      type="checkbox"
+                      name="private"
+                      value={userProfile.private}
+                      checked={userProfile.private}
+                      className="sr-only peer"
+                      onChange={handleCheckChange}
+                  />
                   <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
                 </label>
               </div>
@@ -1074,6 +1147,7 @@ const About = () => {
                     type="checkbox"
                     name="user_direct"
                     value={userProfile.user_direct}
+                    checked={userProfile.user_direct}
                     className="sr-only peer"
                     onChange={handleCheckChange}
                   />

@@ -143,7 +143,7 @@ const ContactTbl = () => {
                   </th>
 
                   <th scope="col" className="px-6 py-3">
-                    Job Title
+                    Email
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Phone
@@ -192,12 +192,9 @@ const ContactTbl = () => {
                                   <div className="text-base font-semibold">
                                     {result?.first_name} {result?.last_name}
                                   </div>
-                                  <div className="font-normal text-gray-500">
-                                    {result.email}
-                                  </div>
                                 </div>
                               </td>
-                              <td className="px-6 py-4">{result.job_title}</td>
+                              <td className="px-6 py-4">{result.email}</td>
                               <td className="px-6 py-4">{result?.phone}</td>
                               <td className="px-6 py-4">
                                 <p

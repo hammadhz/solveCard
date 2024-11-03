@@ -126,7 +126,7 @@ const Register = () => {
         <div className="flex items-center gap-4">
           <div className="flex-1">
             <div className="flex flex-col gap-1 mb-8">
-              <h1 className="text-black font-inter font-bold text-2xl">
+              <h1 className="text-black font-inter font-bold text-xl">
                 Register
               </h1>
               <span className="font-inter text-sm font-medium text-black">

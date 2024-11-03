@@ -15,6 +15,7 @@ const ProfileSel = () => {
     try {
       const response = await axiosInstance.get("/profiles");
       setProfile(response.data.data);
+      handleSelect(response.data.data[0]);
     } catch (error) {
       toast.error(error.response.data.message, {
         position: "bottom-right",
@@ -46,7 +47,7 @@ const ProfileSel = () => {
         className={`w-full px-5 py-3 font-inter font-normal text-base bg-primary rounded-3xl outline-none cursor-pointer`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedOption || "Select an option"}
+        {selectedOption || "Select default profile"}
       </div>
 
       {isOpen && (
