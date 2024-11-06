@@ -22,7 +22,7 @@ const Sidebar = ({
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
     >
-      <div className="h-full px-3 py-8  bg-gradient-to-br from-tertiary-green-30 to-tertiary-green-50">
+      <div className="h-full px-3 py-8  bg-gradient-to-br from-tertiary-green-60 to-tertiary-green-65">
         <div className="flex flex-col gap-3 items-center">
           <ReactSVG src={logo} className={""} />
 
