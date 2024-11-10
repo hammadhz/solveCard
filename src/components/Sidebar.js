@@ -16,7 +16,7 @@ const Sidebar = ({
   return (
     <aside
       ref={sidebarRef}
-      className={`fixed top-0 left-0 z-40 h-screen transition-all duration-300 ${
+      className={`fixed top-0 left-0 z-40 lg:block md:block hidden h-screen transition-all duration-300 ${
         isHovered ? "w-60" : "w-24"
       }`}
       onMouseOver={handleMouseOver}

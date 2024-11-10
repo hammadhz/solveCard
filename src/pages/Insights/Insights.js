@@ -47,7 +47,7 @@ const Insights = () => {
 
   return (
     <section className="">
-      <div className="grid grid-cols-4  gap-6">
+      <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-1 gap-6">
         {loading ? (
           <>
             {[1, 2, 3].map((id) => (
@@ -85,13 +85,13 @@ const Insights = () => {
           </div>
         </div>
 
-        <div className="rounded-2xl h-[500px] w-full p-4 bg-primary col-span-3 row-span-6 ">
+        <div className="rounded-2xl lg:h-[500px] md:h-[370px] sm:h-[370px]  w-full p-4 bg-primary lg:col-span-3 lg:row-span-6 md:col-span-3 md:row-span-6">
           <div className="flex flex-col items-start justify-start gap-3">
             <p className="font-inter font-semibold text-lg">Recent Activity</p>
             <LineChart />
           </div>
         </div>
-        <div className="rounded-2xl h-56 w-full p-4 bg-primary  row-span-2">
+        <div className="rounded-2xl h-56 w-full p-4 bg-primary  lg:row-span-2 md:row-span-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center  gap-2">
               <p className="font-inter font-semibold text-lg">
@@ -99,8 +99,8 @@ const Insights = () => {
               </p>
               <IoInformationCircleOutline className="size-5" title="test" />
             </div>
-            <div className="font-inter font-medium text-2xl">0</div>
           </div>
+          <div className="font-inter font-medium text-2xl">0</div>
         </div>
       </div>
     </section>

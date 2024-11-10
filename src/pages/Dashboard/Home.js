@@ -39,7 +39,7 @@ const Home = () => {
   }, []);
 
   return (
-    <section className="">
+    <section className="overflow-y-auto">
       <div className="mb-8">
         <h1 className="font-inter font-bold text-2xl">
           Welcome Back, {userData?.user?.name} 👋
