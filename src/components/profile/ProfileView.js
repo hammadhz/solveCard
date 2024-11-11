@@ -4,7 +4,7 @@ import ProfileViewCard from "./ProfileViewCard";
 const ProfileView = () => {
   return (
     <section
-      className=" flex justify-center w-80 overflow-y-auto"
+      className=" flex justify-center lg:mx-0 mx-auto lg:w-80 md:w-80 w-full overflow-y-auto"
       id="profileView"
     >
       <div className="w-full px-6 pt-8">

@@ -228,7 +228,7 @@ const About = () => {
         profilePic: reader.result,
       }));
     };
-  }
+  };
 
   const CoverBlobConverter = () => {
     const reader = new FileReader();
@@ -243,7 +243,7 @@ const About = () => {
         coverPic: reader.result,
       }));
     };
-  }
+  };
 
   const submitUpdateProfile = async (e) => {
     e.preventDefault();
@@ -276,12 +276,12 @@ const About = () => {
       email: userProfile.email,
     };
 
-    if (!blobCon.coverPic){
-        delete body.cover_photo;
+    if (!blobCon.coverPic) {
+      delete body.cover_photo;
     }
 
-    if (!blobCon.profilePic){
-        delete body.photo;
+    if (!blobCon.profilePic) {
+      delete body.photo;
     }
 
     // debugger;
@@ -444,7 +444,6 @@ const About = () => {
             theme: "light",
           });
         }
-
       } catch (error) {
         setLoading(false);
         toast.error(error.response.data.message, {
@@ -526,8 +525,8 @@ const About = () => {
   // };
 
   return (
-    <section className="h-full flex justify-center grow bg-primary border-r-2 border-r-white">
-      <div className="h-full flex flex-col w-full p-8 rounded-lg bg-white">
+    <section className="h-full flex justify-center grow bg-primary rounded-xl">
+      <div className="h-full flex flex-col w-full lg:p-8 md:p-8 py-8 px-6 rounded-lg bg-white">
         <header className="text-start w-full z-40 mb-8">
           <h1 className="font-inter font-bold text-2xl">About</h1>
         </header>
@@ -559,7 +558,7 @@ const About = () => {
             </div>
           </div> */}
 
-          <div className="flex space-x-4">
+          <div className="flex lg:flex-row md:flex-row flex-col  lg:space-x-4 md:space-x-4 space-y-4">
             <div className="w-full">
               <label
                 htmlFor="first-name"
@@ -620,7 +619,7 @@ const About = () => {
             </div>
           </div>
 
-          <div className="flex justify-around gap-6 py-4">
+          <div className="flex lg:flex-row md:flex-row flex-col lg:justify-around md:justify-around  items-center gap-6 py-4">
             {/* Profile Picture Section */}
             <div className="flex flex-col gap-4 items-center">
               {/* Title with Information Icon */}
@@ -634,7 +633,7 @@ const About = () => {
                 />
               </div>
               {userData?.photo && picData?.profilePic && (
-                <div className="h-full w-full relative">
+                <div className="h-full w-full  relative">
                   <img
                     src={`${process.env.REACT_APP_SERVER}${picData.profilePic}`}
                     className="size-28 rounded-full object-cover"
@@ -798,7 +797,7 @@ const About = () => {
             </div>
           </div> */}
 
-          <div className="flex space-x-4">
+          <div className="flex lg:flex-row md:flex-row flex-col  lg:space-x-4 md:space-x-4 space-y-4">
             <div className="w-full">
               <label
                 htmlFor="job_title"
@@ -858,7 +857,7 @@ const About = () => {
                   /> */}
             </div>
           </div>
-          <div className="flex space-x-4">
+          <div className="flex lg:flex-row md:flex-row flex-col  lg:space-x-4 md:space-x-4 space-y-4">
             <div className="w-full">
               <label
                 htmlFor="dob"
@@ -970,10 +969,10 @@ const About = () => {
             >
               Choose Theme:
             </label>
-            <div className="w-full bg-primary min-h-16 rounded-lg p-2">
+            <div className="w-full bg-primary min-h-16 rounded-lg py-2 px-3">
               <div className="flex flex-col gap-4">
                 {/* card theme */}
-                <div className="w-full rounded-lg flex items-center justify-between bg-white border border-primary p-4">
+                <div className="w-full rounded-lg flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 items-center justify-between bg-white border border-primary p-4">
                   <label
                     htmlFor=""
                     className="block text-sm font-inter font-medium text-gray-900 "
@@ -1120,12 +1119,12 @@ const About = () => {
               <div>
                 <label className="inline-flex items-center cursor-pointer">
                   <input
-                      type="checkbox"
-                      name="private"
-                      value={userProfile.private}
-                      checked={userProfile.private}
-                      className="sr-only peer"
-                      onChange={handleCheckChange}
+                    type="checkbox"
+                    name="private"
+                    value={userProfile.private}
+                    checked={userProfile.private}
+                    className="sr-only peer"
+                    onChange={handleCheckChange}
                   />
                   <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
                 </label>

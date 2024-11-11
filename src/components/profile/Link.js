@@ -139,7 +139,7 @@ const Link = () => {
         )}
         {/* Content Area */}
         <div
-          className="h-[520px] overflow-y-auto flex flex-col gap-4 w-full"
+          className="lg:h-[520px] md:h-[420px] h-[320px] overflow-y-auto flex flex-col gap-4 w-full"
           id="linksSection"
         >
           {/* Display Existing Links */}

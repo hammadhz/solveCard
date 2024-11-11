@@ -15,7 +15,7 @@ const ProfileNav = () => {
 
   return (
     <nav
-      className="h-full flex justify-center w-56 px-2 overflow-y-auto border-r-2 border-r-gray-200 bg-gray-50"
+      className="h-full flex justify-center w-56 px-2 overflow-y-auto rounded-xl bg-white"
       id="profileNav"
     >
       <div className="flex flex-col gap-8 items-start py-6 w-full">
