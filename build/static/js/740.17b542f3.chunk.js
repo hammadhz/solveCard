@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksolve_card=self.webpackChunksolve_card||[]).push([[740],{6740:(s,e,c)=>{c.r(e),c.d(e,{default:()=>r});c(5043);var a=c(9816),l=c(579);const r=()=>(0,l.jsx)("div",{className:"min-h-screen",children:(0,l.jsx)(a.IM,{})})}}]);
+//# sourceMappingURL=740.17b542f3.chunk.js.map
