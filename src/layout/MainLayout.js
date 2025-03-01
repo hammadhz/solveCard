@@ -27,11 +27,11 @@ const MainLayout = () => {
   };
 
   return (
-    <div className="">
+    <div className="flex flex-row">
       <Sidebar
-        handleMouseOut={handleMouseOut}
-        handleMouseOver={handleMouseOver}
-        isHovered={isHovered}
+        // handleMouseOut={handleMouseOut}
+        // handleMouseOver={handleMouseOver}
+        // isHovered={isHovered}
         sidebarRef={sidebarRef}
       />
       <MobNav
@@ -40,9 +40,7 @@ const MainLayout = () => {
         handleClose={handleClose}
       />
       <div
-        className={`p-4 bg-white min-h-screen ${
-          isHovered ? "sm:ml-64" : "md:ml-32"
-        }`}
+        className={`p-4 bg-white min-h-screen w-full ml-0 lg:ml-52`}
       >
         <Header isMobNavOpen={isMobNavOpen} handleMobNav={handleMobNav} />
         <Outlet />

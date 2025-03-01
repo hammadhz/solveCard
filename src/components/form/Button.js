@@ -51,6 +51,7 @@ const Button = ({
   children,
   eventAction,
   type,
+  style,
   iconLeft,
   iconRight,
   classes,
@@ -58,6 +59,7 @@ const Button = ({
 }) => {
   return (
     <button
+      style={style}
       type={type}
       className={classNames(
         ButtonVariants({ intent, size, roundness }),

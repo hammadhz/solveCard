@@ -194,8 +194,8 @@ const Link = () => {
                               <div className="flex items-center gap-4">
                                 <img
                                   src={`${process.env.REACT_APP_SERVER}${data?.icon}`}
-                                  className="size-5"
-                                  alt="social_logo"
+                                  className="size-5 text-center"
+                                  alt={data?.title[0]}
                                 />
                                 {/* <AiOutlineMail className="text-2xl text-gray-600" /> */}
                                 <p className="text-base font-inter font-medium text-gray-900">

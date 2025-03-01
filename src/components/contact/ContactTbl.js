@@ -135,8 +135,8 @@ const ContactTbl = () => {
         </div>
         <div className="w-full min-h-[150px]  bg-white rounded-xl">
           <div className="w-full h-full  overflow-auto p-3">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     User
@@ -155,10 +155,10 @@ const ContactTbl = () => {
               </thead>
               <tbody>
                 {loading ? (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <tr className="bg-white border-b">
                     <td
                       colSpan={4}
-                      className="py-3 text-center text-gray-500 dark:text-gray-400"
+                      className="py-3 text-center text-gray-500"
                     >
                       Loading....
                     </td>
@@ -166,10 +166,10 @@ const ContactTbl = () => {
                 ) : (
                   <>
                     {contacts.length === 0 ? (
-                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <tr className="bg-white border-b">
                         <td
                           colSpan={4}
-                          className="py-3 text-center text-gray-500 dark:text-gray-400"
+                          className="py-3 text-center text-gray-500"
                         >
                           No Contacts
                         </td>
@@ -180,9 +180,9 @@ const ContactTbl = () => {
                           return (
                             <tr
                               key={result.id}
-                              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                              className="bg-white border-b hover:bg-gray-50"
                             >
-                              <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                              <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
                                 <img
                                   className="w-10 h-10 rounded-full"
                                   src={`${process.env.REACT_APP_SERVER}${result.photo}`}
@@ -199,13 +199,13 @@ const ContactTbl = () => {
                               <td className="px-6 py-4">
                                 <p
                                   onClick={() => handleEditContact(result)}
-                                  className="font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline"
+                                  className="font-medium cursor-pointer text-blue-600 hover:underline"
                                 >
                                   Edit
                                 </p>
                                 <p
                                   onClick={() => deleteContact(result.id)}
-                                  className="font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline"
+                                  className="font-medium cursor-pointer text-blue-600 hover:underline"
                                 >
                                   Delete
                                 </p>

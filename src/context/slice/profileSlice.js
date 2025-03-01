@@ -7,6 +7,9 @@ const profileSlice = createSlice({
     profileId: "",
     profileData: null,
     profileViewData: null,
+    themeColor: "#FFFFFF",
+    textColor: "#000000",
+    platforms: [],
   },
   reducers: {
     sectionLink: (state, action) => {
@@ -24,22 +27,41 @@ const profileSlice = createSlice({
     setProfileData: (state, action) => {
       state.profileData = action.payload;
     },
-    setProfileviewData: (state, action) => {
+    setProfileViewData: (state, action) => {
       state.profileViewData = action.payload;
     },
+    setThemeColor: (state, action) => {
+      state.themeColor = action.payload;
+    },
+    setTextColor: (state, action) => {
+      state.textColor = action.payload;
+    },
+    setPlatform: (state, action) => {
+      state.platforms = action.payload;
+    },
+    pushPlatform: (state, action) => {
+        const index = state.platforms.findIndex(
+            (platform) => platform.id === action.payload.id
+        );
+        if (index !== -1) {
+            state.platforms[index] = action.payload;
+        } else {
+            state.platforms.push(action.payload);
+        }
+    }
   },
 });
 
 export const {
-  selectColor,
-  resetColor,
-  selectLinkColor,
-  resetLinkColor,
+  setThemeColor,
+  setTextColor,
   sectionLink,
   profilePicUpdate,
   profileCoverUpdate,
   profileIdSelect,
   setProfileData,
-  setProfileviewData,
+  setProfileViewData,
+  setPlatform,
+  pushPlatform,
 } = profileSlice.actions;
 export default profileSlice.reducer;

@@ -52,7 +52,7 @@ const Home = () => {
           <>
             {" "}
             {profile?.map((result) => {
-              return <ProfileCard {...result} />;
+              return <ProfileCard {...result} key={result.id} />;
             })}{" "}
           </>
         )}

@@ -15,6 +15,7 @@ import { registerUser } from "../../context/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 const Register = () => {
   const [nextStep, setNextStep] = useState(0);
@@ -86,6 +87,7 @@ const Register = () => {
         const response = await axiosInstance.post("/register", body);
         if (response.status === 200) {
           dispatch(registerUser(response?.data));
+          Cookies.set("token", response.data.token);
           navigate("/dashboard");
           setLoading(false);
         }

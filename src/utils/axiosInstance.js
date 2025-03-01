@@ -19,6 +19,7 @@ axiosInstance.interceptors.request.use(
       config.headers["Device-Id"] = "123456";
     } else {
       const token = Cookies.get("token");
+        console.log("token", token);
       config.headers["Accept"] = "application/json";
       if (
         config.url === "/addPhoneContact" ||

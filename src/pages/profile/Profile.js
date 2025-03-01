@@ -3,7 +3,7 @@ import { ProfileEdit } from "../../components/profile";
 
 const Profile = () => {
   return (
-    <div className="min-h-screen">
+    <div>
       {/* profile edit */}
       <ProfileEdit />
     </div>

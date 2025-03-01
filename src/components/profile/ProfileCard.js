@@ -5,14 +5,16 @@ import { Button } from "../form";
 import edit from "../../assets/svgs/edit.svg";
 import NavLink from "../NavLink";
 import { useDispatch, useSelector } from "react-redux";
-import { setProfileData } from "../../context/slice/profileSlice";
+import {sectionLink, setPlatform, setProfileData} from "../../context/slice/profileSlice";
 
 const ProfileCard = (result) => {
   console.log("result", result);
   const profileId = useSelector((state) => state.profile.profileId);
   const dispatch = useDispatch();
   const profileDataDispatch = (data) => {
+    dispatch(sectionLink("about"));
     dispatch(setProfileData(data));
+    dispatch(setPlatform(data.platforms));
   };
 
   return (
@@ -28,7 +30,7 @@ const ProfileCard = (result) => {
       {result.cover_photo && (
           <img
               src={`${process.env.REACT_APP_SERVER}${result.cover_photo}`}
-              className="w-full h-32 rounded-t-2xl object-contain"
+              className="w-full h-32 rounded-t-2xl object-cover"
               alt="cover_photo"
           />
       )}

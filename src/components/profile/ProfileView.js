@@ -1,24 +1,27 @@
 import React from "react";
 import ProfileViewCard from "./ProfileViewCard";
+import { CiShare1 } from "react-icons/ci";
+import {BsShare} from "react-icons/bs";
+import {Link} from "react-router-dom";
 
 const ProfileView = () => {
   return (
     <section
-      className=" flex justify-center lg:mx-0 mx-auto lg:w-80 md:w-80 w-full overflow-y-auto"
+      className="w-full lg:w-3/12 lg:col-span-2 justify-center overflow-y-auto"
       id="profileView"
     >
-      <div className="w-full px-6 pt-8">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-4 text-center">
-            <p className="font-inter font-semibold text-2xl text-black">
+      <div className="w-full flex-col gap-4 py-4 h-full">
+        <div className="flex flex-col gap-4 text-center mb-2">
+          <div className="text-start w-full">
+            <h1 className="font-inter font-bold text-xl">
               Card live preview
-            </p>
-            <p className="font-inter font-normal text-xl text-black">
-              View Card
-            </p>
+            </h1>
           </div>
-          <ProfileViewCard />
+          <Link className="font-normal text-md text-blue-400" to={""}>
+            View Card <CiShare1 className="font-extrabold text-base inline-block" />
+          </Link>
         </div>
+        <ProfileViewCard />
       </div>
     </section>
   );

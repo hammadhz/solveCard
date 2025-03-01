@@ -3,10 +3,13 @@ import ReactDOM from "react-dom";
 import { Button, Input } from "../form";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import {useDispatch} from "react-redux";
+import {pushPlatform} from "../../context/slice/profileSlice";
 
 const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
   const [updateLink, setUpdateLink] = useState("");
   const [pathLink, setPathLink] = useState("");
+  const dispatch = useDispatch();
 
   const extractUsername = (url) => {
     const lastSlashIndex = url.lastIndexOf("/");
@@ -40,6 +43,11 @@ const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
         profile_id: id,
       });
       if (response.status === 200) {
+        dispatch(pushPlatform({
+          id: data?.id,
+          icon: data?.img,
+          path: pathLink.replace(data?.baseUrl, ""),
+        }))
         toast.success(response.data.message, {
           position: "bottom-right",
           autoClose: 5000,

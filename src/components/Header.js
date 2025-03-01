@@ -9,7 +9,7 @@ const Header = ({ isMobNavOpen, handleMobNav }) => {
   };
 
   return (
-    <header className="flex justify-between items-center mb-8 lg:gap-0 md:gap-0 sm:gap-1">
+    <header className="flex justify-between items-center mb-4 lg:gap-0 md:gap-0 sm:gap-1">
       <div
         onClick={openMobNav}
         className="lg:hidden md:hidden  size-10 flex justify-center items-center bg-tertiary-gray-700 rounded-lg"

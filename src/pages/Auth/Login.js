@@ -46,11 +46,14 @@ const Login = () => {
         theme: "light",
       });
 
-      if (response.status === 200) {
+      if (response.status === 200 && response.data.token) {
         dispatch(loginUser(response?.data));
+        console.log("response", response.data.message);
+        Cookies.set("token", response.data.token);
         navigate("/dashboard");
         setLoading(false);
-        Cookies.set("token", response.data.token);
+      } else {
+        setLoading(false);
       }
     } catch (err) {
       toast.error(err.response.data.message, {
