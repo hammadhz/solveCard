@@ -55,7 +55,10 @@ const AddContactModal = ({ closeModal, handleChange }) => {
   };
 
   const addContactSubmit = async (data) => {
-    let profileBlob = base64ToBlob(profilePic);
+    let profileBlob = null;
+    if (profilePic) {
+      profileBlob = base64ToBlob(profilePic);
+    }
     setLoading(true);
     const body = {
       first_name: data.first_name,
@@ -158,7 +161,7 @@ const AddContactModal = ({ closeModal, handleChange }) => {
                     size={"md"}
                     classes={"w-full block p-2.5 "}
                     roundness={"round-sm"}
-                    placeholder={"first name"}
+                    placeholder={"First Name"}
                     register={register}
                   />
                   {/* <input
@@ -241,7 +244,7 @@ const AddContactModal = ({ closeModal, handleChange }) => {
                   size={"md"}
                   classes={"w-full block p-2.5 "}
                   roundness={"round-sm"}
-                  placeholder={"phone"}
+                  placeholder={"Phone"}
                   maxLength={"11"}
                   minLength={"10"}
                   register={register}
@@ -270,7 +273,7 @@ const AddContactModal = ({ closeModal, handleChange }) => {
                   size={"md"}
                   classes={"w-full block p-2.5 "}
                   roundness={"round-sm"}
-                  placeholder={"Add website link"}
+                  placeholder={"Website Link"}
                   register={register}
                 />
                 {/* <input

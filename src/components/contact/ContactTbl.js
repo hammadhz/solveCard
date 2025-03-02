@@ -5,6 +5,8 @@ import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import EditContactModal from "../modal/EditContactModal";
 import { useSelector } from "react-redux";
+import {BiEdit} from "react-icons/bi";
+import {FiDelete} from "react-icons/fi";
 
 const ContactTbl = () => {
   const profileId = useSelector((state) => state.profile.profileId);
@@ -106,7 +108,7 @@ const ContactTbl = () => {
   };
 
   return (
-    <div className="w-full min-h-[150px] bg-primary rounded-2xl p-6 mb-20">
+    <div className="w-full min-h-[150px] bg-primary rounded-2xl p-6 mb-8">
       <div className="flex flex-col gap-4 w-full">
         <div className="w-full h-16  rounded-xl flex justify-between items-center">
           <h1 className="font-inter font-bold text-2xl">Contacts</h1>
@@ -182,33 +184,29 @@ const ContactTbl = () => {
                               key={result.id}
                               className="bg-white border-b hover:bg-gray-50"
                             >
-                              <td className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
-                                <img
+                              <td className="flex items-center px-6 py-4 text-gray-900">
+                                {result.photo && <img
                                   className="w-10 h-10 rounded-full"
                                   src={`${process.env.REACT_APP_SERVER}${result.photo}`}
                                   alt="phot"
-                                />
-                                <div className="ps-3">
-                                  <div className="text-base font-semibold">
-                                    {result?.first_name} {result?.last_name}
-                                  </div>
+                                />}
+                                <div className="ps-3 text-base font-semibold">
+                                  {result?.first_name} {result?.last_name}
                                 </div>
                               </td>
                               <td className="px-6 py-4">{result.email}</td>
                               <td className="px-6 py-4">{result?.phone}</td>
-                              <td className="px-6 py-4">
-                                <p
-                                  onClick={() => handleEditContact(result)}
-                                  className="font-medium cursor-pointer text-blue-600 hover:underline"
-                                >
-                                  Edit
-                                </p>
-                                <p
-                                  onClick={() => deleteContact(result.id)}
-                                  className="font-medium cursor-pointer text-blue-600 hover:underline"
-                                >
-                                  Delete
-                                </p>
+                              <td className="px-6 py-4 flex items-center justify-start gap-2">
+                                <div
+                                    onClick={() => handleEditContact(result)}
+                                    className={"bg-gradient-to-r from-tertiary-green-60 to-tertiary-green-70 rounded-full px-2 py-2 cursor-pointer"}>
+                                  <BiEdit className={"text-white size-4"} />
+                                </div>
+                                <div
+                                    onClick={() => deleteContact(result.id)}
+                                    className={"bg-red-500 rounded-full px-2 py-2 cursor-pointer"}>
+                                  <FiDelete className={"text-white size-4"} />
+                                </div>
                               </td>
                             </tr>
                           );

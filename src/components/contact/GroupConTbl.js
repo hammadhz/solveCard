@@ -5,6 +5,10 @@ import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import EditGrpContact from "../modal/EditGrpContact";
 import { useSelector } from "react-redux";
+import edit from "../../assets/svgs/edit.svg";
+import {BiEdit} from "react-icons/bi";
+import {FiDelete} from "react-icons/fi";
+import {AiOutlineUserAdd} from "react-icons/ai";
 
 const GroupConTbl = () => {
   const profileId = useSelector((state) => state.profile.profileId);
@@ -25,9 +29,10 @@ const GroupConTbl = () => {
 
   const openAddContactModal = () => {
     setIsOpenModal(!isOpenModal);
-    setGroupData((prev) => ({
-      ...prev,
+    setGroupData(() => ({
+      data: "",
       isAdd: true,
+      isEdit: false,
     }));
   };
 
@@ -210,24 +215,21 @@ const GroupConTbl = () => {
                                   {result.total_members}
                                 </div>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-6 py-4 flex items-center justify-start gap-2">
+                                {/*<div*/}
+                                {/*    onClick={() => handleEditGrpContact(result)}*/}
+                                {/*    className={"bg-gradient-to-r from-tertiary-green-30 from-0% to-tertiary-green-50 to-100% rounded-full px-2 py-2 cursor-pointer"}>*/}
+                                {/*  <AiOutlineUserAdd className={"text-white size-4"} />*/}
+                                {/*</div>*/}
                                 <div
                                     onClick={() => editGroup(result, true)}
-                                  className="font-medium text-blue-600 cursor-pointer hover:underline"
-                                >
-                                  Edit Group
+                                    className={"bg-gradient-to-r from-tertiary-green-60 to-tertiary-green-70 rounded-full px-2 py-2 cursor-pointer"}>
+                                  <BiEdit className={"text-white size-4"} />
                                 </div>
                                 <div
-                                  onClick={() => deleteGroup(result.id)}
-                                  className="font-medium text-blue-600 cursor-pointer hover:underline"
-                                >
-                                  Delete Group
-                                </div>
-                                <div
-                                  onClick={() => handleEditGrpContact(result)}
-                                  className="font-medium text-blue-600 cursor-pointer hover:underline"
-                                >
-                                  Add Contact
+                                    onClick={() => deleteGroup(result.id)}
+                                    className={"bg-red-500 rounded-full px-2 py-2 cursor-pointer"}>
+                                  <FiDelete className={"text-white size-4"} />
                                 </div>
                               </td>
                             </tr>

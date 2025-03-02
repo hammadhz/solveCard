@@ -5,7 +5,6 @@ const Contacts = () => {
   return (
     <section className="">
       <ContactTbl />
-
       <GroupConTbl />
     </section>
   );
