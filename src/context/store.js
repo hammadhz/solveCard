@@ -3,6 +3,7 @@ import profileSlice from "./slice/profileSlice";
 import authSlice from "./slice/authSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import profilesSlice from "./slice/profilesSlice";
 
 const persistConfig = {
   key: "solveCard",
@@ -12,6 +13,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   profile: profileSlice,
   auth: authSlice,
+  profiles: profilesSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

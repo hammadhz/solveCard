@@ -1,42 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { ProfileCard, AddProfileCard } from "../../components/profile";
 import axiosInstance from "../../utils/axiosInstance";
-import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CardFallback from "../../components/Fallback/CardFallback";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProfiles} from "../../context/slice/profilesSlice";
 
 const Home = () => {
-  const [profile, setProfile] = useState([]);
+  const profiles = useSelector((state) => state.profiles.profiles);
   const [loading, setLoading] = useState(true);
   const userData = useSelector((state) => state?.auth);
-
-  async function getProfile() {
-    try {
-      const response = await axiosInstance.get("/profiles");
-      if (response.status === 200) {
-        console.log(response.data?.data);
-        setProfile(response.data?.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(error?.response?.data?.message, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  }
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    dispatch(fetchProfiles());
+    setLoading(false);
+  }, [dispatch]);
+
+  const handleProfileAdded = () => {
+    dispatch(fetchProfiles());
+  };
 
   return (
     <section className="overflow-y-auto">
@@ -51,12 +35,12 @@ const Home = () => {
         ) : (
           <>
             {" "}
-            {profile?.map((result) => {
+            {profiles?.map((result) => {
               return <ProfileCard {...result} key={result.id} />;
             })}{" "}
           </>
         )}
-        <AddProfileCard />
+        <AddProfileCard onProfileAdded={handleProfileAdded} />
       </div>
       <ToastContainer />
     </section>

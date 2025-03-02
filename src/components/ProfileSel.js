@@ -1,38 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { profileIdSelect } from "../context/slice/profileSlice";
-import { toast } from "react-toastify";
+import {fetchProfiles} from "../context/slice/profilesSlice";
 
 const ProfileSel = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [profile, setProfile] = useState([]);
+  const profiles = useSelector((state) => state.profiles.profiles);
   const [selectedOption, setSelectedOption] = useState("");
 
   const dispatch = useDispatch();
 
-  async function getProfile() {
-    try {
-      const response = await axiosInstance.get("/profiles");
-      setProfile(response.data.data);
-      handleSelect(response.data.data[0]);
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  }
-
   useEffect(() => {
-    getProfile();
-  }, []);
+    dispatch(fetchProfiles());
+    handleSelect(profiles[0]);
+  }, [dispatch]);
 
   const handleSelect = (option) => {
     setSelectedOption(option?.name);
@@ -52,7 +34,7 @@ const ProfileSel = () => {
 
       {isOpen && (
         <div className="absolute top-16 z-10 w-full bg-white rounded-lg shadow-md">
-          {profile.map((option) => (
+          {profiles.map((option) => (
             <div
               key={option?.id}
               className="px-5 py-3 hover:bg-gray-200 cursor-pointer"

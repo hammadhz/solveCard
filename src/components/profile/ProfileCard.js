@@ -38,12 +38,12 @@ const ProfileCard = (result) => {
       {result.photo && (
           <img
               src={`${process.env.REACT_APP_SERVER}${result.photo}`}
-          className="size-20 rounded-full border border-secondary object-cover flex justify-center items-center z-40 absolute top-24 left-1/2 transform -translate-x-1/2"
+          className="size-20 rounded-full border border-secondary object-cover flex justify-center items-center z-10 absolute top-24 left-1/2 transform -translate-x-1/2"
           alt="profile"
         />
       )}
       {!result.photo && (
-        <div className="size-20 rounded-full border border-secondary bg-primary flex justify-center items-center z-40 absolute top-24 left-1/2 transform -translate-x-1/2">
+        <div className="size-20 rounded-full border border-secondary bg-primary flex justify-center items-center z-10 absolute top-24 left-1/2 transform -translate-x-1/2">
           <ReactSVG src={avatar} />
         </div>
       )}

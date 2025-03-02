@@ -195,7 +195,7 @@ const About = () => {
                     <h1 className="font-inter font-bold text-xl">About</h1>
                 </div>
 
-                <div className="h-[calc(100%-7rem)] absolute overflow-y-auto">
+                <div className="h-[calc(100%-7rem)] w-full absolute overflow-y-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full pr-2">
                     <div className="w-full">
                         <label

@@ -60,7 +60,7 @@ const ProfileViewCard = () => {
   return (
     <div className="space-y-4 h-full">
 
-      <div className={`w-full rounded-t-3xl shadow-lg border`} style={{ background: selectedThemeColor }}>
+      <div className={`w-full h-full rounded-t-3xl shadow-lg border`} style={{ background: selectedThemeColor }}>
         <div className="h-32 relative">
           <div className={"w-full h-full rounded-t-3xl"}>
             {userData?.cover_photo ? (
