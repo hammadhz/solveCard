@@ -63,14 +63,14 @@ const Routing = () => {
                 </Suspense>
               }
             />
-            <Route
-              path="/settings"
-              element={
-                <Suspense fallback={<PageFallback />}>
-                  <Settings />
-                </Suspense>
-              }
-            />
+            {/*<Route*/}
+            {/*  path="/settings"*/}
+            {/*  element={*/}
+            {/*    <Suspense fallback={<PageFallback />}>*/}
+            {/*      <Settings />*/}
+            {/*    </Suspense>*/}
+            {/*  }*/}
+            {/*/>*/}
           </Route>
         </Route>
       </Routes>

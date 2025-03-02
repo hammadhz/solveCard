@@ -58,14 +58,14 @@ const Sidebar = ({
                 </Link>
               </li>
 
-              <li>
-                <Link to={"/settings"} className="flex items-center  gap-4">
-                  <ReactSVG src={setting} className="" />
-                    <span className="font-inter font-normal text-xl text-white">
-                      Settings
-                    </span>
-                </Link>
-              </li>
+              {/*<li>*/}
+              {/*  <Link to={"/settings"} className="flex items-center  gap-4">*/}
+              {/*    <ReactSVG src={setting} className="" />*/}
+              {/*      <span className="font-inter font-normal text-xl text-white">*/}
+              {/*        Settings*/}
+              {/*      </span>*/}
+              {/*  </Link>*/}
+              {/*</li>*/}
             </ul>
           </nav>
         </div>

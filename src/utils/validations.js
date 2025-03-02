@@ -72,8 +72,7 @@ export const loginSchema = z.object({
 
   password: z
     .string()
-    .min(6, { message: "Password must be at least 6 characters" })
-    .max(8, { message: "Password must not exceed 8 characters" })
+    .min(4, { message: "Password must be at least 4 characters" })
     .regex(/^[\w!@#$%^&*()_+=-]+$/, {
       message: "Password can contain letters, numbers, and special symbols",
     }),
@@ -99,7 +98,6 @@ export const forgotPwdSchema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters" })
-    .max(8, { message: "Password must not exceed 8 characters" })
     .regex(/^[\w!@#$%^&*()_+=-]+$/, {
       message: "Password can contain letters, numbers, and special symbols",
     })
@@ -107,7 +105,6 @@ export const forgotPwdSchema = z.object({
 
   password_confirmation: z
     .string()
-    .min(6, { message: "Confirm Password is required" })
-    .max(8, { message: "Confirm Password must not exceed 8 characters" })
+    .min(6, { message: "Confirm Password must be at least 6 characters" })
     .optional(),
 });
