@@ -38,6 +38,7 @@ const About = () => {
     const [buttonColors, setButtonColors] = useState([]);
 
     const [loading, setLoading] = useState(false);
+    const [colorLoading, setColorLoading] = useState(false);
     const [picData, setPicData] = useState({ photo: "", cover_photo: "" });
     const [blobCon, setBlobCon] = useState({ photo: "", cover_photo: "" });
     const [userProfile, setUserProfile] = useState({
@@ -63,6 +64,7 @@ const About = () => {
     }, [userProfile, dispatch]);
 
     useEffect(() => {
+        setColorLoading(true);
         const fetchBackgroundColors = async () => {
             try {
                 const response = await axiosInstance.get("/backgroundColors");
@@ -78,6 +80,7 @@ const About = () => {
             } catch (error) {
                 console.error("Error fetching button colors:", error);
             }
+            setColorLoading(false);
         }
         fetchBackgroundColors();
         fetchButtonColors();
@@ -171,9 +174,12 @@ const About = () => {
                 // }
                 await axiosInstance.post("/updateBackgroundColor", { profile_id: id, bg_color_id: selectedTheme.id });
                 await axiosInstance.post("/updateButtonColor", { profile_id: id, btn_color_id: selectedTextColor.id });
-                toast.success(response.data.message);
-                dispatch(setProfileData({ ...userProfile, cover_photo: picData.cover_photo, photo: picData.photo, background_color_code: selectedTheme.color_code, button_color_code: selectedTextColor.color_code }));
-                console.log('final', response.data)
+                setTimeout(() => {
+                    console.log('after delay',  response.data.message)
+                    toast.success(response.data.message);
+                }, 100);
+                console.log('final', response.data, "body", body)
+                dispatch(setProfileData({ ...userProfile, cover_photo: body.cover_photo ?? picData.cover_photo, photo: body.photo ?? picData.photo, background_color_code: selectedTheme.color_code, button_color_code: selectedTextColor.color_code }));
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Error updating profile");
@@ -195,7 +201,7 @@ const About = () => {
                     <h1 className="font-inter font-bold text-xl">About</h1>
                 </div>
 
-                <div className="h-[calc(100%-7rem)] w-full absolute overflow-y-auto">
+                <div className="lg:h-[calc(100%-7rem)] w-full lg:absolute overflow-y-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full pr-2">
                     <div className="w-full">
                         <label
@@ -267,7 +273,7 @@ const About = () => {
                             <div className="w-full h-full relative">
                                 <img
                                     src={userProfile.photo}
-                                    className="rounded-full h-full aspect-square mx-auto object-cover"
+                                    className="rounded-full h-full aspect-square w-2/5 mx-auto object-cover"
                                     alt=""
                                 />
                                 <MdCancel
@@ -610,14 +616,14 @@ const About = () => {
                             <div className="flex flex-col gap-4">
                                 {/* card theme */}
                                 <div
-                                    className="w-full rounded-lg flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 items-center justify-between bg-white border border-primary p-4">
+                                    className="w-full rounded-lg flex flex-row lg:gap-0 md:gap-0 gap-3 items-center justify-between bg-white border border-primary p-4">
                                     <label
                                         htmlFor=""
                                         className="block text-sm font-inter font-medium text-gray-900 "
                                     >
                                         Profile/Card Theme
                                     </label>
-                                    <div className="flex items-center justify-end flex-grow gap-2">
+                                    <div className="flex items-center justify-end flex-grow flex-wrap gap-2">
                                         {backgroundColors?.map((color) => (
                                             <div
                                                 key={color.id}
@@ -639,7 +645,7 @@ const About = () => {
                                         >
                                             Link Color
                                         </label>
-                                        <div className="flex items-center justify-end flex-grow gap-2">
+                                        <div className="flex items-center justify-end flex-grow flex-wrap gap-2">
                                             {buttonColors?.map((color) => (
                                                 <div
                                                     key={color.id}
@@ -727,12 +733,14 @@ const About = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 pt-4 w-full bg-white flex justify-end items-center gap-4">
                     <Button
+                        type="submit"
                         intent={"primary"}
                         children={"Update"}
                         size={"lg"}
                         loading={loading}
                         roundness={"round"}
                         classes={"!bg-black !text-white"}
+                        disabled={colorLoading}
                     />
                     <NavLink
                         intent={"secondary"}

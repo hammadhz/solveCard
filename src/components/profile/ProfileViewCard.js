@@ -6,7 +6,6 @@ import {Button} from "../form";
 
 const ProfileViewCard = () => {
   const userData = useSelector((state) => state.profile.profileViewData);
-  const userPlatforms = useSelector((state) => state.profile.platforms);
   const selectedThemeColor = useSelector((state) => state.profile.themeColor);
   const selectedTextColor = useSelector((state) => state.profile.textColor);
   const [layout, setLayout] = useState("center");
@@ -60,7 +59,7 @@ const ProfileViewCard = () => {
   return (
     <div className="space-y-4 h-full">
 
-      <div className={`w-full h-full rounded-t-3xl shadow-lg border`} style={{ background: selectedThemeColor }}>
+      <div className={`w-full min-h-full rounded-t-3xl shadow-lg border`} style={{ background: selectedThemeColor }}>
         <div className="h-32 relative">
           <div className={"w-full h-full rounded-t-3xl"}>
             {userData?.cover_photo ? (
@@ -133,18 +132,18 @@ const ProfileViewCard = () => {
           />
         </div>
         <div className={
-          layout === 'left' ? 'w-full flex flex-col items-start text-left gap-2 px-4 my-4' : layout === 'right' ? 'w-full flex flex-col items-end text-right gap-2 px-4 my-4' : 'w-full flex flex-wrap items-center justify-center gap-2 px-4 my-4'
+          layout === 'left' ? 'w-full flex flex-col items-start text-left gap-2 px-4 my-4' : layout === 'right' ? 'w-full flex flex-col items-end text-right gap-2 px-4 my-4' : 'w-full flex flex-wrap items-start justify-center gap-2 px-4 my-4'
         }>
-          {userPlatforms?.map((platform, index) => (
+          {userData?.platforms?.map((platform, index) => (
               <div key={index}
                    className={
-                     layout === 'left' ? 'w-full flex flex-row items-center justify-start gap-2' : layout === 'right' ? 'w-full flex flex-row-reverse items-center justify-start gap-2' : 'flex flex-col items-center justify-center gap-2'
+                     layout === 'left' ? 'w-full flex flex-row items-center justify-start gap-2' : layout === 'right' ? 'w-full flex flex-row-reverse items-center justify-start gap-2' : 'flex flex-col items-center justify-start gap-2'
                    }
                    style={{ width: layout === 'center' ? 'calc(33.33% - 8px)' : '100%' }}>
                 <div style={{ width: layout === 'center' ? '100%' : '80px' }}>
                   <img className="w-full" src={`${process.env.REACT_APP_SERVER}${platform.icon}`} alt={platform.title}/>
                 </div>
-                <p className={`font-inter text-base font-normal`} style={{ color: selectedTextColor }}>
+                <p className={`font-inter text-base font-normal text-center`} style={{ color: selectedTextColor }}>
                   {platform.label ?? platform.title}
                 </p>
               </div>

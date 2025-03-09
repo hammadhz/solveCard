@@ -35,38 +35,19 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axiosInstance.post("/login", data);
-      toast.error(response?.data?.message, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
 
       if (response.status === 200 && response.data.token) {
         dispatch(loginUser(response?.data));
-        console.log("response", response.data.message);
+        toast.success(response?.data?.message);
         Cookies.set("token", response.data.token);
         navigate("/dashboard");
-        setLoading(false);
       } else {
-        setLoading(false);
+        toast.error(response?.data?.message);
       }
     } catch (err) {
-      toast.error(err.response.data.message, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setLoading(false);
+      toast.error(err.response.data.message);
+    } finally {
+        setLoading(false);
     }
   };
 
@@ -90,9 +71,9 @@ const Login = () => {
                 <h1 className="text-black font-inter font-bold text-xl">
                   Login
                 </h1>
-                <span className="font-inter text-sm font-medium text-black">
-                  Login your company on app
-                </span>
+                {/*<span className="font-inter text-sm font-medium text-black">*/}
+                {/*  Login your company on app*/}
+                {/*</span>*/}
               </div>
               {/*<div className="w-full rounded-lg flex justify-center gap-3 items-center bg-primary p-3">*/}
               {/*  <FcGoogle className="size-5" />{" "}*/}
@@ -172,7 +153,6 @@ const Login = () => {
             <img src={logo} className="" alt="" />
           </div>
         </div>
-        <ToastContainer />
       </div>
     </div>
   );

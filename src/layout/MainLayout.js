@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import { ToastContainer } from "react-toastify";
 import MobNav from "../components/MobNav";
 
 const MainLayout = () => {
@@ -45,7 +44,6 @@ const MainLayout = () => {
         <Header isMobNavOpen={isMobNavOpen} handleMobNav={handleMobNav} />
         <Outlet />
       </div>
-      <ToastContainer />
     </div>
   );
 };

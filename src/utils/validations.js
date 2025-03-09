@@ -3,20 +3,20 @@ import { z } from "zod";
 export const registerSchema = z.object({
   name: z
     .string()
-    .min(6, { message: "Name is required" })
-    .max(50, { message: "Name must be less than 50 characters" })
+    .min(3, { message: "Name must be at least 3 characters" })
+    .max(25, { message: "Name must be less than 25 characters" })
     .regex(/^[a-zA-Z\s]+$/, {
       message: "Name must only contain letters and spaces",
     }),
 
   phone: z
     .string()
-    .length(11, { message: "Phone number must be 11 digits" })
+    .min(11, { message: "Phone number must be at least 11 characters" })
     .regex(/^\d+$/, { message: "Phone number must only contain numbers" }),
 
   companyName: z
     .string()
-    .min(6, { message: "Company Name is required" })
+    .min(1, { message: "Company Name is required" })
     .max(50, {
       message: "Company Name must be less than 50 characters",
     })
@@ -27,7 +27,7 @@ export const registerSchema = z.object({
 
   role: z
     .string()
-    .min(6, { message: "Role is required" })
+    .min(1, { message: "Role is required" })
     .max(50, { message: "Role must be less than 50 characters" })
     .regex(/^[a-zA-Z\s]+$/, {
       message: "Role must only contain letters and spaces",
@@ -36,29 +36,19 @@ export const registerSchema = z.object({
 
   email: z
     .string()
-    .min(6, { message: "Email is required" })
+    .min(1, { message: "Email is required" })
     .email({ message: "Invalid email address" })
     .regex(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/, {
       message: "Email must not contain special symbols except @, _, -",
-    })
-    .optional(),
+    }),
 
   password: z
     .string()
-    .min(6, { message: "Password must be at least 6 characters" })
-    .max(8, { message: "Password must not exceed 8 characters" })
-    .regex(/^[\w!@#$%^&*()_+=-]+$/, {
-      message: "Password can contain letters, numbers, and special symbols",
-    })
-    .optional(),
+    .min(6, { message: "Password must be at least 6 characters" }),
 
   password_confirmation: z
     .string()
-    .min(6, { message: "Confirm Password is required" })
-    .max(8, {
-      message: "Confirm Password must not exceed 8 characters",
-    })
-    .optional(),
+    .min(6, { message: "Confirm Password must be at least 6 characters" }),
 });
 
 export const loginSchema = z.object({

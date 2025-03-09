@@ -13,8 +13,14 @@ const ProfileSel = () => {
 
   useEffect(() => {
     dispatch(fetchProfiles());
-    handleSelect(profiles[0]);
   }, [dispatch]);
+
+
+  useEffect(() => {
+    if (profiles.length > 0) {
+      handleSelect(profiles[0]);
+    }
+  }, [profiles]);
 
   const handleSelect = (option) => {
     setSelectedOption(option?.name);

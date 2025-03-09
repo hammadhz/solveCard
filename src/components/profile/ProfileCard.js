@@ -1,22 +1,37 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { ReactSVG } from "react-svg";
 import avatar from "../../assets/svgs/avatar.svg";
 import {Button, Input} from "../form";
 import edit from "../../assets/svgs/edit.svg";
 import NavLink from "../NavLink";
 import { useDispatch, useSelector } from "react-redux";
-import {sectionLink, setPlatform, setProfileData} from "../../context/slice/profileSlice";
+import {sectionLink, setProfileData} from "../../context/slice/profileSlice";
 import {toast} from "react-toastify";
+import QRCode from "react-qr-code";
+import logo from "../../assets/svgs/logo.svg";
+
 
 const ProfileCard = (result) => {
   const profileId = useSelector((state) => state.profile.profileId);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [qrValue, setQrValue] = useState("");
+  const [qrColor, setQrColor] = useState("#2A9562");
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (result?.card_uuid) {
+      setQrValue(result.card_uuid);
+    }
+
+    // Get QR color from profile if available
+    if (result?.button_color) {
+      setQrColor(result.button_color?.color_code || "#000000");
+    }
+  }, [result]);
   const profileDataDispatch = (data) => {
     dispatch(sectionLink("about"));
     dispatch(setProfileData(data));
-    dispatch(setPlatform(data.platforms));
   };
 
   const handleCopyLink = () => {
@@ -83,7 +98,7 @@ const ProfileCard = (result) => {
             <div className="relative bg-white rounded-lg shadow w-full max-w-lg">
               <div className="flex items-center justify-between p-2 md:p-5 border-b rounded-t">
                 <h3 className="text-xl font-semibold text-gray-900 ">
-                  {"Share Profile"}
+                  {"Share Card"}
                 </h3>
                 <button
                     type="button"
@@ -108,29 +123,52 @@ const ProfileCard = (result) => {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-              <div className="p-4">
-                <p className="text-xl text-black mb-2">Profile Link</p>
-                <div className="w-full flex items-center justify-between gap-4">
-                  <Input
-                      type="text"
-                      name="company"
-                      value={result?.card_uuid}
-                      intent="primary"
-                      size="md"
-                      classes="w-full block p-2.5"
-                      parentDivH="w-full"
-                      roundness="round-sm"
-                      placeholder="Company"
-                      custom="custom"
-                  />
-                  <Button
-                      type="button"
-                      intent="primary"
-                      size="sm"
-                      children="Copy Link"
-                      classes="ml-2 text-nowrap"
-                      eventAction={handleCopyLink}
-                  />
+              {/* QR Code Section */}
+              <div className="my-4 flex flex-col items-center">
+                <h4 className="text-lg font-medium mb-2 text-center">Scan QR Code</h4>
+                <div className="bg-white rounded-lg shadow-sm inline-block">
+                  <div className="relative">
+                    <QRCode
+                        id="profile-qr-code"
+                        value={qrValue}
+                        size={170}
+                        fgColor={result?.qr_color || qrColor}
+                        style={{ maxWidth: "100%", height: "auto" }}
+                        level="H"
+                    />
+
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img
+                          src={ result?.qr_logo ? `${process.env.REACT_APP_SERVER}${result.qr_logo}` : logo}
+                          className="h-11 w-11 object-contain bg-white rounded-md"
+                          alt="QR logo"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">Scan the code by placing camera in front of code</p>
+              </div>
+              <div className="px-8">
+                <div className="py-6 border-t">
+                  <p className="text-lg font-medium mb-2 text-center">Share Profile Link</p>
+                  <div className="w-full flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="w-full px-3 py-2 overflow-hidden overflow-ellipsis whitespace-nowrap text-gray-600">
+                      {result?.card_uuid}
+                    </div>
+                    <button
+                        onClick={handleCopyLink}
+                        className="bg-secondary hover:bg-tertiary-green-65 transition-colors text-white px-4 py-2 h-full flex items-center justify-center gap-1"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                        <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2 text-center">
+                    Share this link to let others view your profile
+                  </p>
                 </div>
               </div>
             </div>

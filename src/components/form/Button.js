@@ -56,6 +56,7 @@ const Button = ({
   iconRight,
   classes,
   loading,
+  disabled
 }) => {
   return (
     <button
@@ -63,7 +64,8 @@ const Button = ({
       type={type}
       className={classNames(
         ButtonVariants({ intent, size, roundness }),
-        classes
+        classes,
+        disabled ? "cursor-not-allowed" : ""
       )}
       onClick={eventAction}
     >

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { logout } from "./authSlice";
 
 const profileSlice = createSlice({
   name: "profile",
@@ -9,7 +10,8 @@ const profileSlice = createSlice({
     profileViewData: null,
     themeColor: "#FFFFFF",
     textColor: "#000000",
-    platforms: [],
+    qrColor: "#2A9562",
+    qrPhoto: null,
   },
   reducers: {
     sectionLink: (state, action) => {
@@ -36,19 +38,46 @@ const profileSlice = createSlice({
     setTextColor: (state, action) => {
       state.textColor = action.payload;
     },
-    setPlatform: (state, action) => {
-      state.platforms = action.payload;
+    setQrColor: (state, action) => {
+      state.qrColor = action.payload;
+    },
+    setQrPhoto: (state, action) => {
+      state.qrPhoto = action.payload;
     },
     pushPlatform: (state, action) => {
-        const index = state.platforms.findIndex(
+      const profilePlatforms = state.profileData?.platforms;
+        const index = profilePlatforms.findIndex(
             (platform) => platform.id === action.payload.id
         );
         if (index !== -1) {
-            state.platforms[index] = action.payload;
+            profilePlatforms[index] = action.payload;
         } else {
-            state.platforms.push(action.payload);
+            profilePlatforms.push(action.payload);
         }
-    }
+      state.profileViewData.platforms = profilePlatforms;
+    },
+    removePlatform: (state, action) => {
+      const profilePlatforms = state.profileData?.platforms;
+      const index = profilePlatforms.findIndex(
+        (platform) => platform.user_platforms_id === action.payload
+      );
+      if (index !== -1) {
+        profilePlatforms.splice(index, 1);
+      }
+      state.profileViewData.platforms = profilePlatforms;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logout, (state) => {
+      state.sectionLnk = "about";
+      state.profileId = "";
+      state.profileData = null;
+      state.profileViewData = null;
+      state.themeColor = "#FFFFFF";
+      state.textColor = "#000000";
+      state.qrColor = "#2A9562";
+      state.qrPhoto = null;
+    });
   },
 });
 
@@ -61,7 +90,9 @@ export const {
   profileIdSelect,
   setProfileData,
   setProfileViewData,
-  setPlatform,
   pushPlatform,
+  setQrColor,
+  setQrPhoto,
+  removePlatform
 } = profileSlice.actions;
 export default profileSlice.reducer;

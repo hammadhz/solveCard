@@ -47,12 +47,22 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError
   } = useForm({
     resolver: zodResolver(stepSchema),
   });
 
   const registerSubmit = async (data) => {
     await stepSchema.parseAsync(data);
+    if (nextStep === 2 && data.password !== data.password_confirmation) {
+      // show zod error
+      setError("password_confirmation", {
+        type: "manual",
+        message: "Passwords do not match",
+      });
+      return;
+    }
+
     if (nextStep === 0) {
       if (data?.name && data?.phone) {
         setNextStep(nextStep + 1);
@@ -131,9 +141,9 @@ const Register = () => {
               <h1 className="text-black font-inter font-bold text-xl">
                 Register
               </h1>
-              <span className="font-inter text-sm font-medium text-black">
-                Register your company on app
-              </span>
+              {/*<span className="font-inter text-sm font-medium text-black">*/}
+              {/*  Register your company on app*/}
+              {/*</span>*/}
             </div>
             <div className="flex flex-col gap-6">
               {/* steps */}

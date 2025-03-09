@@ -285,7 +285,6 @@ const ForgotPwd = () => {
             <img src={logo} className="" alt="" />
           </div>
         </div>
-        <ToastContainer />
       </div>
     </div>
   );

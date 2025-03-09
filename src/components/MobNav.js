@@ -61,18 +61,18 @@ const MobNav = ({ isMobNavOpen, handleMobNav, handleClose }) => {
                 </span>
               </Link>
             </li>
-            <li>
-              <Link
-                to="/settings"
-                onClick={handleClose}
-                className="flex flex-col items-center"
-              >
-                <ReactSVG src={setting} className="" />
-                <span className="font-inter font-normal text-sm text-white">
-                  Settings
-                </span>
-              </Link>
-            </li>
+            {/*<li>*/}
+            {/*  <Link*/}
+            {/*    to="/settings"*/}
+            {/*    onClick={handleClose}*/}
+            {/*    className="flex flex-col items-center"*/}
+            {/*  >*/}
+            {/*    <ReactSVG src={setting} className="" />*/}
+            {/*    <span className="font-inter font-normal text-sm text-white">*/}
+            {/*      Settings*/}
+            {/*    </span>*/}
+            {/*  </Link>*/}
+            {/*</li>*/}
           </ul>
         </nav>
       </div>

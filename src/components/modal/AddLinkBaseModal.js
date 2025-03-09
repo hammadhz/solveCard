@@ -6,9 +6,13 @@ import { toast } from "react-toastify";
 import {useDispatch} from "react-redux";
 import {pushPlatform} from "../../context/slice/profileSlice";
 
-const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
-  const [updateLink, setUpdateLink] = useState("");
-  const [pathLink, setPathLink] = useState("");
+const AddLinkBaseModal = ({ closeModal, data, id }) => {
+  const [title, setTitle] = useState("");
+  const [baseUrl, setBaseUrl] = useState("");
+  const [path, setPath] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   const extractUsername = (url) => {
@@ -16,62 +20,67 @@ const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
     return url.substring(lastSlashIndex + 1);
   };
 
-  const handleUpdateLink = (e) => {
+  const handleUpdatePath = (e) => {
     const path = e.target.value;
-    // const path = pathInput.replace(data?.baseUrl, "");
-    // setPathLink(pathInput);
-    setUpdateLink(path);
-    const username = extractUsername(path);
-    setPathLink(username);
+    setPath(path);
+  };
+
+  const handleUpdateTitle = (e) => {
+    const title = e.target.value;
+    setTitle(title);
   };
 
   useEffect(() => {
+    console.log('daaata', data)
     if (data?.baseUrl) {
-      setUpdateLink(data?.baseUrl);
+      setBaseUrl(data?.baseUrl);
+      setPath(data?.baseUrl);
     }
     if (data?.path) {
-      setUpdateLink(data?.baseUrl + data?.path);
+      setPath(data?.baseUrl + data?.path);
     }
-  }, [data?.baseUrl, data?.path]);
+    if (data?.label) {
+      setTitle(data?.label);
+    }
+
+  }, [data?.baseUrl, data?.path, data?.label]);
 
   const submitUpdateLink = async (e) => {
     e.preventDefault();
+    if (title === "") {
+      toast.error("Title Field is required.");
+      return;
+    }
+    const finalPath = baseUrl ? path.replace(baseUrl, "") : path;
+    if (finalPath === "" || finalPath.length < 2) {
+        toast.error("Link Field is required with minimum of 2 characters.");
+        return;
+    }
+    setLoading(true);
     try {
       const response = await axiosInstance.post("/addPlatform", {
-        platform_id: data?.id,
-        path: pathLink.replace(data?.baseUrl, ""),
+        platform_id: data?.user_platforms_id,
+        path: finalPath,
         profile_id: id,
+        label: title,
       });
       if (response.status === 200) {
         dispatch(pushPlatform({
           id: data?.id,
-          icon: data?.img,
-          path: pathLink.replace(data?.baseUrl, ""),
+          user_platforms_id: data?.user_platforms_id,
+          title: data?.title,
+          icon: data?.icon,
+          path: baseUrl ? path.replace(baseUrl, "") : path,
+          label: title,
+          baseUrl: data?.baseUrl,
         }))
-        toast.success(response.data.message, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        handleUpdate();
+        toast.success(response.data.message);
         closeModal();
       }
     } catch (error) {
-      toast.error(error.response.data.message, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error(error.response.data.message);
+    } finally {
+        setLoading(false);
     }
   };
 
@@ -82,11 +91,11 @@ const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
       aria-hidden="false"
       className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50"
     >
-      <div className="relative p-4 w-full max-w-[320px] max-h-full">
+      <div className="relative p-4 w-full max-w-lg max-h-full">
         <div className="relative bg-white rounded-lg shadow ">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-900">
-              Add Link
+              {data?.path ? "Edit" : "Add"} Link Info
             </h3>
             <button
               type="button"
@@ -118,37 +127,60 @@ const AddLinkBaseModal = ({ closeModal, data, id, handleUpdate }) => {
             >
               <div className="flex justify-center items-center size-10 rounded-full bg-tertiary-green-30 mx-auto">
                 <img
-                  src={`${process.env.REACT_APP_SERVER}${data.img}`}
+                  src={`${process.env.REACT_APP_SERVER}${data.icon}`}
                   className="size-6"
                   alt=""
                 />
               </div>
+
               <h1 className="text-black dark:text-black">
-                Add {data.title} Link
+                Add {data.title}
               </h1>
+
               <div>
+                <h1 className="text-black text-left">
+                  Title
+                </h1>
+                <Input
+                    intent={"primary"}
+                    size={"lg"}
+                    roundness={"round-md"}
+                    label={"Title"}
+                    placeholder={"Enter Title"}
+                    custom={"custom"}
+                    classes={"w-full"}
+                    name={"title"}
+                    value={title}
+                    eventAction={handleUpdateTitle}
+                />
+              </div>
+              <div>
+                <h1 className="text-black text-left">
+                  Link
+                </h1>
                 <Input
                   intent={"primary"}
                   size={"lg"}
                   roundness={"round-md"}
-                  label={"Link Title"}
+                  label={"Link"}
                   placeholder={
-                    data?.baseUrl ? data?.baseUrl : "Enter your base"
+                    data?.baseUrl ? data?.baseUrl : "Enter Link"
                   }
                   custom={"custom"}
                   classes={"w-full"}
                   name={"link"}
-                  value={updateLink}
-                  eventAction={handleUpdateLink}
+                  value={path}
+                  eventAction={handleUpdatePath}
                 />
               </div>
 
               <Button
                 intent={"primary"}
-                size={"lg"}
+                size={"md"}
                 roundness={"round"}
-                children={"Add"}
+                children={"Submit"}
                 classes={"!w-1/2 !p-2 !mx-auto"}
+                loading={loading}
               />
             </form>
           </div>

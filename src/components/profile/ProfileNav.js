@@ -59,6 +59,23 @@ const ProfileNav = () => {
           {/*</div>*/}
         </div>
 
+        {/* Section: QR Code */}
+        <div className="flex flex-col w-full gap-2">
+          <h3 className="pl-3 font-inter font-semibold text-xl text-gray-600 uppercase">
+            Sharing
+          </h3>
+
+          {/* QR Code */}
+          <div
+              onClick={() => handleLinks("qrCode")}
+              className="flex gap-2 items-center p-2 rounded hover:bg-gray-200 cursor-pointer transition duration-300 group">
+            <MdOutlineQrCode2 className="text-lg text-black group-hover:text-black transition duration-300" />
+            <p className="font-inter font-medium text-sm text-gray-700 group-hover:text-black transition duration-300">
+              QR Code
+            </p>
+          </div>
+        </div>
+
         {/* Section: Lead Capture */}
         {/*<div className="flex flex-col w-full gap-2">*/}
         {/*  <h3 className="pl-3 font-inter font-semibold text-xl text-gray-600 uppercase">*/}
@@ -82,28 +99,6 @@ const ProfileNav = () => {
         {/*  </div>*/}
         {/*</div>*/}
 
-        {/* Section: QR Code */}
-        {/*<div className="flex flex-col w-full gap-2">*/}
-        {/*  <h3 className="pl-3 font-inter font-semibold text-xl text-gray-600 uppercase">*/}
-        {/*    QR Code*/}
-        {/*  </h3>*/}
-
-        {/*  /!* QR Code *!/*/}
-        {/*  <div className="flex gap-2 items-center p-2 rounded hover:bg-gray-200 cursor-pointer transition duration-300 group">*/}
-        {/*    <MdOutlineQrCode2 className="text-lg text-black group-hover:text-black transition duration-300" />*/}
-        {/*    <p className="font-inter font-medium text-sm text-gray-700 group-hover:text-black transition duration-300">*/}
-        {/*      QR Code*/}
-        {/*    </p>*/}
-        {/*  </div>*/}
-
-        {/*  /!* Follow Up Email *!/*/}
-        {/*  <div className="flex gap-2 items-center p-2 rounded hover:bg-gray-200 cursor-pointer transition duration-300 group">*/}
-        {/*    <MdOutlineEmail className="text-lg text-black group-hover:text-black transition duration-300" />*/}
-        {/*    <p className="font-inter font-medium text-sm text-gray-700 group-hover:text-black transition duration-300">*/}
-        {/*      Follow Up Email*/}
-        {/*    </p>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
       </div>
     </nav>
   );
