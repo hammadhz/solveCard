@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import AddLinkBaseModal from "../modal/AddLinkBaseModal";
 import { toast } from "react-toastify";
 import {Button} from "../form";
-import {removePlatform} from "../../context/slice/profileSlice";
+import {pushPlatform, removePlatform} from "../../context/slice/profileSlice";
 
 const Link = () => {
   const { id } = useParams();
@@ -79,6 +79,22 @@ const Link = () => {
     }
   };
 
+  const handleDirectPlatform = async (platform) => {
+    try {
+      await axiosInstance.post("/platformDirect", {
+        user_platform_id: platform.id,
+        profile_id: id,
+      });
+      dispatch(pushPlatform({
+        ...platform,
+        direct: !platform.direct,
+      }))
+      toast.success("Platform direct status updated successfully");
+    } catch (error) {
+      toast.error("Failed to update platform direct");
+    }
+  };
+
   return (
       <section className="h-full flex justify-center grow bg-primary border-r-2 border-r-white">
         <div className="flex flex-col w-full p-8 bg-white rounded-lg">
@@ -129,6 +145,15 @@ const Link = () => {
                               </p>
                             </div>
                             <div className="flex items-center gap-2">
+                              <label className="inline-flex items-center cursor-pointer">
+                                <input type="checkbox"
+                                       className="sr-only peer"
+                                       checked={platform.direct}
+                                        onChange={() => handleDirectPlatform(platform)}
+                                />
+                                <div
+                                    className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-white rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                              </label>
                               <FiEdit
                                   className="text-xl text-gray-600"
                                   onClick={() =>

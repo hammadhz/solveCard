@@ -5,8 +5,11 @@ import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import AddLinkInfoModal from "./AddLinkInfoModal";
 import AddLinkBaseModal from "./AddLinkBaseModal";
+import {useSelector} from "react-redux";
 
 const AddLinksModal = ({ id, closeModal }) => {
+  const userData = useSelector((state) => state?.auth?.user);
+
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [isLinkInfoOpenModal, setIsLinkInfoOpenModal] = useState(false);
@@ -14,22 +17,22 @@ const AddLinksModal = ({ id, closeModal }) => {
   const categoryRefs = useRef({});
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axiosInstance.post("/categories", {
-          profile_id: id,
-        });
-        setCategories(response.data.categories);
-        setActiveCategory(response.data.categories[0]?.id || null);
-      } catch (error) {
-        console.log(error.data)
-        toast.error(error?.data?.message ?? "Failed to fetch categories");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchCategories = async () => {
+    try {
+      const response = await axiosInstance.post("/categories", {
+        profile_id: id,
+      });
+      setCategories(response.data.categories);
+      setActiveCategory(response.data.categories[0]?.id || null);
+    } catch (error) {
+      console.log(error.data)
+      toast.error(error?.data?.message ?? "Failed to fetch categories");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCategories();
   }, [id]);
 
@@ -39,6 +42,11 @@ const AddLinksModal = ({ id, closeModal }) => {
   };
 
   const handlePlatformClick = (platform) => {
+    if (userData.is_pro === 0 && platform.pro === "1") {
+        toast.error("Upgrade to pro to use this link");
+        return;
+    }
+
     setSelectedPlatform({
       id: Date.now(),
       user_platforms_id: platform?.id,
@@ -53,6 +61,8 @@ const AddLinksModal = ({ id, closeModal }) => {
 
   const handleCloseModalLink = () => {
     setIsLinkInfoOpenModal(false);
+    setLoading(true);
+    fetchCategories();
   };
 
   return ReactDOM.createPortal(
@@ -142,7 +152,21 @@ const AddLinksModal = ({ id, closeModal }) => {
                                         {platform.title}
                                       </p>
                                     </div>
-                                    <FiPlus className="text-xl text-gray-600" />
+                                    <div className="flex items-center justify-center gap-1">
+                                      {platform.pro === '1' && (
+                                          <div
+                                              className="bg-black text-xs w-7 h-7 rounded-full text-white flex items-center justify-center">
+                                            Pro
+                                          </div>
+                                      )}
+                                      {platform.Total_used > 0 && (
+                                          <div
+                                              className="bg-black text-xs w-7 h-7 rounded-full text-white flex items-center justify-center">
+                                            {platform.Total_used}
+                                          </div>
+                                      )}
+                                      <FiPlus className="text-xl text-gray-600"/>
+                                    </div>
                                   </div>
                               ))}
                             </div>

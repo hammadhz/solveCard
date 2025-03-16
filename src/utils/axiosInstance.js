@@ -1,6 +1,9 @@
 import axios from "axios";
 import { SERVER_URL } from "../constants/ServerUrl";
 import Cookies from "js-cookie";
+import store from "../context/store";
+import {logout} from "../context/slice/authSlice";
+import {toast} from "react-toastify";
 
 const axiosInstance = axios.create({
   baseURL: SERVER_URL,
@@ -44,6 +47,10 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
+      store.dispatch(logout());
+      Cookies.remove("token");
+      window.location.href = "/";
+      toast.error("Session expired, Please login again");
     return Promise.reject(error);
   }
 );

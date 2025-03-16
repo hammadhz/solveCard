@@ -49,13 +49,13 @@ const About = () => {
     useEffect(() => {
         if (userData) {
             setUserProfile(prev => ({ ...prev, ...userData }));
-            console.log("userData", userData.photo, userData.cover_photo);
             setPicData({ photo: userData.photo || "", cover_photo: userData.cover_photo || "" });
+
             setThemeColor(userData.background_color_code);
             dispatch(updateThemeColor(userData.background_color_code));
+
             dispatch(updateTextColor(userData.button_color_code ?? "#000000"));
             setTextColor(userData.button_color_code);
-            // dispatch(setProfileViewData(userData));
         }
     }, [userData, dispatch]);
 
@@ -85,6 +85,30 @@ const About = () => {
         fetchBackgroundColors();
         fetchButtonColors();
     }, []);
+
+    useEffect(() => {
+        if (backgroundColors.length){
+            const selectedTheme = backgroundColors.find(
+                (theme) => theme.id === themeColor || theme.color_code === themeColor
+            );
+
+            setThemeColor(selectedTheme.color_code);
+            dispatch(updateThemeColor(selectedTheme.color_code));
+        }
+
+        if (buttonColors.length) {
+            let selectedTextColor = buttonColors.find(
+                (theme) => theme.id === textColor || theme.color_code === textColor
+            );
+
+            if (!selectedTextColor) {
+                selectedTextColor = buttonColors[0];
+            }
+
+            dispatch(updateTextColor(selectedTextColor.color_code));
+            setTextColor(selectedTextColor.color_code);
+        }
+    }, [backgroundColors, buttonColors]);
 
     const handleFileUpload = async (e, type) => {
         const file = e.target.files[0];
@@ -119,13 +143,13 @@ const About = () => {
         setPicData(prev => ({ ...prev, [type]: "" }));
     };
 
-    const handleThemeColor = (id, color) => {
-        setThemeColor(id);
+    const handleThemeColor = (color) => {
+        setThemeColor(color);
         dispatch(updateThemeColor(color));
     };
 
-    const handleTextColor = (id, color) => {
-        setTextColor(id);
+    const handleTextColor = (color) => {
+        setTextColor(color);
         dispatch(updateTextColor(color));
     };
 
@@ -154,14 +178,6 @@ const About = () => {
             (theme) => theme.id === textColor || theme.color_code === textColor
         );
 
-        if (!selectedTextColor) {
-            setTextColor(buttonColors[0].id);
-            selectedTextColor = buttonColors[0];
-        }
-        setThemeColor(selectedTheme.id);
-        setTextColor(selectedTextColor.id);
-
-        console.log('direct', userData.user_direct, userProfile.user_direct, body)
         try {
             const response = await axiosInstance.post("/updateProfile", body);
             if (response.status === 200) {
@@ -627,18 +643,31 @@ const About = () => {
                                         {backgroundColors?.map((color) => (
                                             <div
                                                 key={color.id}
-                                                className="rounded-full w-6 h-6 cursor-pointer border"
+                                                className="relative rounded-full w-6 h-6 cursor-pointer border"
                                                 style={{ backgroundColor: color.color_code }}
-                                                onClick={() => handleThemeColor(color.id, color.color_code)}
-                                            ></div>
+                                                onClick={() => handleThemeColor(color.color_code)}
+                                            >
+                                                {themeColor === color.color_code && (
+                                                    <div className="absolute inset-0 flex items-center justify-center">
+                                                        <svg className="w-4 h-4 text-white" fill="none"
+                                                             stroke="currentColor" viewBox="0 0 24 24"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                    </div>
+                                                )}
+                                            </div>
                                         ))}
+                                        { !backgroundColors.length && (
+                                            <span className="loader !w-8 !h-8"></span>
+                                        )}
                                     </div>
                                 </div>
 
                                 {/* link color */}
                                 <div
                                     className="w-full rounded-lg flex flex-col gap-2 bg-white border border-primary p-4">
-                                    <div className="pb-4 flex items-center justify-between">
+                                    <div className="flex items-center justify-between">
                                         <label
                                             htmlFor=""
                                             className="block text-sm font-inter font-medium text-gray-900 "
@@ -649,11 +678,24 @@ const About = () => {
                                             {buttonColors?.map((color) => (
                                                 <div
                                                     key={color.id}
-                                                    className="rounded-full w-6 h-6 cursor-pointer border"
+                                                    className="relative rounded-full w-6 h-6 cursor-pointer border"
                                                     style={{ backgroundColor: color.color_code }}
-                                                    onClick={() => handleTextColor(color.id, color.color_code)}
-                                                ></div>
+                                                    onClick={() => handleTextColor(color.color_code)}
+                                                >
+                                                    {textColor === color.color_code && (
+                                                        <div className="absolute inset-0 flex items-center justify-center">
+                                                            <svg className="w-4 h-4 text-white" fill="none"
+                                                                 stroke="currentColor" viewBox="0 0 24 24"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M5 13l4 4L19 7"></path>
+                                                            </svg>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             ))}
+                                            { !buttonColors.length && (
+                                                <span className="loader !w-8 !h-8"></span>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

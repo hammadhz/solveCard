@@ -73,6 +73,7 @@ const AddLinkBaseModal = ({ closeModal, data, id }) => {
           path: baseUrl ? path.replace(baseUrl, "") : path,
           label: title,
           baseUrl: data?.baseUrl,
+          direct: data?.direct ?? 1,
         }))
         toast.success(response.data.message);
         closeModal();

@@ -134,7 +134,7 @@ const ProfileViewCard = () => {
         <div className={
           layout === 'left' ? 'w-full flex flex-col items-start text-left gap-2 px-4 my-4' : layout === 'right' ? 'w-full flex flex-col items-end text-right gap-2 px-4 my-4' : 'w-full flex flex-wrap items-start justify-center gap-2 px-4 my-4'
         }>
-          {userData?.platforms?.map((platform, index) => (
+          {userData?.platforms?.filter(platform => platform.direct).map((platform, index) => (
               <div key={index}
                    className={
                      layout === 'left' ? 'w-full flex flex-row items-center justify-start gap-2' : layout === 'right' ? 'w-full flex flex-row-reverse items-center justify-start gap-2' : 'flex flex-col items-center justify-start gap-2'

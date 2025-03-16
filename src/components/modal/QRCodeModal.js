@@ -4,7 +4,7 @@ import {Button} from "../form";
 
 const QRCodeModal = ({ onClose }) => {
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg">
                 <div className={"flex items-end mb-4"}>
                     <div className={`flex items-end border-r-2 pr-4`}>
@@ -17,7 +17,7 @@ const QRCodeModal = ({ onClose }) => {
                     </div>
                     <h6 className="ps-4 text-xl font-lg">Download the app</h6>
                 </div>
-                <p className="mb-4">The SolveCard app is needed to share your digital business card.</p>
+                <p className="mb-4">Upgrade to pro by scanning this Qr code to download mobile app.</p>
                 <div className="flex justify-center mb-4">
                     <QRCode value="https://example.com/download-app" />
                 </div>
